@@ -1,0 +1,4 @@
+Puzzle Idea:
+One of the maps, the player will be given a certain amount of insturments
+player must play the insturments in order to open a passage
+Note: not sure how connected the puzzle will be to the world
