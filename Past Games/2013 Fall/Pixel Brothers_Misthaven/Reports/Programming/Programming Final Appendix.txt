@@ -1,0 +1,1292 @@
+//=======================================================================================================================================================
+2. //	   Once Upon a Time in	                   _____  .___  _______________________ ___    _________   _______________ _______		       ||
+3. //	    					  /     \ |   |/   _____/\__    ___/   |   \  /  _  \   \ /   /\_   _____/ \      \		       ||
+4. //	    					 /  \ /  \|   |\_____  \   |    | /    ~    \/  /_\  \   Y   /  |    __)_  /   |   \		       ||
+5. //	    					/    Y    \   |/        \  |    | \    Y    /    |    \     /   |        \/    |    \		       ||
+6. //	    		                        \____|__  /___/_______  /  |____|  \___|_  /\____|__  /\___/   /_______  /\____|__  /		       ||
+7. //	    			                 	\/            \/                 \/         \/                 \/         \/                   ||
+8. //====================================================================================================================================================
+9. 
+10. 
+11. 				#include "Header.h"
+12. 
+13. 
+14. //====================================================================================================================================================
+15. //		GLOBAL VARIABLES:                                                          (0) - All global variables.
+16. //====================================================================================================================================================
+17. 
+18. 
+19. 		// SAVE FILE DATA.
+20. 		int Xpos=21,Ypos=32;			// Map Positioning. 
+21. 		int PlayerPosX, PlayerPosY;             // Character Positioning.
+22. 		int Health;				// Health.
+23. 		int stagenum;				// Stage Number
+24. 		int currency;				// Currency
+25. 
+26. 		// LOADED GRAPHICS.
+27. 		char mapread[65][145];			// Map - Hometown
+28. 		char mapread2[4*78][223];		// Map - Levels (x-78)
+29. 		char mapread2copy[4*78][223];   	// Map - Levels Copy (Used to reset map).
+30. 		char avatar[17][72];			// Avatars.
+31. 		char logoread[9][64];			// Logo.
+32. 		char inventory[15][80];			// Inventory.
+33. 		char gamestory[500][65];		// Game Story. 
+34. 
+35. 		// RUNTIME VARIABLES.
+36. 		int EnemyPosX, EnemyPosY;       	// Enemy Positioning. 
+37. 		int turn, turncurrency;			// Turns, Turn Currency.
+38. 		int ParalizeEnemy;			// Play Ability - Freeze Enemy.
+39. 		int randv;				// Enemy probability value. (Function 15).
+40. 		bool charactermoved=1;			// Freeze game if no movemnt. (Function 13).
+41. 		bool op;				// Control Invert Trap Switch.
+42. 		bool PlayerInput;			// Input needs to be turned OFF for some situations.
+43. 
+44. 		//PROGRESS VARIABLES.
+45. 		bool ITEM_necklace=false;       	// ITEM: Necklace.
+46. 		bool ITEM_photograph=false;     	// ITEM: Photograph.
+47. 		bool ITEM_scarf=false;			// ITEM: Scarf.
+48. 		bool ITEM_knife=false;			// ITEM: Knife.
+49. 
+50. 
+51. //====================================================================================================================================================
+52. //		MAIN FUNCTION:                                                             (1) - Main() : Menu & Prestartup function calls.
+53. //====================================================================================================================================================
+54. 
+55. 
+56. 			void main ()
+57. 			{ 
+58. 				playSound();
+59. 				txtloader();
+60. 
+61. 			    gamemenuexe(1);
+62. 
+63. 				printstory(5,0,7);
+64. 				printstory(5,7,14);
+65. 
+66. 				system("CLS");
+69. 				system("pause");
+70. 
+71. 			    gamebody();
+72. 			 }
+73. 
+74. //====================================================================================================================================================
+75. //		COLORING FUNCTION:                                                         (2) - Used to add color to ascii in the next function.
+76. //====================================================================================================================================================
+77. 			
+78. 
+79. 		 void ColorAscii(int INTASCII, WORD text_color) 
+80. 		 {
+81. 				HANDLE output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+82. 
+83. 				WORD default_dos_color = FOREGROUND_RED   |
+84. 							 FOREGROUND_GREEN |
+85. 							 FOREGROUND_BLUE  |
+86. 							 FOREGROUND_INTENSITY;
+87. 
+88. 				SetConsoleTextAttribute(output_handle, text_color);
+89. 
+90. 				cout<<char(INTASCII);
+91. 
+92. 			    SetConsoleTextAttribute(output_handle, default_dos_color);
+93. 		 }
+94. 
+95. //====================================================================================================================================================
+96. //		ASCII CHARACTER MAPPING SWITCH:                                            (3) - Char to ASCII: Parsing, Printing, Color, Constraint.
+97. //====================================================================================================================================================
+98. 	
+99. 
+100. 		void PRINTMAPCHAR (char mapcharnum)
+101. 		{  switch(mapcharnum)
+102. 		   {  
+103. 
+104. 			 //************************************* NUMERICALS ( NON CONSTRAINED CHARACTERS) *******************************************
+105. 
+106. 			 case '.': {cout<<" ";break;}
+107. 			 case '_': {ColorAscii(char(219),FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE);break;}
+108. 	        	 case '1': {ColorAscii(char(176),FOREGROUND_GREEN | FOREGROUND_INTENSITY);break;}
+109. 		         case '2': {cout<<char(177);break;}
+110. 		     	 case '3': {cout<<char(178);break;}
+111. 			 case '4': {cout<<char(219);break;}
+112. 			 case '5': {ColorAscii(char(03), FOREGROUND_RED | FOREGROUND_INTENSITY);break;}
+113. 			 case '6': {ColorAscii(char(03), FOREGROUND_BLUE | BACKGROUND_INTENSITY | FOREGROUND_INTENSITY);break;}
+114. 			 case '7': {ColorAscii(char(176), BACKGROUND_RED | FOREGROUND_GREEN );break;}
+115. 			 case '8': {ColorAscii(char(15),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);break;}
+116. 			 case '9': {ColorAscii(char(04), FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY);break;}
+117. 			 case '0': {ColorAscii(char(178),FOREGROUND_RED | BACKGROUND_BLUE);break;}                               
+118. 
+119. 
+120. 			 //************************************* ALPHABETS ( NON CONSTRAINED CHARACTERS) *******************************************
+121. 
+122. 			case 'A': {cout<<" ";break;}	
+123. 			case 'B': {cout<<char(176);break;}
+124. 			case 'C': {cout<<char(177);break;}	
+125. 			case 'D': {cout<<char(178);break;}			
+126. 			case 'E': {cout<<char(219);break;}					
+127. 			case 'F': {cout<<char(223);break;}		
+128. 			case 'G': {cout<<char(220);break;}		
+129. 			case 'H': {cout<<char(206);break;}	
+130. 			case 'I': {cout<<char(186);break;}	
+131. 			case 'J': {ColorAscii(char(176),FOREGROUND_GREEN | FOREGROUND_INTENSITY);break;}		 
+132. 			case 'K': {ColorAscii(char(176),FOREGROUND_GREEN);break;}       				    
+133. 			case 'L': {ColorAscii(char(02), FOREGROUND_RED  | FOREGROUND_INTENSITY);break;}	        
+134. 			case 'M': {ColorAscii(char(176),BACKGROUND_GREEN  | FOREGROUND_BLUE);break;}
+135. 			case 'N': {ColorAscii(char(177),BACKGROUND_GREEN  | FOREGROUND_BLUE);break;}
+136. 			case 'O': {ColorAscii(char(178),BACKGROUND_GREEN  | FOREGROUND_BLUE);break;}
+137. 			case 'P': {ColorAscii(char(219),FOREGROUND_RED  | FOREGROUND_GREEN | FOREGROUND_BLUE);break;}
+138. 		        case 'Q': {ColorAscii(char(01), FOREGROUND_BLUE | FOREGROUND_RED   | FOREGROUND_GREEN);break;} 
+139. 			case 'R': {ColorAscii(char(176), BACKGROUND_RED | FOREGROUND_BLUE  | FOREGROUND_GREEN );break;}
+140. 			case 'V': {ColorAscii(char(03), FOREGROUND_RED | FOREGROUND_INTENSITY);break;}	
+141. 			case 'W': {ColorAscii(char(178), FOREGROUND_GREEN | FOREGROUND_BLUE);break;}
+142. 
+143. 		  }
+144. 		}
+145. 
+146. //====================================================================================================================================================
+147. //		PRINT AVATAR FUNCTION:                                                     (4) - Prints Unformatted text in formatted form. 
+148. //====================================================================================================================================================
+149. 
+150. 
+151. 			void printavatars (int avatarnum)
+152. 			{ 
+153. 				LockWindowUpdate(GetConsoleWindow());
+154. 			    system("CLS");
+155. 			    cout<<"\n\n\n\n\t\t\t     ";
+156. 				for(int i=0;i<17;i++)			
+157. 				{  
+158. 					for(int j=((18*avatarnum)-18);j<(18*avatarnum);j++)
+159. 			        {  PRINTMAPCHAR(avatar[i][j]); }
+160. 				    cout<<endl<<"\t\t\t     ";
+161. 				}
+162. 			    LockWindowUpdate(NULL);
+163. 			    Sleep(500);
+164. 			}	
+165. 
+166. //====================================================================================================================================================
+167. //		COMPLETE GAME FILE LOADER:                                                 (5) - Load maps, logos, assets & defauly Initialization.
+168. //====================================================================================================================================================
+169. 		
+170. 
+171. 			void txtloader ()
+172. 			{ 
+173. 			 //********************************************* AVATAR FILE LOADING (A) *************************************************
+174. 
+175. 				    ifstream INAVATAR; 
+176. 					INAVATAR.open("avatar.txt");
+177. 					for(int i=0;i<17;i++)	
+178. 					{ 
+179. 						for(int j=0;j<72;j++)
+180. 					    { INAVATAR>>avatar[i][j]; }
+181. 					}
+182. 					INAVATAR.close();				printavatars(1); // 25 % Loading Complete. 
+183. 				
+184. 			 //********************************************** LOGO FILE LOADING (B) ***************************************************
+185. 
+186. 					ifstream INLOGO; 
+187. 					INLOGO.open("logo.txt");
+188. 					for(int i=0;i<9;i++)			
+189. 					{
+190. 						for(int j=0;j<64;j++)
+191. 						{ INLOGO>>logoread[i][j];}
+192. 				    }
+193. 					INLOGO.close();
+194. 
+195. 			 //****************************************** MAP - HOME TOWN - FILE LOADING (C) *****************************************
+196. 					
+197. 					ifstream INMAP;	
+198. 					INMAP.open("map - hometown.txt");
+199. 					for(int i=0;i<65;i++)			
+200. 					{
+201. 						for(int j=0;j<150;j++)
+202. 						{INMAP>>mapread[i][j];}
+203. 					}
+204. 					INMAP.close();					printavatars(2); // 50% Loading Complete. 
+205. 
+206. 			 //****************************************** MAP - LEVEL 1 - FILE LOADING (D) *******************************************
+207. 
+208. 					ifstream INMAP2;
+209. 					INMAP2.open("map - levels.txt");
+210. 					for(int i=0;i<4*78;i++)	//2 Levels		
+211. 					{
+212. 						for(int j=0;j<223;j++)
+213. 						{INMAP2>>mapread2[i][j];}
+214. 						
+215. 					}
+216. 					
+217. 					INMAP2.close();
+218. 
+219. 			 //********************************************* GAME STORY - FILE LOADING (E) *******************************************
+220. 
+221. 					ifstream INSTORY;
+222. 					INSTORY.open("story.txt");
+223. 					for(int i=0;i<500;i++)			
+224. 					{
+225. 						for(int j=0;j<65;j++)
+226. 						{INSTORY.get(gamestory[i][j]);}
+227. 					}
+228. 					INSTORY.close();				printavatars(3); // 75% Loading Complete. 
+229. 
+230. 			 //******************************************* DEFAULT INITIALIZATION BELOW (F)*******************************************
+231. 
+232. 
+233. 			   		for(int i=0;i<4*78;i++)			// Creates a copy of the levels to reset after player leaves region. 
+234. 			        {  for(int j=0;j<223;j++)
+235. 			            {mapread2copy[i][j]=mapread2[i][j];}  }
+236. 
+237. 						stagenum=1;
+238. 						currency=0;
+239. 						Health=5;
+240. 						op=true;
+241. 						PlayerInput=true;
+242. 						
+243. 											printavatars(4); //100% Loading Completed.
+244. 			 }
+245. 			
+246. //====================================================================================================================================================
+247. //		GOTO X,Y FUNCTION:                                                         (6) - Windows move console curser to screen position (x,y).
+248. //====================================================================================================================================================
+249. 
+250. 
+251. 			void gotoxy(int x, int y)
+252. 		  {
+253. 				static HANDLE h = NULL;  
+254. 				if(!h)
+255. 				h = GetStdHandle(STD_OUTPUT_HANDLE);
+256. 				COORD c = { x, y };  
+257. 
+258. 				SetConsoleCursorPosition(h,c);
+259. 		  }
+260. 
+261. //====================================================================================================================================================
+262. //		GAME STORY FUNCTION:							  (7) - Fully formats bulk text into paragraphs and positions it.
+263. //====================================================================================================================================================
+264. 
+265. 
+266. 			void printstory (int numberofnewlines, int from, int to) 
+267. 			{  
+268. 						 //********************************************* CHAINGING TEXT COLOR.
+269. 						 HANDLE output_handle = GetStdHandle(STD_OUTPUT_HANDLE); 
+270. 						 WORD default_dos_color = FOREGROUND_RED   | 
+271. 					  	 			  FOREGROUND_GREEN | 
+272. 									  FOREGROUND_BLUE  | 
+273. 									  FOREGROUND_INTENSITY;
+274. 
+275. 						 SetConsoleTextAttribute(output_handle, FOREGROUND_BLUE | FOREGROUND_RED);
+276. 
+277. 
+278. 						 //********************************************* INITIAL FORMATING ('numberofnewlines').
+279. 						 system("CLS");
+280. 						 for (int i=0;i<numberofnewlines;i++)
+281. 						 { cout<<"\n"; }
+282. 						   cout<<"\t ";
+283. 
+284. 
+285. 						//********************************************* VARIABLES FOR PARAGRAPH FORMATTING.
+286. 						int j=0;
+287. 						bool newlineencountered=0;
+288. 
+289. 
+290. 						//********************************************* PRINTS OUT THE STORY PARAGRAPH.
+291. 						for(int i=from;i<to;i++) 		
+292. 					    {	j=0; 
+293. 							newlineencountered=0;
+294. 							while(j<65)
+295. 							{  if(isspace(gamestory[i][j])&&j>60)
+296. 							   { cout<<"\n\n\t"; 
+297. 								 newlineencountered=1; 
+298. 								 Sleep(150); }
+299. 							if(gamestory[i][j]=='#')
+300. 								cout<<" ";
+301. 							else
+302. 							    cout<<gamestory[i][j];
+303. 							j++;
+304. 							}
+305. 							if (newlineencountered==0)
+306. 							{cout<<"\n\n\t";
+307. 							Sleep(150);} 
+308. 						}
+309. 						
+310. 						//********************************************* SETTING COLORS TO DEFAULT.
+311. 						SetConsoleTextAttribute(output_handle, default_dos_color);
+312. 						cout<<" ";
+313. 						system("pause");
+314. 						system("CLS");
+315. 			}	
+316. 
+317. //====================================================================================================================================================
+318. //		CUT SCENE LOOPS:    (***Not Used***)                                       (X) - Menu, continue, new game etc.
+319. //====================================================================================================================================================
+320. 
+321. 
+322. 			/*void cutscene(int x1, int y1, int x2, int y2, int mapx, int mapy) //(10,50,40,50,30,50)
+323. 			{ 
+324. 			  bool decrement=false; int XFROMPOS=x1, XTOPOS=x2, YPOS=y2;
+325. 			  if(x1>x2)
+326. 			  { decrement=true;
+327. 			     XFROMPOS=x2;
+328. 				 XTOPOS=x1; }
+329. 			  while(XFROMPOS<XTOPOS)
+330. 			  { Sleep(100);
+331. 			   	LockWindowUpdate(GetConsoleWindow());
+332. 				system("CLS");
+333. 				cout<<"\t";
+334. 				for(int i=mapx; i<(20+mapx); i++)
+335. 				{for (int j=mapy; j<(64+mapy); j++)
+336. 				{if(i==XFROMPOS && j==YPOS)
+337. 				    cout<<char(01);
+338. 				 else
+339. 					PRINTMAPCHAR(mapread[i][j]);}
+340. 			    cout<<endl<<"\t";}
+341. 					    XFROMPOS++;
+342. 					LockWindowUpdate(NULL);}
+343. 			  }*/
+344. 
+345. //====================================================================================================================================================
+346. //		SAVE AND LOAD FUNCTION:                                                    (8) - SAVE = filesave(1) . LOAD = filesave(0).
+347. //====================================================================================================================================================
+348. 
+349. 
+350. 			void filesave (int saveorload)
+351. 			{   
+352. 				//********************************************* (0) LOAD GAME.
+353. 				if ( saveorload==0 ) 
+354. 				{  
+355. 					ifstream INFILE;
+356. 					INFILE.open("save.txt");
+357. 					INFILE>>Xpos;
+358. 					INFILE>>Ypos;
+359. 					INFILE>>stagenum;
+360. 					INFILE>>currency;
+361. 					INFILE>>Health;
+362. 					INFILE>>ITEM_necklace;
+363. 				        INFILE>>ITEM_knife;
+364. 					INFILE>>ITEM_photograph;
+365. 					INFILE>>ITEM_scarf;
+366. 					INFILE.close(); 
+367. 				}
+368. 		    
+369. 			         //********************************************* (1) SAVE GAME.
+370. 			         if ( saveorload==1 ) 
+371. 				 { 
+372. 					ofstream OUTFILE;
+373. 					OUTFILE.open("save.txt");
+374. 					OUTFILE<<Xpos<<endl;
+375. 					OUTFILE<<Ypos<<endl;
+376. 					OUTFILE<<stagenum<<endl;
+377. 					OUTFILE<<currency<<endl;
+378. 					OUTFILE<<Health<<endl;
+379. 					OUTFILE<<ITEM_necklace<<endl;
+380. 				        OUTFILE<<ITEM_knife<<endl;
+381. 					OUTFILE<<ITEM_photograph<<endl;
+382. 					OUTFILE<<ITEM_scarf;
+383. 					OUTFILE.close(); 
+384. 				  }
+385. 
+386. 				 //********************************************* (1) SAVE GAME.
+387. 				 if ( saveorload==2 ) 
+388. 				 { 
+389. 					ofstream OUTFILE;
+390. 
+391. 					OUTFILE.open("save.txt");
+392. 					OUTFILE<<16<<endl;
+393. 					OUTFILE<<18<<endl;
+394. 					OUTFILE<<1<<endl;
+395. 					OUTFILE<<100<<endl;
+396. 					OUTFILE<<6<<endl;
+397. 					OUTFILE<<0<<endl;
+398. 				        OUTFILE<<0<<endl;
+399. 					OUTFILE<<0<<endl;
+400. 					OUTFILE<<0;
+401. 
+402. 					OUTFILE.close();
+403. 				 }
+404. 			}
+405. 
+406. //====================================================================================================================================================
+407. //	    PROGRESS MENU:                                                             (9) - Prints progress scree, Shows Key items found.
+408. //====================================================================================================================================================
+409. 
+410. 
+411. 			void progressmenu()
+412. 			{ 
+413. 				system("CLS");
+414. 				cout<<"\n\n\n\n\n\n";
+415. 
+416. 				cout<<"\t\t\tITEMS FOUND ("; PRINTMAPCHAR('6'); cout<<")\n\n\n\n";
+417. 
+418. 				if(ITEM_necklace==true)
+419. 					cout<<"\t\t\t1. NECKLACE "<<"\n\n";
+420. 				else
+421. 					cout<<"\t\t\t1. xxxxxxxx "<<"\n\n";
+422. 
+423. 				if(ITEM_knife==true)
+424. 					cout<<"\t\t\t2. KNIFE    "<<"\n\n";
+425. 				else
+426. 					cout<<"\t\t\t2. xxxxxxxx "<<"\n\n";
+427. 
+428. 				if(ITEM_photograph==true)
+429. 					cout<<"\t\t\t3. PHOTO    "<<"\n\n";
+430. 				else
+431. 					cout<<"\t\t\t3. xxxxxxxx "<<"\n\n";
+432. 
+433. 				if(ITEM_scarf==true)
+434. 					cout<<"\t\t\t4. SCARF    "<<"\n\n";
+435. 				else
+436. 					cout<<"\t\t\t4. xxxxxxxx "<<"\n\n";
+437. 
+438. 				cout<<"\n\n\t\t";
+439. 				system("pause");
+440. 
+441. 			}
+442. 
+443. //====================================================================================================================================================
+444. //	    MAIN & IN GAME MENU:                                                      (10) - Only prints: main / in-game menu. 
+445. //====================================================================================================================================================
+446. 
+447. 
+448. 			void gamemenu(int opt)
+449. 			{  
+450. 				 system("CLS");
+451. 				
+452. 
+453. 				 
+454.     			    cout<<"\n\n\n\t      Once upon a time at\n\n\t";
+455. 
+456. 				    for(int i=0;i<9;i++) // **** Printing Game Logo. 
+457. 				    {  for(int j=0;j<64;j++)
+458. 					   {  PRINTMAPCHAR(logoread[i][j]); }
+459. 					   cout<<endl<<"\t"; }
+460. 
+461. 				//********************************************* MAIN GAME MENU.
+462. 				if (opt==1)
+463. 				{
+464. 					cout<<"\n\n\n";
+465. 					cout<<"\t\t 1. CONTINUE GAME\n\n";
+466. 					cout<<"\t\t 2. NEW GAME\n\n";
+467. 					cout<<"\t\t 3. EXIT GAME\n\n\t\t ";
+468. 				 }
+469. 
+470. 				 //********************************************* IN GAME MENU.
+471. 				 if (opt==2)
+472. 				 {  
+473. 					cout<<"\n\n\n\t\t GAME PAUSED\n\n";
+474. 				    cout<<"\t\t 1. CONTINUE\n\n";
+475. 					cout<<"\t\t 2. SAVE GAME\n\n";
+476. 					cout<<"\t\t 3. SAVE & EXIT\n\n\t\t ";
+477. 				 }
+478. 			}
+479. 
+480. //====================================================================================================================================================
+481. //	    MAIN & IN GAME MENU EXECUTIONS:                                           (11) - Executes all main / in-game menu options.
+482. //====================================================================================================================================================
+483. 
+484. 
+485. 			void gamemenuexe(int opt)
+486. 			{   
+487. 				char confirm;
+488. 				int choice;
+489. 
+490. 				restart:
+491. 
+492. 			    gamemenu(opt);
+493. 				cin>>choice;
+494. 
+495. 				if( opt==1)
+496. 				{  
+497. 					switch(choice)
+498. 				  { 
+499. 					     case 1: { filesave(0); break; }
+500. 
+501. 					     case 2: {  cout<<"\n\t\t Are you sure? All previous Data will be lost! (Y/N)";
+502. 
+503. 									cin>>confirm;
+504. 
+505. 									if( confirm=='Y' || confirm=='y')
+506. 									{ filesave(2); 
+507. 									  filesave(0); }
+509. 									else
+510. 								        goto restart;
+512. 								        break;
+513. 								  }
+514. 					     case 3: {  cout<<"\n\t\t Are you sure you want to exit game? (Y/N)";
+515. 									cin>>confirm;
+516. 									if( confirm=='Y' || confirm=='y')
+517. 										exit(1);
+518. 									else
+519. 							                goto restart; break;}
+520. 
+521. 					     default: goto restart;
+522. 					}}
+523. 
+524. 				
+525. 				if( opt==2)
+526. 				{  
+527. 					switch(choice)
+528. 				  { 
+529. 					      case 1: { break; }
+530. 
+531. 					      case 2: {  filesave(1);
+532. 							         cout<<"Game Saved!"; 
+533. 									 _getch(); break; }
+534. 
+535. 					      case 3: {  cout<<"\n\t\t Are you sure you want to save and exit game? (Y/N)";
+536. 									cin>>confirm;
+537. 									if( confirm=='Y' || confirm=='y')
+538. 										{ filesave(1);
+539. 									      exit(1); }
+540. 									else
+541. 										goto restart;break;}
+542. 
+543. 					      default: goto restart;
+544. 					}}
+545. 			}
+546. 
+547. //====================================================================================================================================================
+548. //		PRINT HEADER:                                                             (12) - Prints Header: Health, Currency, Items, Turns.
+549. //====================================================================================================================================================
+550. 
+551. 
+552. 			void printheader ()
+553. 			{ 
+554. 				  cout<<"\n\n\t HEALTH ";
+555. 				  for (int i=0; i<Health; i++) 
+556. 				  PRINTMAPCHAR ('V');
+557. 
+558. 				  cout<<"\t     PLASMA ";
+559. 				  PRINTMAPCHAR ('9');
+560. 				  cout<<currency;
+561. 				  
+562. 
+563. 				  cout<<"\t";
+564. 				  PRINTMAPCHAR('6');
+565. 				  { cout<<":"<<(int(ITEM_necklace)+int(ITEM_knife)+int(ITEM_photograph)+int(ITEM_scarf))<<"/4"; }
+566. 
+567. 
+568. 			          if (stagenum==2)
+569. 				  { 
+570. 					cout<<"\t     TURNS ";
+571. 				    cout<<char(01);
+572. 				    cout<<turncurrency; 
+573. 				  }
+574. 
+575. 				  cout<<"\n";
+576. 				  //cout <<"\tx:"<<PlayerPosX<<"("<<Xpos<<") "<<"y:"<<PlayerPosY<<"("<<Ypos<<")\n"; //Player Coordinate Print. (OFF)
+577. 				  
+578. 			}
+579. 
+580. //====================================================================================================================================================
+581. //		SPELL BOOK:								    (13) - In-Game Spellbook menu with Operations.
+582. //====================================================================================================================================================
+583. 
+584. 
+585. 		void powers(int opt)
+586. 		{  
+587. 		   int PowerChoice;
+588. 		   char Confirm;
+589. 
+590. 		   if (opt==1)
+591. 		   {     menu: //GOTO LABEL. 
+592. 
+593. 			     system("CLS");
+594. 				 printheader();
+595. 
+596. 				 cout << "\n\n\n\t\tSPELL BOOK:"; cout<<"\t\t You Have (" << turncurrency << " turns)\n\n";
+597. 				 cout << "\t\t1. Freeze Enemy for 20 turns: (15"; PRINTMAPCHAR('9') ; cout<< ")(100 turns)\n\n";
+598. 				 cout << "\t\t2. Destroy Most of the traps: (15"; PRINTMAPCHAR('9') ; cout<< ")(110 turns)\n\n";
+599. 				 cout << "\t\t3. Return Home to Misthaven : (15"; PRINTMAPCHAR('9') ; cout<< ")\n\n";
+600. 				 cout << "\t\t4. Exit SpellBook!\n\n\t\t>> ";
+601. 					 
+602. 				 cin>>PowerChoice;
+603. 
+604. 			switch(PowerChoice)
+605. 			{     
+606. 				//**************************************************** CASE 1 ***********************************************************
+607. 
+608. 				  case 1:    { cout<<"\n\n\tSpend (30";PRINTMAPCHAR('9');cout<<") to paralize the spirit? (Y/N)\n\n\t>>";
+609. 						       Confirm=_getch();
+610. 						       
+611. 							   if ( Confirm=='Y'||Confirm=='y' && (currency>30) && (turncurrency>100) )
+612. 						       {    
+613. 								    ParalizeEnemy=turn+20;
+614. 							        currency=currency-15;
+615. 								    turncurrency=turncurrency-100;
+616. 								    cout<<" A deal has been made!";
+617. 							   } 
+618. 							   break;
+619. 							 }
+620. 
+621. 				  //**************************************************** CASE 2 ***********************************************************
+622. 
+623. 				  case 2:    { cout<<"\n\n\tSpend (30";PRINTMAPCHAR('9');cout<<") to paralize the spirit? (Y/N)\n\n\t>>";
+624. 						       Confirm=_getch();
+625. 						 
+626. 							   if ( Confirm=='Y'||Confirm=='y' && (currency>30) && (turncurrency>110) )
+627. 							   {
+628. 								    for(int i=0;i<78;i++) // Re-initializes map to default (Map2copy). 
+629. 						            {  for(int j=0;j<223;j++)
+630. 						               { mapread2[i][j]=mapread2copy[i][j]; }
+631. 								    }
+632. 
+633. 									currency=currency-15;
+634. 									turncurrency=turncurrency-110;
+635. 									cout<<" A deal has been made!";
+636. 							   }
+637. 							   break;
+638. 							 }
+639. 
+640. 				  //**************************************************** CASE 3 ***********************************************************
+641. 
+642. 				  case 3:    { cout<<"\n\n\tSpend (30";PRINTMAPCHAR('9');cout<<") to go back home to Misthaven? (Y/N)\n\n\t>>";
+643. 						       Confirm=_getch();
+644. 						 
+645. 							   if ( Confirm=='Y'||Confirm=='y' && (currency>30))
+646. 							   {	
+647. 									currency=currency-15;
+648. 									 stagenum=1;
+649. 									 Xpos=30; 
+650. 									 Ypos=50;
+651. 									 Health=6;
+652. 							   		 cout<<" A deal has been made!";} break; } 
+653. 
+654. 				  //**************************************************** DEFAULT CASE *****************************************************
+655. 					
+656. 				  case 4: break;
+657. 				  default:   goto menu;
+658. 			
+659. 			} cout<<"\n\n\n\n\t";
+660. 
+661. 		   }}
+662. 
+663. //====================================================================================================================================================
+664. //		PRINT MAPS:                                                               (14) - Prints different levels / Game screen.
+665. //====================================================================================================================================================
+666. 
+667. 
+668. 		void printmap (int opt)
+669. 		{      
+670. 		  //********************************************* .PRINT: LEVEL 1. *********************************************
+671. 				 if ( opt==1)
+672. 			     {	  for (int i=Xpos; i<(20+Xpos); i++)
+673. 						  {   for (int j=Ypos; j<(64+Ypos); j++)
+674. 								  {   
+675. 									if(i==(PlayerPosX) && j==(PlayerPosY))
+676. 								        cout<<char(01);
+677. 								        else
+678. 								        PRINTMAPCHAR(mapread[i][j]);
+679. 									}
+680. 									cout<<endl<<"\t";  }}
+681. 
+682. 		 //********************************************* .PRINT: LEVEL 1. *********************************************
+683. 				 
+684. 			     if (opt==2)
+685. 							   {	for (int i=Xpos; i<(20+Xpos); i++)
+686. 								{   for (int j=Ypos; j<(64+Ypos); j++)
+687. 									{   if(i==(PlayerPosX) && j==(PlayerPosY))
+688. 								        cout<<char(01);
+689. 								        else
+690. 								        if(i==(EnemyPosX) && j==(EnemyPosY))
+691. 								        cout<<char(02);
+692. 								        else
+693. 								        PRINTMAPCHAR(mapread2[i][j]);
+694. 							        }
+695. 								    cout<<endl<<"\t"; 
+696. 							     }}
+697. 		 }
+698. 
+699. //====================================================================================================================================================
+700. //		DIRECTION MOVEMENT:                                                       (15) - Alters movements by DIRECTION, sets Constraints!
+701. //====================================================================================================================================================
+702. 
+703. 
+704. 		            void directionfunct(char DIRECTION, int opt,bool reverse)
+705. 		            {  int checkxmovement=Xpos,
+706. 					       checkymovement=Ypos;
+707. 
+708. 					DIRECTION=tolower(DIRECTION);//always convert to lower case.
+709. 
+710. 					//**************************************************** CASE 1 *************************************************
+711. 
+712. 					   if(opt==1)
+713. 					{  switch(DIRECTION)
+714. 					{  case 'w': {  if(!isalpha(mapread[PlayerPosX-1][PlayerPosY]))
+715. 									Xpos--; break;}
+716. 					   case 's': {  if(!isalpha(mapread[PlayerPosX+1][PlayerPosY]))
+717. 									Xpos++; break;}
+718. 					   case 'd': {  if(!isalpha(mapread[PlayerPosX][PlayerPosY+1]))
+719. 									Ypos++; break;}
+720. 					   case 'a': {  if(!isalpha(mapread[PlayerPosX][PlayerPosY-1]))
+721. 									Ypos--; break;    }}}
+722. 					
+723. 					//**************************************************** CASE 1 *************************************************
+724. 
+725. 					   if(opt==2 && op==true)
+726. 					{  switch(DIRECTION)
+727. 					{  case 'w': {  if(!isalpha(mapread2[PlayerPosX-1][PlayerPosY]))
+728. 									Xpos--;break;}
+729. 					   case 's': {  if(!isalpha(mapread2[PlayerPosX+1][PlayerPosY]))
+730. 									Xpos++; break;}
+731. 					   case 'd': {  if(!isalpha(mapread2[PlayerPosX][PlayerPosY+1]))
+732. 									Ypos++; break;}
+733. 					   case 'a': {  if(!isalpha(mapread2[PlayerPosX][PlayerPosY-1]))
+734. 						            Ypos--; break;}}}	
+735. 
+736. 					//**************************************************** CASE 1 *************************************************
+737. 
+738. 					   if(opt==2 && op==false)
+739. 					{  switch(DIRECTION)
+740. 					{  case 's': {  if(!isalpha(mapread2[PlayerPosX-1][PlayerPosY]))
+741. 									Xpos--; break;}
+742. 					   case 'w': {  if(!isalpha(mapread2[PlayerPosX+1][PlayerPosY]))
+743. 									Xpos++; break;}
+744. 					   case 'a': {  if(!isalpha(mapread2[PlayerPosX][PlayerPosY+1]))
+745. 									Ypos++; break;}
+746. 					   case 'd': {  if(!isalpha(mapread2[PlayerPosX][PlayerPosY-1]))
+747. 									Ypos--; break; }}}	
+748. 
+749. 					//**************************************************** CASE 1 *************************************************
+750. 
+751. 					   switch(DIRECTION)
+752. 					   {	
+753. 					     case 'x': {  system("CLS");
+754. 									  gamemenuexe(2);
+755. 									  break; }
+756. 					     case 'b': {  if ( stagenum==2)
+757. 									  {    powers(1);
+758. 									       system("PAUSE"); break; }}
+759. 						 case 'e': {  progressmenu(); break; }
+760. 						 default:     break; }  
+761. 					
+762. 					if(checkxmovement==Xpos && checkymovement==Ypos)
+763. 				    charactermoved=0;
+764. 					else
+765. 				    charactermoved=1;
+766. 					}
+767. 
+768. //====================================================================================================================================================
+769. //		CHECKS X,Y COORDINATE VICINITY:                                           (16) - Checks if player is anywhere around (x,y). T/F;
+770. //====================================================================================================================================================
+771. 
+772. 
+773. 					bool checkXYvicinity(int X, int Y)
+774. 					{
+775. 
+776. 					    if ( ( PlayerPosX+1==X && PlayerPosY==Y ) || //if player is on the right of coordinate.
+777. 						 ( PlayerPosX-1==X && PlayerPosY==Y ) || //if player is on the  left of coordinate.
+778. 						 ( PlayerPosX==X && PlayerPosY+1==Y ) || //if player is below the given coordinate.
+779. 						 ( PlayerPosX==X && PlayerPosY-1==Y ))   //if player is above the given coordinate.
+780. 							return (true);
+781. 					   else
+782. 							return (false); }
+783. 
+784. //====================================================================================================================================================
+785. //		CHECKS ENEMY VICINITY:                                                    (17) - Checks if the enemy is around the player. T/F;
+786. //====================================================================================================================================================
+787. 
+788. 
+789. 					bool checkEnemyvicinity()
+790. 					{
+791. 					    if (( (EnemyPosX==PlayerPosX+1) && (EnemyPosY==PlayerPosY) )|| //if enemy is on the right of player
+792. 						( (EnemyPosX==PlayerPosX-1) && (EnemyPosY==PlayerPosY) )|| //if enemy is on the left  if player
+793. 						( (EnemyPosY==PlayerPosY+1) && (EnemyPosX==PlayerPosX) )|| //if enemy is bellow the player
+794. 						( (EnemyPosY==PlayerPosY-1) && (EnemyPosX==PlayerPosX) ))  //if enemy is above  the player
+795. 							return (true);
+796. 					   else
+797. 							return (false); 
+798. 					} 
+799. 
+800. //====================================================================================================================================================
+801. //		CHECKS OBJECT VICINITY:                                                   (18) - Checks if player is anywhere around an object. T/F;
+802. //====================================================================================================================================================
+803. 
+804. 
+805. 					bool checkObjvicinity(char Obj)
+806. 					{
+807. 
+808. 					    if ((mapread[PlayerPosX+1][PlayerPosY]==Obj) || //if player is on the right of coordinate.
+809. 					        (mapread[PlayerPosX-1][PlayerPosY]==Obj) || //if player is on the  left of coordinate.
+810. 					        (mapread[PlayerPosX][PlayerPosY+1]==Obj) || //if player is below the given coordinate.
+811. 						(mapread[PlayerPosX][PlayerPosY-1]==Obj))   //if player is above the given coordinate.
+812. 							return (true);
+813. 					   else
+814. 							return (false); }
+815. 
+816. //====================================================================================================================================================
+817. //		ENEMY CHASE FUNCTION:                                                     (19) - Enemy X,Y Increment/decrement (& Optional Porbability).
+818. //====================================================================================================================================================
+819. 					
+820. 
+821. 					 void enemychase()
+822. 					 {    
+823. 						 randv = rand() % 100 + 1; //Creates Probability. 
+824. 
+825. 					         if((PlayerPosX>EnemyPosX)&&(randv<=95)) //(randv<=100) Probability: OFF
+826. 							EnemyPosX++;
+827. 						 else
+828. 							EnemyPosX--;
+829. 						 
+830. 						 if((PlayerPosY>EnemyPosY)&&(randv<=100))
+831. 							EnemyPosY++;
+832. 						 else
+833. 							EnemyPosY--; 
+834. 						 
+835. 					 }
+836. 
+837. //====================================================================================================================================================
+838. //		RANDOM OBJECT PLACEMENT ALGORITHM:                                        (20) - Places any object randomly on the map.
+839. //====================================================================================================================================================
+840. 		
+841. 
+842. 					void RandObject (char Obj,int mapnum,int xprobvalue, int yprobvalue,int totalprobvalue)
+843. 					{	  
+844. 						  int objrand = (rand() % 100)+1; //so the srand does not overlap for different objects;
+845. 
+846. 						  srand((unsigned)time(0)+objrand); // Random seeding using system time. 
+847. 
+848. 						  int nProbability= (rand() % 100)+1;
+849. 
+850. 						  if(stagenum==mapnum && nProbability>totalprobvalue)
+851. 
+852. 						  {     
+853. 								int n= (rand() % xprobvalue)+5;
+854. 								//srand((unsigned)time(0));
+855. 								int m= (rand() % yprobvalue)+5;
+856. 								//srand((unsigned)time(0));
+857. 								int o= (rand() % 4)+1;
+858. 
+859. 						  switch(o)
+860. 						  { case 1: { if ( mapread2[PlayerPosX-n][PlayerPosY-m]=='.' )
+861. 										   mapread2[PlayerPosX-n][PlayerPosY-m]=Obj;
+862. 										   break; }
+863. 							case 2: { if ( mapread2[PlayerPosX-n][PlayerPosY+m]=='.' )
+864. 										   mapread2[PlayerPosX-n][PlayerPosY+m]=Obj;
+865. 										   break; }
+866. 							case 3: { if ( mapread2[PlayerPosX+n][PlayerPosY-m]=='.' )
+867. 										   mapread2[PlayerPosX+n][PlayerPosY-m]=Obj;
+868. 										   break; }
+869. 							case 4: { if ( mapread2[PlayerPosX+n][PlayerPosY+m]=='.')
+870. 										   mapread2[PlayerPosX+n][PlayerPosY+m]=Obj;
+871. 										   break; }
+872. 						  }}
+873. 					}
+874. 
+875. //====================================================================================================================================================
+876. //		LEVEL SELECT MENU:                                                        (21) - Triangle Portal trigger and Initialization. 
+877. //====================================================================================================================================================
+878. 
+879. 
+880. 					void levelmenu()
+881. 					{ 
+882. 
+883. 					  if ( PlayerPosX==32 && PlayerPosY==109 && stagenum==1)
+884. 				
+885. 						 { char choice;
+886. 						   gotoxy(40, 9);   cout<<"                      ";
+887. 						   gotoxy(40,10);   cout<<"    SELECT LEVEL:     ";
+888. 						   gotoxy(40,11);   cout<<"                      ";
+889. 						   gotoxy(40,12);   cout<<" 1. Frostmist Swamp   ";
+890. 						   gotoxy(40,13);   cout<<"                      ";
+891. 						   gotoxy(40,14);   cout<<" 2. Forsaken Capital  ";
+892. 						   gotoxy(40,15);   cout<<"                      ";
+893. 						   if ((int(ITEM_necklace)+int(ITEM_knife)+int(ITEM_photograph)+int(ITEM_scarf))==4)
+894. 						   {gotoxy(40,16);   cout<<" 3. Exit              ";
+895. 						   gotoxy(40,17);   cout<<"                      ";
+896. 						   gotoxy(40,18);   cout<<" 4. Final Frontier    ";
+897. 						   gotoxy(40,19);   cout<<"                      ";}
+898. 						   else
+899. 						  {gotoxy(40,16);   cout<<" 3. Exit              ";
+900. 						   gotoxy(40,17);   cout<<"                      ";}
+901. 
+902. 						   choice=_getch();
+903. 
+904. 						   turn=0;
+905. 						   turncurrency=0;
+906. 						   PlayerInput=false;
+907. 			
+908. 						switch(choice)
+909. 						{ 
+910. 						  case '1': { playBeepSound();
+911. 									  stagenum=2;
+912. 									  Xpos=22;
+913. 									  Ypos=13; break; }
+914. 						  case '2': { playBeepSound();
+915. 									  stagenum=2;
+916. 									  Xpos=100;
+917. 									  Ypos=13; break; }
+918. 						  case '3': { Xpos=26;
+919. 									  Ypos=94; break; }
+920. 						  case '4': { playBeepSound();
+921. 									  stagenum=2;
+922. 									  Xpos=194;
+923. 									  Ypos=13; break; }
+924. 				
+925. 						}
+926. 
+927. 						   PlayerPosX=Xpos+5;	    // SETTING INITIAL PLAYER POSITION
+928. 						   PlayerPosY=Ypos+15;
+929. 
+930. 						   EnemyPosX=PlayerPosX-10;  // SETTING INITIAL ENEMY POSITION
+931. 						   EnemyPosY=PlayerPosY; 
+932. 			
+933. 					  }}
+934. 			  
+935. //====================================================================================================================================================
+936. //		TRIGGERS: RUNTIME                                                         (22) - Triggers: Runtime.
+937. //====================================================================================================================================================
+938. 
+939. 
+940. 					void triggers_runtime(int PlayerPosX, int PlayerPosY)
+941. 					{ 
+942. 						if(PlayerInput==false)
+943. 							PlayerInput=true;
+944. 
+945. 					  //******************** VARIABLE INITIALIZATION STAGE ***********************
+946. 
+947. 								PlayerPosX=Xpos+5;
+948. 								PlayerPosY=Ypos+15;
+949. 
+950. 								if( stagenum!=1 && charactermoved==1)
+951. 								{   turn++;
+952. 								    turncurrency++; } 
+953. 
+954. 
+955. 					  //****************** ENEMY CHASE PLAYER EVERY OTHER TURN ********************
+956. 					  
+957. 						  if( stagenum==2 && (turn%2==0) && charactermoved==1)
+958. 						    { if( ParalizeEnemy<turn)
+959. 							      enemychase(); } 
+960. 
+961. 					  //*********** IF ENEMY CATCHES THE PLAYER, INSTANT KILL PLAYER **************
+962. 					
+963. 						  if( stagenum==2 && (checkEnemyvicinity()==true))
+964. 						    { Health=0; 
+965. 						      PlayerInput=false;}
+966. 					}
+967. 
+968. //====================================================================================================================================================
+969. //		TRIGGERS: HOMETOWN                                                        (23) - Triggers: Hometown (mapread).
+970. //====================================================================================================================================================
+971. 
+972. 
+973. 					void triggers_hometown (int PlayerPosX, int PlayerPosY)
+974. 					{ 		
+975. 								PlayerPosX=Xpos+5;
+976. 								PlayerPosY=Ypos+15;
+977. 
+978. 					  //********************* COLLECT CURRENCY, REMOVE FROM MAP *******************
+979. 
+980. 						  if ( stagenum==1 &&  mapread[PlayerPosX][PlayerPosY]=='9') //Map 1
+981. 						     { mapread[PlayerPosX][PlayerPosY]='.'; 
+982. 							   currency++; }
+983. 
+984. 					  //************** TELEPORT PLAYER TO MAZE 1, AND INITIALIZE ******************
+985. 
+986. 						//levelmenu(); // CALLS THE LEVEL MENU
+987. 
+988. 					}
+989. 
+990. //====================================================================================================================================================
+991. //		TRIGGERS: LEVEL 1                                                         (24) - Triggers: Level 1.
+992. //====================================================================================================================================================
+993. 
+994. 
+995. 					void triggers_level1 (int PlayerPosX, int PlayerPosY)
+996. 					{
+997. 
+998. 								PlayerPosX=Xpos+5;
+999. 								PlayerPosY=Ypos+15;
+1000. 
+1001. 				      //********************* COLLECT CURRENCY, REMOVE FROM MAP *******************
+1002. 
+1003. 						  if ( stagenum==2 && mapread2[PlayerPosX][PlayerPosY]=='9') //Map 2
+1004. 						     { mapread2[PlayerPosX][PlayerPosY]='.'; 
+1005. 							   currency++; }
+1006. 
+1007. 					  //********************* IF POSITION IS TRAP, DEAL DAMAGE ********************
+1008. 
+1009. 						  if ( stagenum==2 && mapread2[PlayerPosX][PlayerPosY]=='8')
+1010. 							 { mapread2[PlayerPosX][PlayerPosY]='.';
+1011. 							   Health--; }
+1012. 
+1013. 					  //********************* COLLECT CURRENCY, REMOVE FROM MAP *******************
+1014. 
+1015. 						  if ( stagenum==2 && mapread2[PlayerPosX][PlayerPosY]=='0')
+1016. 						     { mapread2[PlayerPosX][PlayerPosY]='.';
+1017. 							   op=!op; }
+1018. 
+1019. 					  //************************ INITIALIZE ENEMY POSITION ************************
+1020. 					  
+1021. 
+1022. 
+1023. 					  //********** TELEPORT FROM END OF MAZE 1 TO HOMETOWN & INITIALIZE ***********
+1024. 					  
+1025. 						  if ( PlayerPosX==35 && PlayerPosY==183)
+1026. 						     { stagenum=1;
+1027. 						       Xpos=30; 
+1028. 						       Ypos=50;
+1029. 						       Health=6;
+1030. 						                          
+1031. 						       for( int i=0;i<(3*78);i++) //Reseting map back to default below.
+1032. 						       {    for( int j=0;j<223;j++)
+1033. 						            {    mapread2[i][j]=mapread2copy[i][j]; }}}
+1034. 
+1035. 
+1036. 					}
+1037. 
+1038. //====================================================================================================================================================
+1039. //		TRIGGERS: LEVEL 2                                                         (25) - Triggers: Level 2.
+1040. //====================================================================================================================================================
+1041. 
+1042. 
+1043. 					void triggers_level2 (int PlayerPosX, int PlayerPosY)
+1044. 					{
+1045. 
+1046. 								PlayerPosX=Xpos+5;
+1047. 								PlayerPosY=Ypos+15;
+1048. 
+1049. 					
+1050. 						    if ( PlayerPosX==175 && PlayerPosY==60)
+1051. 						     { Xpos = 203;
+1052. 							   Ypos = 137;}
+1053. 						    if ( PlayerPosX==200 && PlayerPosY==152)
+1054. 						     { Xpos = 203;
+1055. 							   Ypos = 95;}
+1056. 							if ( PlayerPosX==216 && PlayerPosY==152)
+1057. 						     { Xpos = 177;
+1058. 							   Ypos = 124;}
+1059. 						    if ( PlayerPosX==182 && PlayerPosY==130)
+1060. 						     { Xpos = 195;
+1061. 							   Ypos = 137;}
+1062. 							 if ( PlayerPosX==218 && PlayerPosY==73)
+1063. 						     { Xpos = 177;
+1064. 							   Ypos = 106;}
+1065.      					     if ( PlayerPosX==216 && PlayerPosY==144)
+1066. 						     { Xpos = 178;
+1067. 							   Ypos = 45;}											    
+1068. 							 if( PlayerPosX==172 && PlayerPosY==138)
+1069. 						     { Xpos = 174;
+1070. 							   Ypos = 72;}
+1071. 							 if( PlayerPosX==189 && PlayerPosY==100)
+1072. 						     { Xpos = 169;
+1073. 							   Ypos = 144;}
+1074. 							 if( PlayerPosX==191 && PlayerPosY==183)
+1075. 							 {   system("CLS");
+1076. 							     cout<<"\n\n\n\n\n\n\n\n\t\t\t";
+1077. 							     cout<<"To be continued in part 2\n\n\n\n\n\n\t\t\t";
+1078. 						             stagenum=1;
+1079. 							     Xpos=30;
+1080. 							     Ypos=50;
+1081. 							     system("pause");}
+1082. 						                     
+1083. 
+1084. 					}
+1085. 
+1086. //====================================================================================================================================================
+1087. //		DIALOGUE BOX FUNTION:                                                     (26) - Prints out a black box so text can be printed over.
+1088. //====================================================================================================================================================
+1089. 
+1090. 
+1091. 					void dialoguebox ()
+1092. 					{ gotoxy(0,20);
+1093. 
+1094. 					  // Prints black box on game screen for text.
+1095. 					  for( int i=0;i<3;i++) 
+1096. 					  {    for( int j=0;j<79;j++)
+1097. 					       {    cout<<" "; }
+1098. 					  cout<<endl;
+1099. 					  }
+1100. 
+1101. 					  gotoxy(10,21); // curser ready to print at centre of box.
+1102. 					}
+1103. 
+1104. //====================================================================================================================================================
+1105. //		DIALOGUE TRIGGERS:                                                        (27) - Complete dialogue triggers (Body).
+1106. //====================================================================================================================================================
+1107. 
+1108. 
+1109. 					void dialoguetrigger()
+1110. 					{
+1111. 								PlayerPosX=Xpos+5;
+1112. 								PlayerPosY=Ypos+15;
+1113. 
+1114. 
+1115. 						if(stagenum==1)
+1116. 						{   
+1117. 							if (checkXYvicinity(24,77)==true)
+1118. 							{   dialoguebox(); cout<<" Collect Plasma ! It will help you on your journey! "; 
+.....							    PRINTMAPCHAR('9');}
+1119. 
+1120. 							if (checkXYvicinity(27,77)==true)
+1121. 							{   dialoguebox(); cout<<" When your out there, Press 'B' to access your spellbook! ";}
+1122. 
+1123. 							if (checkXYvicinity(30,77)==true)
+1124. 							{   dialoguebox(); cout<<" I hear it's dangerous out there, don't step on traps! "; 
+.....							    PRINTMAPCHAR('0');}
+1125. 
+1126. 							if (checkXYvicinity(33,77)==true)
+1127. 							{   dialoguebox(); cout<<" Press 'X' at anytime to access the menu!";}
+1128. 
+1129. 							if (checkXYvicinity(36,77)==true)
+1130. 							{   dialoguebox(); cout<<" Find clues! Press 'E' to open your Inventory!"; PRINTMAPCHAR('6');}
+1131. 
+1132. 							if (checkXYvicinity(39,77)==true)
+1133. 							{   dialoguebox(); cout<<" When you're ready, walk east to the triangular portal!";}
+1134. 
+1135. 							if (checkXYvicinity(26,47)==true)
+1136. 							{   dialoguebox(); cout<<" This portal will be finished soon! ";}
+1137. 
+1138. 						        if (checkXYvicinity(26,50)==true)
+1139. 							{   dialoguebox(); cout<<" Ha, If I were you I would kill that girl... traitor ";}
+1140. 
+1141. 							if (checkXYvicinity(36,47)==true)
+1142. 							{   dialoguebox(); cout<<" Get that girl soon so we can conquer this world !";}
+1143. 
+1144. 						        if (checkXYvicinity(36,50)==true)
+1145. 							{   dialoguebox(); cout<<" Mwhahahahaha Oh, ahem *cough* What are you looking at?";}
+1146. 
+1147. 							if (checkXYvicinity(31,41)==true)
+1148. 							{   dialoguebox(); cout<<" Those who have left Misthaven have not returned... ";}
+1149. 
+1150. 							if (checkXYvicinity(31,56)==true)
+1151. 							{   dialoguebox(); cout<<" I don't remember anything... This portal needs building!";}
+1152. 							
+1153. 						}}
+1154. 
+1155. //====================================================================================================================================================
+1156. //		STORY TRIGGERS:                                                           (28) - Complete story triggers (Body).
+1157. //====================================================================================================================================================
+1158. 
+1159. 
+1160. 					void storytrigger()
+1161. 					{  	
+1162. 								PlayerPosX=Xpos+5;
+1163. 								PlayerPosY=Ypos+15;
+1164. 
+1165. 
+1166. 						if( stagenum==2 && turn ==10)
+1167. 						{   printstory(6,14,22);  }
+1168. 
+1169. 						
+1170. 						if( PlayerPosX==28 && PlayerPosY==149 && stagenum==2) // Item 1 - Necklace.
+1171. 						{   printstory(6,22,29);
+1172. 						    ITEM_necklace=1;
+1173. 							mapread2[PlayerPosX][PlayerPosY]='.';
+1174. 						}
+1175. 							
+1176. 
+1177. 						if( PlayerPosX==33 && PlayerPosY==159 && stagenum==2) // Item 2 - Knife.
+1178. 						{   printstory(8,29,34); 
+1179. 							ITEM_knife=1;
+1180. 							mapread2[PlayerPosX][PlayerPosY]='.';
+1181. 						}
+1182. 
+1183. 						
+1184. 						if( PlayerPosX==99 && PlayerPosY==142 && stagenum==2) // Item 3 - Photograph.
+1185. 						{   printstory(8,34,39); 
+1186. 							ITEM_photograph=1;
+1187. 							mapread2[PlayerPosX][PlayerPosY]='.';
+1188. 						}
+1189. 
+1190. 
+1191. 						if( PlayerPosX==129 && PlayerPosY==151 && stagenum==2) // Item 4 - Scarf.
+1192. 						{   printstory(7,39,44);
+1193. 							ITEM_scarf=1;
+1194. 							mapread2[PlayerPosX][PlayerPosY]='.';
+1195. 						}
+1196. 
+1197. 						if (( PlayerPosX==35 && PlayerPosY==183) || ( PlayerPosX==113 && PlayerPosY==183))
+1198. 						{    printstory(9,44,48);
+1199. 						     printstory(10,48,52);  
+1200. 						     stagenum=1;
+1201. 						     Xpos=30; 
+1202. 						     Ypos=50;
+1203. 						     Health=6;
+1204. 						                          
+1205. 						       for( int i=0;i<(3*78);i++) //Reseting map back to default below.
+1206. 						       {    for( int j=0;j<223;j++)
+1207. 						            {    mapread2[i][j]=mapread2copy[i][j]; }}}
+1208. 					}
+1209. 
+1210. //====================================================================================================================================================
+1211. //		DEATH ANIMATION:                                                          (29) - Resets variables after death. 
+1212. //====================================================================================================================================================
+1213. 
+1214. 
+1215. 					void deathanimation ()
+1216. 					{  if ( Health==0)
+1217. 					   {    system("CLS");
+1218. 						    cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\tYOU DIED! YOU GAVE 20 PLASMA TO A WILD BEAST FOR RESCUEING YOU!\n\t";
+1219. 						  
+1220. 						    for(int i=0;i<63;i++)
+1221. 						    { PRINTMAPCHAR('V');
+1222. 						      Sleep(50); }
+1223. 
+1224. 						    cout<<"\n\n\n\n\n\n\n\n\n\n\t";
+1225. 						    system("pause");
+1226. 						    system("CLS");
+1227. 						  
+1228. 						    stagenum=1;
+1229. 					            Xpos=30;Ypos=50;
+1230. 						    Health=6;
+1231. 						    op=true;
+1232. 						    currency=currency-20;
+1233. 						    PlayerInput=false; //Turns OFF Input;
+1234. 						  
+1235. 						    //Reseting map back to default below.
+1236. 						    for(int i=0;i<3*78;i++)			
+1237. 						    {  for(int j=0;j<223;j++)
+1238. 						       { mapread2[i][j]=mapread2copy[i][j]; }}
+1239. 					}}
+1240. 
+1241. //====================================================================================================================================================
+1242. //		MAIN GAME BODY:                                                           (30) - All game body execution / function calls here.
+1243. //====================================================================================================================================================
+1244. 
+1245. 
+1246. 			void gamebody()
+1247. 			{   ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+1248. 				char DIRECTION;					// FOR DIRECTIONAL KEY
+1249. 				storytrigger();
+1250. 
+1251. 				do  //************************** || MAIN LOOP STARTS HERE || ******************
+1252. 
+1253. 			    {   
+1254. 					storytrigger();				     // TRIGGERS STORY EVENTS.
+1255. 					triggers_runtime(PlayerPosX,PlayerPosY);
+1256. 					triggers_hometown(PlayerPosX,PlayerPosY);
+1257. 					triggers_level1(PlayerPosX,PlayerPosY);
+1258. 					triggers_level2(PlayerPosX,PlayerPosY);
+1259. 
+1260. 					LockWindowUpdate(GetConsoleWindow());       // TURN ON LOCKDOWN.
+1261. 					system("CLS"); 
+1262. 
+1263. 					PlayerPosX=Xpos+5;
+1264. 					PlayerPosY=Ypos+15;
+1265. 
+1266. 					printheader();				    // PRINTS HEADER BAR.
+1267. 
+1268. 					cout<<"\n\t";
+1269. 					printmap(stagenum);			    // PRINTS MAP.
+1270. 					LockWindowUpdate(NULL);		 	    // TURN OFF LOCKDOWN.
+1271. 
+1272. 
+1273. 					dialoguetrigger();			    // TRIGGER - DIALOGUES.
+1274. 					levelmenu();				    // MAIN PORTAL TRIGGER.
+1275. 
+1276. 					Sleep(20);
+1277. 
+1278. 					if( PlayerInput==true )
+1279. 					  { DIRECTION=_getch();
+1280. 					    directionfunct(DIRECTION,stagenum,op); }
+1281. 
+1282. 					deathanimation();			    // DEATH ANIMATION.
+1283. 
+1284. 					RandObject('8',2,15,15,80);
+1285. 					RandObject('9',2, 5, 5,20);
+1286. 					
+1287. 
+1288. 				} while(true); //***************** || MAIN LOOP ENDS HERE ||******************* 
+1289. 			}
+1290. 
+1291. 
+1292. //====================================================================================================================================================
+1293. // END OF CODE                                                                       (All work programmed by Aaron Alphonso, 2013)
+1294. //====================================================================================================================================================
