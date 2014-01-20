@@ -38,9 +38,8 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
-	Player = new Character("images/InternetTestSprite.png", 32, 64);
+	Player = new MainCharacter("images/InternetTestSprite.png", 32, 64);
 	this->addSpriteToDrawList(Player);
-	Player->setLayerID(5);
 }
 
 /* draw()
@@ -154,8 +153,8 @@ void Game::drawSprites()
 void Game::update()
 {
 		updateTimer->tick();
-
 		Player->update();
+
 }
 
 /* 

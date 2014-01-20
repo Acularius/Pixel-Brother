@@ -17,7 +17,7 @@
 /*********************************/
 /* GLOBAL SPRITE INFO */
 /*********************************/
-#define FRAMES_PER_SECOND 15
+#define FRAMES_PER_SECOND 6
 const int FRAME_DELAY_SPRITE=1000/FRAMES_PER_SECOND;
 
 /* the Game */
@@ -41,7 +41,7 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 {
 	std::cout << "Keycode:"<<(int)key<<std::endl;
 	theGame->keyboardDown(key,x,y);
-
+	theGame->Player->movementGo(key);
 }
 
 /* function void KeyboardUpCallbackFunction(unsigned char, int,int)
@@ -51,6 +51,7 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 void KeyboardUpCallbackFunction(unsigned char key, int x, int y)
 {
 	theGame->keyboardUp(key,x,y);
+	theGame->Player->movementStop(key);
 }
 
 /* function initImageLibrary()

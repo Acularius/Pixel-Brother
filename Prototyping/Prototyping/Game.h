@@ -11,7 +11,7 @@
 #include "IL/il.h"
 #include "IL/ilu.h"
 #include "IL/ilut.h"
-#include "Character.h"
+#include "Objects.h"
 #include "Timer.h"
 #include <algorithm>
 #include <cmath>
@@ -135,7 +135,7 @@ public:
 	GameStateInfo stateInfo;
 
 	/* Player Sprite */
-	Character *Player;
+	MainCharacter *Player;
 
 	InputInfo input;
 
