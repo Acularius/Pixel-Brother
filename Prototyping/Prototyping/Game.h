@@ -119,6 +119,7 @@ public:
 	void PostDraw(); // cleanup and prepare for next frame
 	
 	void drawSprites(); // draw the sprite list
+	void drawTestPrimitives(); // Test function for GDWII milestone
 
 	/* update routines, the game loop */
 	void update(); // called from main frequently

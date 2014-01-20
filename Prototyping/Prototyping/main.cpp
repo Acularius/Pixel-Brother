@@ -17,7 +17,7 @@
 /*********************************/
 /* GLOBAL SPRITE INFO */
 /*********************************/
-#define FRAMES_PER_SECOND 6
+#define FRAMES_PER_SECOND 15
 const int FRAME_DELAY_SPRITE=1000/FRAMES_PER_SECOND;
 
 /* the Game */
@@ -39,6 +39,7 @@ void DisplayCallbackFunction(void)
  */
 void KeyboardCallbackFunction(unsigned char key, int x, int y)
 {
+
 	std::cout << "Keycode:"<<(int)key<<std::endl;
 	theGame->keyboardDown(key,x,y);
 	theGame->Player->movementGo(key);
@@ -76,7 +77,7 @@ void initImageLibrary()
  */
 void TimerCallbackFunction(int value)
 {
-	theGame->update();		
+	theGame->update();
 
 	glutPostRedisplay();
 	glutTimerFunc(FRAME_DELAY_SPRITE,TimerCallbackFunction,0);
@@ -117,6 +118,7 @@ int main(int argc, char **argv)
 	glutCreateWindow("MY GAME");
 
 	/* set up our function callbacks */
+	bool ignoreRepeats = false;
 	glutDisplayFunc(DisplayCallbackFunction);
 	glutKeyboardFunc(KeyboardCallbackFunction);
 	glutKeyboardUpFunc(KeyboardUpCallbackFunction);

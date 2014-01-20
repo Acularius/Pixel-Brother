@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "DrawPrimitives.h"
 
 /* this is called by std::sort to sort the list based on layerID 
  *  for drawing in the proper order 
@@ -93,6 +94,7 @@ void Game::DrawGame()
 	drawSprites();
 
 	glDisable(GL_TEXTURE_2D);
+	drawTestPrimitives();
 
 	/* this makes it actually show up on the screen */
 	glutSwapBuffers();
@@ -141,6 +143,22 @@ void Game::drawSprites()
 
 }
 
+/* For testing purposes for drawing primitives for GDWII
+* milestone
+*/
+void Game::drawTestPrimitives()
+{
+	/*Draw ze line*/
+	setLineWidth(5.f);
+	setColor(1,0,0);
+	drawLine(100,100,200,200);
+	setLineWidth(1.f);
+
+	/* Draw rectangle */
+	setColor(1,1,0);
+	drawRectangle(true, 200,200,50,50,45.f);
+}
+
 /* update()
   - this function is essentially the game loop
     it gets called often and as such you
@@ -154,6 +172,7 @@ void Game::update()
 {
 		updateTimer->tick();
 		Player->update();
+		Player->movement();
 
 }
 

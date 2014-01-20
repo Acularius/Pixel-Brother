@@ -14,15 +14,16 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this->addSpriteAnimFrame(1,0,64); // 1 face up
 	this->addSpriteAnimFrame(2,0,132); // 2 face left (The sprite sheet wasn't made, in an ideal world, y should be 128, 64 intervals)
 	this->addSpriteAnimFrame(3,-1,196); // 3 face down (Thee sprite sheet wasn't well made, in an ideal world, x should be 0)
-	this->addSpriteAnimRow(4, 32,0, 32,0, 4); // 4 walk right
+	this->addSpriteAnimRow(4, 0,0, 32,0, 4); // 4 walk right
 	this->addSpriteAnimRow(5, 32,64, 32,0, 4); // 5 walk up
-	this->addSpriteAnimRow(6, 32,132, 32,0, 4); // 6 walk left 
+	this->addSpriteAnimRow(6, 0,132, 32,0, 4); // 6 walk left 
 	this->addSpriteAnimRow(7, 31,196, 32,0, 4); // 7 walk down
-	this->setPosition(200,200);
+	this->setPosition(300,300);
 	this->setCurrentAnimation(3);
 
-	this->setLayerID(5);
-
+	this->setLayerID(11);
+	speedX = 0; // Character starts NOT moving
+	speedY = 0;
 }
 
 MainCharacter::~MainCharacter(void)
@@ -32,54 +33,74 @@ MainCharacter::~MainCharacter(void)
 
 void MainCharacter::update()
 {
-	glutKeyboardFunc;
-	glutKeyboardUpFunc;
+
 	this->nextFrame();
 }
 
 
 void MainCharacter::movementGo(unsigned char key)
 {
+	float move = 5;
 	switch(key)
 	{
-	case 'w': //Up (walk) = 5
+	case 'w': //Up (walk) = 5; +Y
 		this->setCurrentAnimation(5);
-		this->positionY = positionY + 5.f;
+		this->speedY = move;
+		this->speedX =0.f;
 		if(positionY > 432) positionY = 431;
 		break;
-	case 's': // Down (walk) = 7
+	case 's': // Down (walk) = 7; -Y
 		this->setCurrentAnimation(7);
-		this->positionY = positionY + -5.f;
+		this->speedY = -move;
+		this->speedX = 0.f;
 		if(positionY < 0) positionY = 1;
 		break;
-	case 'a': // Left (walk) = 6
+	case 'a': // Left (walk) = 6; -X
 		this->setCurrentAnimation(6);
-		this->positionX = positionX + -5.f;
+		this->speedY = 0.f;
+		this->speedX = -move;
 		if(positionX < 0) positionX = 1;
 		break;
-	case 'd': // right (walk) = 4
+	case 'd': // right (walk) = 4; +X
 		this->setCurrentAnimation(4);
-		this->positionX = positionX + 5.f;
+		this->speedY = 0.f;
+		this->speedX = move;
 		if(positionX > 800) positionX = 799;
 		break;
 	}
 }
 
+
 void MainCharacter::movementStop(unsigned char key)
 {
+	
 		switch(key)
 	{
-	case 'w': //Up (stationary) = 1
+	case 'w': //Up (stationary) = 1; Y
 		this->setCurrentAnimation(1);
+		this->speedY=0.f;
+		this->speedX=0.f;
 		break;
-	case 's': // Down (stationary) = 3
+	case 's': // Down (stationary) = 3; Y
 		this->setCurrentAnimation(3);
+		this->speedY=0.f;
+		this->speedX=0.f;
 		break;
-	case 'a': // Left (stationary) = 2
+	case 'a': // Left (stationary) = 2; X
 		this->setCurrentAnimation(2);
+		this->speedY=0.f;
+		this->speedX=0.f;
 		break;
-	case 'd': // right (stationary) = 0
+	case 'd': // right (stationary) = 0; X
 		this->setCurrentAnimation(0);
+		this->speedY=0.f;
+		this->speedX=0.f;
 		break;
 		}
 }	
+
+void MainCharacter::movement()
+{
+	this->positionX = positionX + speedX;
+	this->positionY = positionY + speedY;
+}
