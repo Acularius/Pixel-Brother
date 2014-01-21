@@ -41,6 +41,44 @@ void MainCharacter::update()
 void MainCharacter::movementGo(unsigned char key)
 {
 	float move = 5;
+	if (key == 'w')//Up (walk) = 5; +Y
+	{
+		this->setCurrentAnimation(5); 
+		this->speedY = move;
+		this->speedX = 0.f;
+		if(positionY > 432) this->positionY = 431; //Collision system later, simple boundary
+	}
+	else if( key == 's') // Down (walk) = 7; -Y
+	{
+		this->setCurrentAnimation(7); 
+		this->speedY = -move;
+		this->speedX = 0.f;
+		if(positionY < 0) this->positionY = 1; //Collision system later, simple boundar
+	}
+	else if( key == 'a') // Left (walk) = 6; -X
+	{
+		this->setCurrentAnimation(6);
+		this->speedY = 0.f;
+		this->speedX = -move;
+		if(positionX < 0) this->positionX = 1;
+	}
+	else if( key == 'd') // right (walk) = 4; +X
+	{
+		this->setCurrentAnimation(4);
+		this->speedY = 0.f;
+		this->speedX = move;
+		if(positionX > 800) this->positionX = 799;
+	}
+	else // Character going nowhere
+	{
+		this->speedY = 0.f;
+		this->speedX = 0.f;
+	}
+}
+	
+	//Works
+/*{
+	float move = 5;
 	switch(key)
 	{
 	case 'w': //Up (walk) = 5; +Y
@@ -68,7 +106,7 @@ void MainCharacter::movementGo(unsigned char key)
 		if(positionX > 800) positionX = 799;
 		break;
 	}
-}
+}*/
 
 
 void MainCharacter::movementStop(unsigned char key)

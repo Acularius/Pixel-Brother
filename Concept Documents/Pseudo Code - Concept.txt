@@ -1,0 +1,15 @@
+<cv.h> http://opencv-srf.blogspot.ca/2013/05/installing-configuring-opencv-with-vs.html
+
+Load 'image', height (y) and width (x); //Where x,y define the coordinates of a pixel
+
+Create a matrix to store information, matrix[height, width]; //where the matrix is defined by the loaded image.
+
+if 'colour' (R, G, B) at image [x,y] = 'colour' (I'm looking for); //occupies same position in matrix
+therefore colour = 'true' then matrix [x,y] = 'X'; // to be used in collision, not traversable
+		colour = 'false' then matrix[x,y] = 'O' ;// Traversable, and can be ignored in collision detection
+		
+		Use in my current Prototype to define a limit in movement function.
+
+What this means, 
+I can use the matrix storage of 'true/false' from an image file to dictate the boundaries for the player at (x,y) coords of each respective pixel.
+In theory, you could add more colours to check to do different things in terms of movement upon the player.
