@@ -108,8 +108,9 @@ void WindowReshapeCallbackFunction(int w,int h)
  * Description:
  *  - this is the main function
  *  - does initialization and then calls glutMainLoop() to start the event handler
+ *	- argv2 will eventually be for OpenCV
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **argv2) 
 {
 	/* initialize the window and OpenGL properly */
 	glutInit(&argc,argv);

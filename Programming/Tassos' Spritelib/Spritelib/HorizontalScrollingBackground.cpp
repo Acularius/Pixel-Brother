@@ -5,7 +5,7 @@ HorizontalScrollingBackground::HorizontalScrollingBackground(std::string filenam
 {
 	/* it is assumed that the filename is loaded through the parent class constructor above */
 	/* thus we should already have a texture associated with this background */
-	scrollingSpeed = 10;
+	scrollingSpeed = 0; // Original speed = 10
 	this->setNumberOfAnimations(1);
 	this->addSpriteAnimFrame(0, 0,0);
 	this->setSpriteFrameSize(width,height);
