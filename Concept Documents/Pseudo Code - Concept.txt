@@ -1,6 +1,7 @@
 <cv.h> http://opencv-srf.blogspot.ca/2013/05/installing-configuring-opencv-with-vs.html
 
-Load 'image', height (y) and width (x); //Where x,y define the coordinates of a pixel
+[Success] Load 'image', height (y) and width (x); //Where x,y define the coordinates of a pixel 
+-Refer to Cimg Experiment
 
 Create a matrix to store information, matrix[height, width]; //where the matrix is defined by the loaded image.
 

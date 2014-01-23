@@ -5,13 +5,13 @@ int main()
 {
 
 
-CImg<unsigned char> img("images/redsplotch.bmp"); // Reads from .bmp files natively
+CImg<unsigned char> img("images/splotches.bmp"); // Reads from .bmp files natively
 
 int width = img.width();
 int height = img.height();
-float red = img(100,125,0, 0); // in theory should be red
-float green = img(100,125,0, 1); // in theory should be green
-float blue = img(100,125,0, 2); // in theory the channel should be blue
+float red = img(99,99,0, 0); // Red Channel
+float green = img(99,99,0, 1); // Green Channel
+float blue = img(99,99,0, 2); // Blue Channel
 int numChannels = img.spectrum(); // Number of Channels
 
 std::cout << "The file is  " << width << " pixels wide" << std::endl;
@@ -27,10 +27,27 @@ return 0;
 }
 
 /* What I have learned:
-'image'(x,y,z, channel)
+CImg<unsigned char> image("location/of/image/here.bmp")
+image(x,y,z, channel)
 x,y,z represent the location of the pixel.
 In terms of channel.
 Red is channel = 0
 Green, channel = 1
 Blue, channel = 2
+
+Therefore, the program starts from the top left.
+In a 200 by 200 file. Ignore z
+0-199
+0,0 = Purple Corner ( Red and Blue > Green)
+0,199 = Blue Corner
+99,99 = Red Center
+199,0 = Green Corner
+199,199 = Not sure what colour Corner (Red and Green > Blue)
+
+ Cimg stores from the top left
+OpenGL reads pixel coords from the bottom left.
+
+OpenGl will start from 0 and end at image.height()-1;
+Cimg will start from image.height() - 1 to 0.
+
 */

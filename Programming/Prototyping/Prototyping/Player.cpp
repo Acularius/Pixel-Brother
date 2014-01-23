@@ -18,7 +18,7 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this->addSpriteAnimRow(5, 32,64, 32,0, 4); // 5 walk up
 	this->addSpriteAnimRow(6, 0,132, 32,0, 4); // 6 walk left 
 	this->addSpriteAnimRow(7, 31,196, 32,0, 4); // 7 walk down
-	this->setPosition(300,300);
+	this->setPosition(0,0);
 	this->setCurrentAnimation(3);
 
 	this->setLayerID(11);
@@ -46,28 +46,24 @@ void MainCharacter::movementGo(unsigned char key)
 		this->setCurrentAnimation(5); 
 		this->speedY = move;
 		this->speedX = 0.f;
-		if(positionY > 432) this->positionY = 431; //Collision system later, simple boundary
 	}
 	else if( key == 's') // Down (walk) = 7; -Y
 	{
 		this->setCurrentAnimation(7); 
 		this->speedY = -move;
 		this->speedX = 0.f;
-		if(positionY < 0) this->positionY = 1; //Collision system later, simple boundar
 	}
 	else if( key == 'a') // Left (walk) = 6; -X
 	{
 		this->setCurrentAnimation(6);
 		this->speedY = 0.f;
 		this->speedX = -move;
-		if(positionX < 0) this->positionX = 1;
 	}
 	else if( key == 'd') // right (walk) = 4; +X
 	{
 		this->setCurrentAnimation(4);
 		this->speedY = 0.f;
 		this->speedX = move;
-		if(positionX > 800) this->positionX = 799;
 	}
 	else // Character going nowhere
 	{
@@ -140,5 +136,10 @@ void MainCharacter::movementStop(unsigned char key)
 void MainCharacter::movement()
 {
 	this->positionX = positionX + speedX;
+		if(positionX < 0) this->positionX = 1;
+		if(positionX > 800) this->positionX = 799;
+	
 	this->positionY = positionY + speedY;
+		if(positionY > 432) this->positionY = 431; //Collision system later, simple boundary
+		if(positionY < 0) this->positionY = 1; //Collision system later, simple boundary
 }
