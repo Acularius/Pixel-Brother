@@ -8,6 +8,8 @@ Sprite::Sprite(std::string spriteSheetFilename)
 	layerID = 0;
 	theta = 0;
 	centerX = centerY = 0;
+	speedX = 0; // Character starts NOT moving
+	speedY = 0;
 }
 
 Sprite::~Sprite(void)
@@ -127,7 +129,5 @@ void Sprite::draw()
  */
 void Sprite::update()
 {
-	positionX = positionX + 5.f;
-	if(positionX > 800) positionX = 0;
-	theta += 1; // increment orientation
+
 }

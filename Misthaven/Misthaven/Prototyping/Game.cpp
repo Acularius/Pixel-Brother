@@ -42,42 +42,30 @@ void Game::initializeGame()
 	Player = new MainCharacter("images/PlayerSprite.png", 28,48);
 	this->addSpriteToDrawList(Player);
 
-	/* Will place what Aaron has currently here until I integrate it properly*/
 
-	Background = new Sprite ("images/Background Sprite.png");
+	Background = new Objects ("images/Background Sprite.png",2860,1488);
 	Background -> setNumberOfAnimations(1);
-	Background -> setSpriteFrameSize(2860,1488);
-	//Background -> setPosition(0,0);
-	Background -> setPosition(-1700,-750);
-	Background -> setCenter(0,0);
+	Background -> setPosition(0,0);
 	Background -> setLayerID (2);
-	Background ->addSpriteAnimRow(0,0,0,2860,1488,1);
-	Background -> setCurrentAnimation(1);
+	Background -> addSpriteAnimFrame(0,0,0);
+	Background -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Background);
-	mapSpeed = 0;
 
 
-	WaterBackground = new Sprite ("images/Water Sprite.png");
+	WaterBackground = new Objects ("images/Water Sprite.png",2860,1488);
 	WaterBackground -> setNumberOfAnimations(1);
-	WaterBackground -> setSpriteFrameSize(2860,1488);
-	//WaterBackground -> setPosition(0,0);
-	WaterBackground -> setPosition(-1700,-750);
-	WaterBackground -> setCenter(0,0);
+	WaterBackground -> setPosition(0,0);
 	WaterBackground -> setLayerID (1);
-	WaterBackground ->addSpriteAnimRow(0,0,0,2860,1488,1);
-	WaterBackground -> setCurrentAnimation(1);
+	WaterBackground -> addSpriteAnimFrame(0,0,0);
+	WaterBackground -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(WaterBackground);
-	mapSpeed = 0;
-	WaterSpeed = 0;
 
-	Health = new Sprite ("images/Hearts.png");
+	Health = new Objects ("images/Hearts.png",132,32);
 	Health -> setNumberOfAnimations(1);
-	Health -> setSpriteFrameSize(132,32);
 	Health -> setPosition(0,0);
-	Health -> setCenter(0,0);
 	Health -> setLayerID (3);
-	Health -> addSpriteAnimRow(0,0,0,132,32,1);
-	Health -> setCurrentAnimation(1);
+	Health -> addSpriteAnimFrame(0,0,0);
+	Health -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Health);
 }
 
@@ -208,9 +196,14 @@ void Game::drawTestPrimitives()
 */
 void Game::update()
 {
+	
 		updateTimer->tick();
 		Player->update();
 		Player->movement();
+
+		Background->Objupdate();
+		WaterBackground->Objupdate();
+		Health->Objupdate();
 
 }
 

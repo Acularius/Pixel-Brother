@@ -5,24 +5,34 @@ ___________________________________________________________
 
 Future goals:
 
-Pass GDW gate 2. 
-Need to finish scoring.
+Pass GDW gate 2.
+ 
+Donald: Need to finish scoring.
 Character Walks over plasma, add to how much plasma player currently has.
-BMP overlay boundries.
-Boundries of the entire current map.
+
+Aaron + Eric: BMP overlay boundaries.
+Boundaries of the entire current map.
 Make The walking animation more visable/ more obvious.
-Write story by next wednesday.
+
+Rehan: Write story by next Wednesday.[Just get the backstory and concept downs, ask if you need help]
+
 Usman: Get concepts for level design/gameplay (play flash games, get ideas. Hack n Slash/
 Go over gate 2 requirements. 
+
+Thomas: Asset List [Sunday meeting] and Development Plan [Started]
 
 ___________________________________________________________
 
 Future meeting plan:
 
 Next Meeting will be on Sunday at 8PM.
+
+Discuss GDW Gate 2.
 ___________________________________________________________
 
 ATTENDANCE:
 Present: Thomas, Eric, Rehan, Eric, Aaron.
 Absent: Usman.
 ___________________________________________________________
+
+Post Script: Definitely ask oters for help for ideas, or to act as a sounding board.

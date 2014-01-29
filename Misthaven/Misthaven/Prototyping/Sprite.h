@@ -122,6 +122,8 @@ public:
 	float positionX,positionY;
 	float centerX,centerY;
 	float theta;
+	float speedX; // Character's move speed in pixels. X (left or right)
+	float speedY; // Character's move speed in pixels. Y (up or down)
 
 	// which layer this sprite is on, lower is further away, 
 	// background is 0, foreground > 0

@@ -11,8 +11,9 @@
 /******************************************/
 #define WINDOW_SCREEN_WIDTH 640 //640
 #define WINDOW_SCREEN_HEIGHT 432 //432
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 432
+
 
 /*********************************/
 /* GLOBAL SPRITE INFO */
@@ -22,6 +23,7 @@ const int FRAME_DELAY_SPRITE=1000/FRAMES_PER_SECOND;
 
 /* the Game */
 Game *theGame;
+
 
 /* function DisplayCallbackFunction(void)
  * Description:
@@ -116,7 +118,6 @@ int main(int argc, char **argv, char **argv2)
 	glutInit(&argc,argv);
 	glutInitWindowSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE);
-	glutInitWindowPosition(0,0);
 	glutCreateWindow("Misthaven");
 
 	/* set up our function callbacks */

@@ -138,17 +138,13 @@ public:
 
 	/* Player Sprite */
 	MainCharacter *Player;
-	//Aaron stuff
-	Sprite *Health;
+	
+	Objects *Health;
 
 		//Background Sprite Test
-	Sprite *Background;
-	Sprite *WaterBackground;
-	int mapSpeed;
-	int WaterSpeed;
-	bool test;
+	Objects *Background;
+	Objects *WaterBackground;
 
-	//Aaron end
 
 	InputInfo input;
 

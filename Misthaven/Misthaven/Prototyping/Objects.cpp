@@ -4,6 +4,9 @@
 Objects::Objects(std::string filename, int width, int height)
 	: Sprite(filename)
 {
+	this->setSpriteFrameSize(width, height);
+	this-> human = false;
+
 	/*I assume the filename is loaded through the parent class constructor above, Sprite*/
 	/* It is assumed I should have the texture associated with this character, Player or NPC*/
 }
@@ -11,9 +14,18 @@ Objects::~Objects()
 {
 	/* Deconstructor */
 }
-void Objects::update()
+void Objects::Objupdate()
 {
-/*Nothing as of yet*/
+	
+	this->nextFrame();
+	if(human==false)
+	{
+		this->positionX;
+		this->positionY;
+	}
+	else
+		; //nothing
+
 }
 
 
