@@ -44,7 +44,19 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 
 	std::cout << "Keycode:"<<(int)key<<std::endl;
 	theGame->keyboardDown(key,x,y);
+
+
+	/*Movement*/
+		//Player
 	theGame->Player->movementGo(key);
+	theGame->Health->movementGo(key);
+
+		//Non-Static
+
+		//Static
+		theGame->Background->movementGo(key);
+		theGame->WaterBackground->movementGo(key);	
+	
 }
 
 /* function void KeyboardUpCallbackFunction(unsigned char, int,int)
@@ -54,7 +66,18 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 void KeyboardUpCallbackFunction(unsigned char key, int x, int y)
 {
 	theGame->keyboardUp(key,x,y);
-	theGame->Player->movementStop(key);
+
+		/*Movement*/
+			//Player
+		theGame->Player->movementStop(key);
+		theGame->Health->movementStop(key);
+
+			//Non-Static
+
+			//Static
+		theGame->Background->movementStop(key);
+		theGame->WaterBackground->movementStop(key);
+
 }
 
 /* function initImageLibrary()

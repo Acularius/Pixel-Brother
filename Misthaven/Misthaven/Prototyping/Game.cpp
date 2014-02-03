@@ -39,7 +39,7 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
-	Player = new MainCharacter("images/PlayerSprite.png", 28,48);
+	Player = new MainCharacter ("images/PlayerSprite.png", 28,48);
 	this->addSpriteToDrawList(Player);
 
 
@@ -66,6 +66,7 @@ void Game::initializeGame()
 	Health -> setLayerID (3);
 	Health -> addSpriteAnimFrame(0,0,0);
 	Health -> setCurrentAnimation(0);
+	Health -> stationary = true;
 	this->addSpriteToDrawList(Health);
 }
 
@@ -196,14 +197,18 @@ void Game::drawTestPrimitives()
 */
 void Game::update()
 {
-	
+		// Time
 		updateTimer->tick();
-		Player->update();
-		Player->movement();
 
-		Background->Objupdate();
-		WaterBackground->Objupdate();
-		Health->Objupdate();
+		// Player
+		Player->update();
+
+		//Characters
+
+		// Static
+		Background->update();
+		WaterBackground->update();
+		Health->update();
 
 }
 
