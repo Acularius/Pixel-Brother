@@ -240,7 +240,8 @@ void Game::update()
 
 		}
 
-
+		if (WaterBackground-> positionY < -1000)
+		{ WaterBackground -> setPosition(-1700,-750); } //RESETTING SCROLLING BACKGROUND. 
 }
 
 /* 
