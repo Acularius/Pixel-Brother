@@ -15,7 +15,7 @@ Game::Game(void)
 {
 	/* green background */
 	stateInfo.bgClearColor.red = 0;
-	stateInfo.bgClearColor.green = 1;
+	stateInfo.bgClearColor.green = 0;
 	stateInfo.bgClearColor.blue = 0;
 
 	/* init state */
@@ -36,6 +36,7 @@ Game::~Game(void)
  *   to the game, i..e loading sprites etc.
  * - MUST be called prior to any drawing/updating (you should add in checks to ensure this occurs in the right order)
  */
+
 
 void Game::initializeGame()
 {
@@ -73,7 +74,7 @@ void Game::initializeGame()
 	Health = new Sprite ("images/Hearts.png");
 	Health -> setNumberOfAnimations(1);
 	Health -> setSpriteFrameSize(132,32);
-	Health -> setPosition(5,175);
+	Health -> setPosition(5,220);
 	Health -> setCenter(0,0);
 	Health -> setLayerID (3);
 	Health ->addSpriteAnimRow(0,0,0,132,32,1);
@@ -218,7 +219,7 @@ void Game::update()
 		//Player->update();
 		//Player->movement();
 
-
+		int count=1;
 
 		if (test == true)//left right
 		{
@@ -238,12 +239,6 @@ void Game::update()
 			
 
 		}
-
-
-
-		
-
-
 
 
 }
@@ -321,6 +316,9 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 
 	}
 }
+
+
+
 /* keyboardUp()
    - this gets called when you lift a key up
    - you are given the key that was pressed

@@ -27,7 +27,7 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this->addSpriteAnimRow(4,0,144,28,0,5);
 	
 	
-	this->setPosition(160,108);
+	this->setPosition(170,115);
 	this->setCurrentAnimation(1);
 
 	//addSpriteAnimRow(animationNumber,startingX,startingY. spacingX, spacingY, numberofanimations?)
