@@ -9,7 +9,16 @@ ___________________________________________________________
 
 Future Meeting plan
 Discuss about the gate 2 milestone
+
+"Going to be a busy week for me then... Also, as I've mentioned before, we're going to go through the Gate 2 stuff and finish off Gate 1 in this Wednesday's meeting and have it all planned out." -Donald
+
+- Finish off Gate 1
+- Decide Gate 2
+- Solidify Game Design, no more concepts, implementation. Once implementation is complete or under compelling reason, we should not add too much more than planned.
 ___________________________________________________________
 Future Goal
 Each member to work on their assigned role
 ___________________________________________________________
+
+P.S
+
