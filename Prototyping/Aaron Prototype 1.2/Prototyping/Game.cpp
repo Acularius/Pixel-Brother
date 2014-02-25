@@ -250,7 +250,7 @@ void Game::update()
 
 			Map1_Base ->positionY+=mapSpeed;
 			Map1_Objects ->positionY+=mapSpeed;
-			WaterBackground -> positionY+=(WaterSpeed-2);
+			WaterBackground -> positionY+=(WaterSpeed-1);
 			
 
 		}
