@@ -55,7 +55,6 @@ void Game::initializeGame()
 	Map1_Base ->addSpriteAnimRow(0,0,0,2500,2000,1);
 	Map1_Base -> setCurrentAnimation(1);
 	this->addSpriteToDrawList(Map1_Base);
-	mapSpeed = 0;
 
 	Map1_Objects = new Sprite ("images/Map 1 Objects.png");
 	Map1_Objects -> setNumberOfAnimations(1);
@@ -67,8 +66,6 @@ void Game::initializeGame()
 	Map1_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 	Map1_Objects -> setCurrentAnimation(1);
 	this->addSpriteToDrawList(Map1_Objects);
-	mapSpeed = 0;
-
 
 	WaterBackground = new Sprite ("images/Water Sprite.png");
 	WaterBackground -> setNumberOfAnimations(1);
@@ -80,6 +77,8 @@ void Game::initializeGame()
 	WaterBackground ->addSpriteAnimRow(0,0,0,2860,1488,1);
 	WaterBackground -> setCurrentAnimation(1);
 	this->addSpriteToDrawList(WaterBackground);
+	
+	/*initialization*/
 	mapSpeed = 0;
 	WaterSpeed = 0;
 
