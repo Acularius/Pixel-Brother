@@ -128,6 +128,7 @@ void Game::PreDraw()
  * DrawGame()
  *  - this is the actual drawing of the current frame of the game.
  */
+
 void Game::DrawGame()
 {
 	/* here is where your drawing stuff goes */
