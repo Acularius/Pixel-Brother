@@ -14,3 +14,4 @@ Aaron Prototype Version 1.2
 2. Water flowing Speed Increased.
 3. Maps Redone, now contains mulaple Sprite layer assets as well. (Base, Objects, constraints).
 4. Framerate set to 20. 
+5. Rough Background Scrolling added but the reset doesn't flow.
