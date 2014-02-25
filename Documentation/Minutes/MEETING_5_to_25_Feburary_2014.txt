@@ -1,0 +1,39 @@
+Feburary 25 2014
+Meeting Timer: Eric Chan
+
+___________________________________________________________
+Attendence
+Present: Eric Chan, Donald Smith, Rehan Rameez, Usman Variava, Thomas Whiting, Aaron Metallion
+Absent: 
+___________________________________________________________
+
+Future Meeting plan
+- Group status (Where we are in terms of assigned tasks)
+- Sprite list
+
+Saturday, March 1st 2014.Audio meeting (microphone)
+
+
+___________________________________________________________
+Future Goal
+First level done by Monday
+___________________________________________________________
+
+Current Meeting:
+include scoring (Donald and Aaron gone over)
+Finalize programming parts for grounds 
+-Menu control (Eric)
+-Level design dialogue (Rehan and Usman)
+-on-screen messages (Thomas)
+-Tutorial
+
+Plan gate 2
+-Code: gameplay triggers (Donald)
+-main menu control (Eric)
+-on-screen messages - scoring/hits/errors/etc (Thomas)
+-main char, fully animated (Aaron)
+-first level background (Aaron)
+-all nav. and movement (Donald)
+-level transitions (Aaron)
+-sound effects (triggered, ie. combat)
+-all course features
