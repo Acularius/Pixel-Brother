@@ -1,0 +1,16 @@
+CHANGELOG:
+
+Aaron Prototype Version 1.0
+
+1. Game has look and feel of what final game may look like. (screen will be made a big bigger) 
+2. Paralax scrolling added for backgrounds, and flowing water.
+3. Character animations, and controls. 
+4. Health bar sprite for future health implementation.
+5. Background water sprite doesn;t wrap around yet. will be implemented later. 
+
+Aaron Prototype Version 1.2
+
+1. Screen Standardized, Resized, Ratioed to actual game screen dimentions. 
+2. Water flowing Speed Increased.
+3. Maps Redone, now contains mulaple Sprite layer assets as well. (Base, Objects, constraints).
+4. Framerate set to 20. 
