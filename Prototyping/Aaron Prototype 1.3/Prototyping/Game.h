@@ -128,6 +128,8 @@ public:
 	void keyboardDown(unsigned char key, int mouseX, int mouseY);
 	void keyboardUp(unsigned char key, int mouseX, int mouseY);
 
+
+
 	/*********************************/
 	/* DATA */
 	/*********************************/
@@ -143,6 +145,9 @@ public:
 	Sprite *Map1_Base;
 	Sprite *Map1_Objects;
 	Sprite *WaterBackground;
+	Sprite *Menu;
+	int option;
+	int gameState;
 	int mapSpeed;
 	int WaterSpeed;
 	bool test;

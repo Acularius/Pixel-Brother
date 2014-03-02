@@ -22,6 +22,9 @@ Game::Game(void)
 	stateInfo.gameState = STATE_GAMEPLAY;
 	renderingTimer = new Timer("RENDER");
 	updateTimer = new Timer("UPDATE");
+
+	gameState=1;
+	option=1;
 }
 
 /* destructor */
@@ -40,10 +43,30 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
+	if (gameState==1)
+	{
+		Menu = new Sprite("images/MenuSprites.png");
+
+		Menu -> setNumberOfAnimations(4);
+		Menu -> setSpriteFrameSize(480,260);
+		Menu -> setPosition(0,0);
+		Menu -> setCenter(0,0);
+		Menu -> setLayerID(1);
+
+		Menu -> addSpriteAnimRow(3,0,0,480,0,1);
+		Menu -> addSpriteAnimRow(2,0,0,480,260,1);
+		Menu -> addSpriteAnimRow(1,0,0,480,520,1);
+
+		Menu -> setCurrentAnimation(1);
+
+		this -> addSpriteToDrawList(Menu);
+	}
+
+	if (gameState==2)
+	{
+
 	Player = new MainCharacter("images/PlayerSprite.png", 28,48);
 	this->addSpriteToDrawList(Player);
-
-
 
 	Map1_Base = new Sprite ("images/Map 1 Base.png");
 	Map1_Base -> setNumberOfAnimations(1);
@@ -52,7 +75,7 @@ void Game::initializeGame()
 	Map1_Base -> setPosition(-1450,-1050);
 	Map1_Base -> setCenter(0,0);
 	Map1_Base -> setLayerID (2);
-	Map1_Base ->addSpriteAnimRow(0,0,0,2500,2000,1);
+	Map1_Base -> addSpriteAnimRow(0,0,0,2500,2000,1);
 	Map1_Base -> setCurrentAnimation(1);
 	this->addSpriteToDrawList(Map1_Base);
 
@@ -91,7 +114,7 @@ void Game::initializeGame()
 	Health ->addSpriteAnimRow(0,0,0,132,32,1);
 	Health -> setCurrentAnimation(1);
 	this->addSpriteToDrawList(Health);
-
+	}
 }
 
 /* draw()
@@ -230,7 +253,15 @@ void Game::update()
 		updateTimer->tick();
 		//Player->update();
 		//Player->movement();
+		if (gameState==1)
+		{
 
+
+		}
+
+
+		if (gameState==2)
+		{
 		int count=1;
 
 		if (test == true)//left right
@@ -256,6 +287,7 @@ void Game::update()
 
 		if (WaterBackground-> positionY < -1000)
 		{ WaterBackground -> setPosition(-1700,-750); } //RESETTING SCROLLING BACKGROUND. 
+		}
 }
 
 /* 
@@ -279,8 +311,57 @@ void Game::addSpriteToDrawList(Sprite *s)
    - you are given the key that was pressed
      and where the (x,y) location of the mouse is when pressed
 */
+
+//===========================================================================================
+// MENU CONTROL - Menu Function Implementations. 
+//===========================================================================================
+
+void MenuControl (int opt, int &gameState)
+{  switch(opt)
+   { 
+      case 1: { 
+		        gameState=2; 
+				
+		        break;
+			  }
+      case 2: break;
+	  case 3: exit(1); break;
+   }
+}
+     
+
 void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 {
+
+//===========================================================================================
+// MENU - Menu without control & Passing.
+//===========================================================================================
+
+	if (gameState==1)
+	{
+		switch(key)
+		{   case 'd':  { if (option!=3)
+						    { 
+						        option++; 
+						    }
+					     Menu->setCurrentAnimation(option); 
+					     break;
+					   }
+
+			case 'a':  { if (option!=1)
+						    { 
+						        option--; 
+						    }
+					     Menu->setCurrentAnimation(option); 
+					     break;
+					   }
+			case 13: { MenuControl(option,gameState);initializeGame(); break;}
+		}
+	}
+
+
+
+	if (gameState==2)
 	switch(key)
 	{
 	case 32: // the space bar
@@ -341,6 +422,15 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 */
 void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 {
+	if (gameState==1)
+	{
+
+
+
+
+	}
+
+	if (gameState==2)
 	switch(key)
 	{
 	case 32: // the space bar
