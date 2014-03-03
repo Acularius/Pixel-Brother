@@ -1,0 +1,17 @@
+Level Progression
+
+- starts off in the house
+- the screen shakes signifying something is happening outside
+- the hero goes outside and sees monsters destroying the town
+- then the tutorial happens where the hero has to defend the houses from the waves of monsters
+- after the waves, the hero can talk to the npc's and find out more about the story
+- one of the npc's tell him about the sacrifices and how his wife/gf has been taken
+- next he goes into the portal and moves on to the next level
+- while going through the portal, there's a cutscene where the ghost is flying around and chasing the hero
+- the ghost chases the hero through the level and the hero also encounters monsters along the way
+- the monsters are only at the purified areas where the ghost cant touch the hero
+- the hero must kill the monsters so he can use these areas as safe areas
+- eventually the hero must get to the main safe area where there is a puzzle
+- after the puzzle the hero must fight the ghost
+- the hero will get a big peice of plasma from the ghost when it is defeated
+- the plasma unlocks the next portal
