@@ -146,6 +146,8 @@ public:
 	Objects *WaterBackground;
 
 
+
+
 	InputInfo input;
 
 	/* sprite list to draw */
@@ -160,4 +162,7 @@ public:
 	/* timer's for rendering and animation/physics update */
 	Timer *renderingTimer;
 	Timer *updateTimer; // for physics/collisions etc.
+
+	std::string sScore;
+	int iScore;
 };

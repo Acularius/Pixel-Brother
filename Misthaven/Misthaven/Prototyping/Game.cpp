@@ -22,6 +22,8 @@ Game::Game(void)
 	stateInfo.gameState = STATE_GAMEPLAY;
 	renderingTimer = new Timer("RENDER");
 	updateTimer = new Timer("UPDATE");
+	iScore = 0;
+	
 }
 
 /* destructor */
@@ -62,7 +64,7 @@ void Game::initializeGame()
 
 	Health = new Objects ("images/Hearts.png",132,32);
 	Health -> setNumberOfAnimations(1);
-	Health -> setPosition(0,0);
+	Health -> setPosition(0,216);
 	Health -> setLayerID (3);
 	Health -> addSpriteAnimFrame(0,0,0);
 	Health -> setCurrentAnimation(0);
@@ -121,7 +123,7 @@ void Game::DrawGame()
 	drawSprites();
 
 	glDisable(GL_TEXTURE_2D);
-	drawTestPrimitives();
+	drawTestPrimitives();  // Test draw the primitives
 
 	/* this makes it actually show up on the screen */
 	glutSwapBuffers();
@@ -175,15 +177,10 @@ void Game::drawSprites()
 */
 void Game::drawTestPrimitives()
 {
-	/*Draw ze line*/
-	setLineWidth(5.f);
-	setColor(1,0,0);
-	drawLine(100,100,200,200);
-	setLineWidth(1.f);
-
-	/* Draw rectangle */
-	setColor(1,1,0);
-	drawRectangle(true, 200,200,50,50,45.f);
+	/* Score */
+	setColor(1,1,1);
+	drawText("SCORE: ",350,290);
+	drawNum(iScore,430,290);
 }
 
 /* update()
@@ -210,6 +207,8 @@ void Game::update()
 		WaterBackground->update();
 		Health->update();
 
+		//Score
+		iScore++;
 }
 
 /* 

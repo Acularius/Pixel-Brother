@@ -32,10 +32,10 @@ this->movement();
 */
 void Objects::movementGo(unsigned char key) //Keyboard down
 	{
-		float move = 3;
+		float move = 5;
 		if(human == true) // Direct Player control
 		{
-			move = move;
+			move = 0;
 		} else if(stationary == true) // For static objects like the HUD
 		{
 			move = 0;
@@ -48,7 +48,9 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 		this->speedY = move;
 		this->speedX = 0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(5);
+		}
 
 	}
 	else if( key == 's') // Down (walk) = 7; -Y
@@ -56,21 +58,30 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 		this->speedY = -move;
 		this->speedX = 0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(7);
+		}
+
 	}
 	else if( key == 'a') // Left (walk) = 6; -X
 	{
 		this->speedY = 0.f;
 		this->speedX = -move;
 		if(player == true)
+		{
 			this->setCurrentAnimation(6);
+		}
 	}
 	else if( key == 'd') // right (walk) = 4; +X
 	{
 		this->speedY = 0.f;
 		this->speedX = move;
 		if(player == true)
+		{
 			this->setCurrentAnimation(4);
+		}
+
+
 	}
 	else // Character going nowhere
 	{
@@ -90,25 +101,33 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 		this->speedY=0.f;
 		this->speedX=0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(1);
+		}
 		break;
 	case 's': // Down (stationary) = 3; Y
 		this->speedY=0.f;
 		this->speedX=0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(3);
+		}
 		break;
 	case 'a': // Left (stationary) = 2; X
 		this->speedY=0.f;
 		this->speedX=0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(2);
+		}
 		break;
 	case 'd': // right (stationary) = 0; X
 		this->speedY=0.f;
 		this->speedX=0.f;
 		if(player == true)
+		{
 			this->setCurrentAnimation(0);
+		}
 		break;
 		}
 	}

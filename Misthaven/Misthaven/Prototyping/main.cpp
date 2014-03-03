@@ -9,16 +9,16 @@
 /******************************************/
 /* GLOBAL VARIABLES */
 /******************************************/
-#define WINDOW_SCREEN_WIDTH 640 //640
-#define WINDOW_SCREEN_HEIGHT 432 //432
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 432
+#define WINDOW_SCREEN_WIDTH 464 //640
+#define WINDOW_SCREEN_HEIGHT 312 //432
+#define WINDOW_WIDTH 480
+#define WINDOW_HEIGHT 260
 
 
 /*********************************/
 /* GLOBAL SPRITE INFO */
 /*********************************/
-#define FRAMES_PER_SECOND 15
+#define FRAMES_PER_SECOND 20
 const int FRAME_DELAY_SPRITE=1000/FRAMES_PER_SECOND;
 
 /* the Game */
@@ -48,8 +48,8 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 
 	/*Movement*/
 		//Player
-	theGame->Player->movementGo(key);
-	theGame->Health->movementGo(key);
+		theGame->Player->movementGo(key);
+		theGame->Health->movementGo(key);
 
 		//Non-Static
 

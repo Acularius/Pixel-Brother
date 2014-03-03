@@ -29,6 +29,7 @@ class Characters : public Objects
 public:
 	Characters::Characters(std::string filename, int width, int height);
 	~Characters(void);
+	int direction; // Will define which direction the character is facing. 0-3 
 
 
 };
@@ -40,4 +41,13 @@ public:
 	~MainCharacter(void);
 
 
+};
+
+/* Backgrounds */
+
+class Background : public Objects
+{
+public:
+	Background::Background(std::string filename, int width, int height);
+	~Background(void);
 };

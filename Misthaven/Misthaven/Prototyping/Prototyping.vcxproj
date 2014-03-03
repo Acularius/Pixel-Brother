@@ -18,6 +18,7 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />

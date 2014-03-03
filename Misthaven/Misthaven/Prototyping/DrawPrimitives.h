@@ -47,3 +47,27 @@ void drawRectangle(bool filled, float cornerX, float cornerY, int width, int hei
 	glEnd();
 	glPopMatrix();
 }
+void drawText(std::string s, float posX, float posY)
+{
+	glPushMatrix();
+	glRasterPos2f(posX,posY);
+	const char *text = s.c_str();
+	for(int i=0;i<s.length();i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+	}
+	glPopMatrix();
+}
+
+void drawNum(int score, float posX, float posY)
+{
+	std::string s = std::to_string(score);
+	glPushMatrix();
+	glRasterPos2f(posX,posY);
+	const char *text =s.c_str();
+	for(int i=0;i<s.length();i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+	}
+	glPopMatrix();
+}
