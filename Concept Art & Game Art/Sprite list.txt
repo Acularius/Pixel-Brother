@@ -1,0 +1,43 @@
+Sprite list:
+
+Props:
+___________________________________________________________
+NPCs:
+
+Main character:
+
+Village people:
+-Black Smith
+
+Animals:
+-Cow
+-Deer
+-Duck
+
+Enemies:
+-Ghost
+
+Boss:
+
+___________________________________________________________
+Items:
+
+Sword:
+
+Key:
+
+potions:
+
+Books:
+___________________________________________________________
+Environment:
+Forest
+Desert
+Ice
+Ash
+Village
+___________________________________________________________
+Effects?:
+Fire:
+Slash:
+Spell:
