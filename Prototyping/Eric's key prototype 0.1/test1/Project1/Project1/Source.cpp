@@ -9,10 +9,27 @@ int main()
 	char downkey;
 	char rightkey;
 	
-	char keys;
-	cin >> keys;
-	
+	int optionnum;
 
+	//INITIALIZE: here not later.
+
+		upkey=119;
+		leftkey=97;
+		downkey=115;
+		rightkey=100;
+
+	// Menu so player can choose which key to change.
+
+	cout<<"Which Keybinding do you wish to change? \n";
+	cout<<"1.upkey "<<upkey<<endl;
+	cout<<"2.leftkey "<<leftkey<<endl;
+	cout<<"3.downkey "<<downkey<<endl;
+	cout<<"4.rightkey "<<rightkey<<endl;
+	cout<<"5.set defaults"<<endl;
+	cin >> optionnum; 
+
+	/* based on optionnumber have a list of if statements with seperate individual keybinding. change below code*/
+	
 	if(keys=='o')
 	{
 		cout<<"Type a key to move up" << endl;
@@ -29,7 +46,7 @@ int main()
 		cout << "New keys is" << rightkey << endl;
 		//cout << "The new keys are:" << upkey << " " << downkey << " " << leftkey << " " << rightkey << endl;
 	}
-	else
+	else //do not do this unless player enters option 5. set defaults.
 	{
 		upkey=119;
 		leftkey=97;
@@ -38,6 +55,8 @@ int main()
 	}
 
 
+	//the bolow code won't work. you read the keys variable only once, and it was initinalized to 'o' therefore none of it will work.
+	//for testing make a do while loop. and "cin>>keys" after every iteration at the begining of the loop. 
 
 	if(keys==upkey)
 	{
