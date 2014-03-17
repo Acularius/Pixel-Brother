@@ -1,5 +1,6 @@
 #include "Sprite.h"
 
+
 class Objects : public Sprite
 {
 public:
@@ -19,6 +20,9 @@ public:
 	void movementGo(unsigned char key); //Keyboard down
 	void movementStop(unsigned char key); //Keyboard Up
 	void movement();
+
+	// Constraints for objects
+
 
 };
 

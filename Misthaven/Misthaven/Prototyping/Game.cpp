@@ -22,7 +22,7 @@ Game::Game(void)
 	stateInfo.gameState = STATE_GAMEPLAY;
 	renderingTimer = new Timer("RENDER");
 	updateTimer = new Timer("UPDATE");
-	iScore = 0;
+//	iScore = 0;
 	
 }
 
@@ -41,35 +41,63 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
-	Player = new MainCharacter ("images/PlayerSprite.png", 28,48);
+	float fMirrorX, fMirrorY; //Where I desire the map and object layer of the map to be in relation to the player and their origin point
+
+	Player = new MainCharacter ("images/Player&HUD/PlayerSprite.png", 28,48);
 	this->addSpriteToDrawList(Player);
 
+	fMirrorX = -687;
+	fMirrorY= -891;
 
-	Background = new Objects ("images/Background Sprite.png",2860,1488);
-	Background -> setNumberOfAnimations(1);
-	Background -> setPosition(0,0);
-	Background -> setLayerID (2);
-	Background -> addSpriteAnimFrame(0,0,0);
-	Background -> setCurrentAnimation(0);
-	this->addSpriteToDrawList(Background);
+	Map01Base = new Objects ("images/Levels/Map 1 Base.png", 2500,2000);
+	Map01Base -> setNumberOfAnimations(1);
+	Map01Base -> setPosition(fMirrorX,fMirrorY);
+	Map01Base -> setLayerID (2);
+	Map01Base -> addSpriteAnimFrame(0,0,0);
+	Map01Base -> setCurrentAnimation(0);
+	this->addSpriteToDrawList(Map01Base);
+
+	Map01Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500,2000);
+	Map01Objects-> setNumberOfAnimations(1);
+	Map01Objects -> setPosition(fMirrorX,fMirrorY);
+	Map01Objects -> setLayerID (3);
+	Map01Objects -> addSpriteAnimFrame(0,0,0);
+	Map01Objects -> setCurrentAnimation(0);
+	this->addSpriteToDrawList(Map01Objects);
 
 
 	WaterBackground = new Objects ("images/Water Sprite.png",2860,1488);
 	WaterBackground -> setNumberOfAnimations(1);
-	WaterBackground -> setPosition(0,0);
+	WaterBackground -> setPosition(fMirrorX,fMirrorY);
 	WaterBackground -> setLayerID (1);
 	WaterBackground -> addSpriteAnimFrame(0,0,0);
 	WaterBackground -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(WaterBackground);
 
-	Health = new Objects ("images/Hearts.png",132,32);
+	Health = new Objects ("images/Player&HUD/Hearts.png",132,32);
 	Health -> setNumberOfAnimations(1);
 	Health -> setPosition(0,216);
-	Health -> setLayerID (3);
+	Health -> setLayerID (4);
 	Health -> addSpriteAnimFrame(0,0,0);
 	Health -> setCurrentAnimation(0);
 	Health -> stationary = true;
 	this->addSpriteToDrawList(Health);
+
+	MapConstraints = new Constraints("images/Levels/Map01Constraints.bmp");
+	std::cout << "At Biscuit" << std::endl;
+	/*
+	if (MapConstraints->vConstraintVector[919][1047] == true)
+	{
+		std::cout << "True" <<std::endl;
+	} else if(MapConstraints->vConstraintVector[919][1047] == false )
+	{ 
+		std::cout << "False" <<std::endl;
+	}
+	else
+	{
+		std::cout << "WAT?!" <<std::endl;
+	};
+	*/
 }
 
 /* draw()
@@ -123,7 +151,7 @@ void Game::DrawGame()
 	drawSprites();
 
 	glDisable(GL_TEXTURE_2D);
-	drawTestPrimitives();  // Test draw the primitives
+	//drawTestPrimitives();  // Test draw the primitives
 
 	/* this makes it actually show up on the screen */
 	glutSwapBuffers();
@@ -178,9 +206,9 @@ void Game::drawSprites()
 void Game::drawTestPrimitives()
 {
 	/* Score */
-	setColor(1,1,1);
-	drawText("SCORE: ",350,290);
-	drawNum(iScore,430,290);
+//	setColor(1,1,1);
+//	drawText("SCORE: ",350,290);
+//	drawNum(iScore,430,290);
 }
 
 /* update()
@@ -199,16 +227,19 @@ void Game::update()
 
 		// Player
 		Player->update();
+		
+		
 
 		//Characters
 
 		// Static
-		Background->update();
+		Map01Base->update();
+		Map01Objects->update();
 		WaterBackground->update();
 		Health->update();
 
 		//Score
-		iScore++;
+//		iScore++;
 }
 
 /* 

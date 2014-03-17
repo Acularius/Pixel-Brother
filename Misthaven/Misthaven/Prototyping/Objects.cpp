@@ -13,8 +13,11 @@ Objects::Objects(std::string filename, int width, int height)
 	speedX = 0; 
 	speedY = 0;
 
+	// Constraints for objects
+
 
 }
+
 Objects::~Objects()
 {
 	/* Deconstructor */
@@ -32,6 +35,7 @@ this->movement();
 */
 void Objects::movementGo(unsigned char key) //Keyboard down
 	{
+		
 		float move = 5;
 		if(human == true) // Direct Player control
 		{
@@ -135,8 +139,16 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 
 void Objects::movement()
 	{
-	this->positionX = positionX + speedX;
-	this->positionY = positionY + speedY;
+		
+		float newPositionX, newPositionY;
+		newPositionX = positionX + speedX;
+		newPositionY = positionY + speedY;
+
+		this->positionX = newPositionX;
+		this->positionY = newPositionY;
+
+		
+	
 
 	}
 

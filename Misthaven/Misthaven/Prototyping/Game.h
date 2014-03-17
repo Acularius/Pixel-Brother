@@ -16,6 +16,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Constraints.h"
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -142,13 +144,15 @@ public:
 	Objects *Health;
 
 		//Background Sprite Test
-	Objects *Background;
+	Objects *Map01Base;
+	Objects *Map01Objects;
 	Objects *WaterBackground;
 
-
-
+	Constraints *MapConstraints;
 
 	InputInfo input;
+
+
 
 	/* sprite list to draw */
 	std::vector<Sprite*> spriteListToDraw;
@@ -163,6 +167,6 @@ public:
 	Timer *renderingTimer;
 	Timer *updateTimer; // for physics/collisions etc.
 
-	std::string sScore;
-	int iScore;
+	//std::string sScore;
+	//int iScore;
 };
