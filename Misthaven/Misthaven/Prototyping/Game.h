@@ -84,6 +84,7 @@ public:
 	Game(void);
 	~Game(void);
 	void initializeGame();
+	void loadLevel01();
 
 	/* convenience functions */
 	// screen size is the apparent size in pixels
@@ -114,6 +115,10 @@ public:
 	// only sprites in the draw list will be drawn
 	void addSpriteToDrawList(Sprite *s);
 
+
+
+	//Unless otherwise specified
+
 	/* draw/rendering routines */
 	void draw(); // called from the main
 
@@ -130,6 +135,7 @@ public:
 	/* input callback functions */
 	void keyboardDown(unsigned char key, int mouseX, int mouseY);
 	void keyboardUp(unsigned char key, int mouseX, int mouseY);
+
 
 	/*********************************/
 	/* DATA */
@@ -148,7 +154,8 @@ public:
 	Objects *Map01Objects;
 	Objects *WaterBackground;
 
-	Constraints *MapConstraints;
+
+	Constraints MapConstraints;
 
 	InputInfo input;
 
@@ -157,11 +164,30 @@ public:
 	/* sprite list to draw */
 	std::vector<Sprite*> spriteListToDraw;
 
+	/* Object list for movement */
+	std::vector<Objects*> objectsList;
+
+		//Add things to the Object List
+
+		void addToObjectsList(Objects *o);
+
 		/* you could have more lists of sprite pointers */
 	/* such as spritesToUpdateForPhysics  
 	   or      spritesToUpdateForCollisions 
 	   etc....
     */
+
+
+	// Objects to a list for movement
+	
+	void moveObjectsKeyboardUp(unsigned char key);
+	void moveObjectsKeyboardDown(unsigned char key);
+	void movement();
+
+	void allowMovement(); //checks constraints to allow for player movement
+
+	// Update Objects
+	void updateObjects();
 
 	/* timer's for rendering and animation/physics update */
 	Timer *renderingTimer;

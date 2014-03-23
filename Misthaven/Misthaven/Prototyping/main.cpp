@@ -9,8 +9,8 @@
 /******************************************/
 /* GLOBAL VARIABLES */
 /******************************************/
-#define WINDOW_SCREEN_WIDTH 464 //464
-#define WINDOW_SCREEN_HEIGHT 312 //312
+#define WINDOW_SCREEN_WIDTH 480 //464
+#define WINDOW_SCREEN_HEIGHT 260 //312
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 260
 
@@ -47,16 +47,8 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 
 
 	/*Movement*/
-		//Player
-		theGame->Player->movementGo(key);
-		theGame->Health->movementGo(key);
-
-		//Non-Static
-
-		//Static
-		theGame->Map01Base->movementGo(key);
-		theGame->Map01Objects->movementGo(key);
-		theGame->WaterBackground->movementGo(key);	
+	theGame->moveObjectsKeyboardDown(key);
+	
 	
 }
 
@@ -69,16 +61,8 @@ void KeyboardUpCallbackFunction(unsigned char key, int x, int y)
 	theGame->keyboardUp(key,x,y);
 
 		/*Movement*/
-			//Player
-		theGame->Player->movementStop(key);
-		theGame->Health->movementStop(key);
+	theGame->moveObjectsKeyboardUp(key);
 
-			//Non-Static
-
-			//Static
-		theGame->Map01Base->movementStop(key);
-		theGame->Map01Objects->movementStop(key);
-		theGame->WaterBackground->movementStop(key);
 
 }
 

@@ -41,10 +41,11 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
-	float fMirrorX, fMirrorY; //Where I desire the map and object layer of the map to be in relation to the player and their origin point
+		float fMirrorX, fMirrorY; //Where I desire the map and object layer of the map to be in relation to the player and their origin point
 
 	Player = new MainCharacter ("images/Player&HUD/PlayerSprite.png", 28,48);
 	this->addSpriteToDrawList(Player);
+	this->addToObjectsList(Player);
 
 	fMirrorX = -687;
 	fMirrorY= -891;
@@ -56,6 +57,7 @@ void Game::initializeGame()
 	Map01Base -> addSpriteAnimFrame(0,0,0);
 	Map01Base -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Map01Base);
+	this->addToObjectsList(Map01Base);
 
 	Map01Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500,2000);
 	Map01Objects-> setNumberOfAnimations(1);
@@ -64,6 +66,7 @@ void Game::initializeGame()
 	Map01Objects -> addSpriteAnimFrame(0,0,0);
 	Map01Objects -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Map01Objects);
+	this->addToObjectsList(Map01Objects);
 
 
 	WaterBackground = new Objects ("images/Water Sprite.png",2860,1488);
@@ -73,31 +76,43 @@ void Game::initializeGame()
 	WaterBackground -> addSpriteAnimFrame(0,0,0);
 	WaterBackground -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(WaterBackground);
+	this->addToObjectsList(WaterBackground);
 
 	Health = new Objects ("images/Player&HUD/Hearts.png",132,32);
 	Health -> setNumberOfAnimations(1);
-	Health -> setPosition(0,216);
+	Health -> setPosition(5,5);
 	Health -> setLayerID (4);
 	Health -> addSpriteAnimFrame(0,0,0);
 	Health -> setCurrentAnimation(0);
 	Health -> stationary = true;
 	this->addSpriteToDrawList(Health);
+	this->addToObjectsList(Health);
+	
+	// vvvv Works vvvv
+	std::cout << "Map01Base position (x,y) : (" << (Map01Base->positionX) << ", " << (Map01Base->positionY)<< ") " << std::endl;
+	std::cout << "Map01Base speed for x: " << (Map01Base->speedX) << " and for y: " << (Map01Base->speedY) << std::endl;
+	std::cout << "Map 01 width and height, width : " << (Map01Base->sz.width) << " and height: " << (Map01Base->sz.height) << std::endl; 
 
-	MapConstraints = new Constraints("images/Levels/Map01Constraints.bmp");
+	// No work
+	std::cout << "Player corners, bottom left X: " << (Player->ObjectHitbox->leftCornerX) << ", bottom right X: " << (Player->ObjectHitbox->rightCornerX) << std::endl;
+	std::cout << "bottom cornerY: " << (Player->ObjectHitbox->bottomCornerY) << ", and top corner Y: " << (Player->ObjectHitbox->topCornerY) << std::endl;
+
+	// vvvv Works vvvv
+	std::cout << "Before Biscuit" << std::endl;
+	MapConstraints = Constraints("images/Levels/Map01Constraints.bmp");
 	std::cout << "At Biscuit" << std::endl;
+	std::cout << "Location of 919, 1047: " << MapConstraints.vConstraintVector[919][1047] << std::endl;
+
 	/*
-	if (MapConstraints->vConstraintVector[919][1047] == true)
-	{
-		std::cout << "True" <<std::endl;
-	} else if(MapConstraints->vConstraintVector[919][1047] == false )
-	{ 
-		std::cout << "False" <<std::endl;
-	}
-	else
-	{
-		std::cout << "WAT?!" <<std::endl;
-	};
+	newMapPositionX = (Map01Base->positionX) + (Map01Base->speedX);
+	newMapPositionY = (Map01Base->positionY) + (Map01Base->speedY);
+
+	indexStartX = (Map01Base->sz.width) + (Player->ObjectHitbox->leftCornerX) + newMapPositionX; 
+	indexStartY = (Map01Base->sz.normalizedHeight) + (Player->ObjectHitbox->bottomCornerY) + newMapPositionY;
+	indexEndX = indexStartX + (Player->ObjectHitbox->rightCornerX); indexEndY = indexStartY + (Player->ObjectHitbox->topCornerY);
 	*/
+
+
 }
 
 /* draw()
@@ -225,19 +240,12 @@ void Game::update()
 		// Time
 		updateTimer->tick();
 
-		// Player
-		Player->update();
+		//Update all in-game Objects
+		updateObjects();
+		allowMovement();
+		movement();
+
 		
-		
-
-		//Characters
-
-		// Static
-		Map01Base->update();
-		Map01Objects->update();
-		WaterBackground->update();
-		Health->update();
-
 		//Score
 //		iScore++;
 }
@@ -252,6 +260,30 @@ void Game::addSpriteToDrawList(Sprite *s)
 	{
 		/* push the sprite to the back of the list */
 		this->spriteListToDraw.push_back(s);
+	}
+}
+
+
+/*ALL THINGS RELATED TO THE OBJECT LIST*/
+
+/*All things related to adding to the ObjectsList*/
+void Game::addToObjectsList(Objects *o)
+{
+	if(o)
+	{
+		/* push the Object to the back of the list */
+		this->objectsList.push_back(o);
+	}
+}
+
+// To streamline the code, update all the Objects from object list at once.
+void Game::updateObjects()
+{
+			std::vector<Objects*>::iterator itUpdate; 
+		for(itUpdate= objectsList.begin() ; itUpdate !=objectsList.end() ; itUpdate++)
+	{
+		Objects *o = (*itUpdate);
+		o-> update();
 	}
 }
 
@@ -291,4 +323,106 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 		exit(1);
 		break;
 	}
+}
+
+void Game::moveObjectsKeyboardDown(unsigned char key)
+{
+
+		std::vector<Objects*>::iterator itMoveGo; 
+		for(itMoveGo=objectsList.begin() ; itMoveGo !=objectsList.end() ; itMoveGo++)
+	{
+		Objects *o = (*itMoveGo);
+		o-> movementGo(key);
+	}
+}
+
+void Game::moveObjectsKeyboardUp(unsigned char key)
+{
+
+		std::vector<Objects*>::iterator itMoveStop; 
+		for(itMoveStop= objectsList.begin() ; itMoveStop !=objectsList.end() ; itMoveStop++)
+	{
+		Objects *o = (*itMoveStop);
+		o-> movementStop(key);
+	}
+}
+
+/*Checks player's hitbox, current map position, and constraints*/
+void Game::allowMovement()
+{
+	std::cout << "allowmovementcheck begin" << std::endl;
+	int interception; //Counts the occurences of interception
+	float stop = 0.f; //stops all movement when interception >=1
+	float newMapPositionX, newMapPositionY;
+	int indexStartX,indexStartY, indexEndX,indexEndY;
+
+	int vecindexX, vecindexY;
+	interception = 0;
+
+	std::cout << " initialize allowMovement variables" << std::endl;
+	newMapPositionX = (Map01Base->positionX) + (Map01Base->speedX);
+	newMapPositionY = (Map01Base->positionY) + (Map01Base->speedY);
+
+	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+
+	std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	std::cout << "Check constraint vector" << std::endl;
+	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
+		{
+			if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == "traverse")
+			{
+				/* Nothing */
+			} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == "nopass") {
+				interception++;
+				break; //ends the loop
+
+			} else{
+				//Nothing
+			};
+
+		};
+	std::cout << "Checked constraint vector" << std::endl;
+		if(interception >= 1){
+			std::cout << "Intercept detected" << std::endl;
+			std::vector<Objects*>::iterator itNoMove;
+			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+			{
+				Objects *o = (*itNoMove);
+				o-> speedX = stop;
+				o-> speedY = stop;
+			};
+		}else
+		{
+			std::cout << "No intercept detected" << std::endl;
+		};
+	std::cout << "Yay! Success!" << std::endl;
+	interception = 0;
+}
+
+void Game::movement()
+{
+
+	std::vector<Objects*>::iterator itMovement;
+	for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
+	{
+		float newPositionX, newPositionY;
+		float currentPositionX, currentPositionY;
+		float currentSpeedX, currentSpeedY;
+		Objects *o = (*itMovement);
+
+		currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
+		currentSpeedX = (o-> speedX); currentSpeedY = (o-> speedY);
+
+		newPositionX = currentPositionX + currentSpeedX;
+		newPositionY = currentPositionY + currentSpeedY;
+
+		o-> positionX = newPositionX;
+		o-> positionY = newPositionY;
+	};
+
 }

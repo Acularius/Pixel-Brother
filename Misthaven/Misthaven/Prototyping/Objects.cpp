@@ -4,16 +4,19 @@
 Objects::Objects(std::string filename, int width, int height)
 	: Sprite(filename)
 {
-	this->setSpriteFrameSize(width, height);
+	this-> setSpriteFrameSize(width, height);
 	this-> human = false;
 	this-> stationary = false;
-	this->player = false;
+	this-> player = false;
+	this-> collidable = false;
+	this-> setPosition(0,0);
 
 	//Movement - Object starts NOT moving
 	speedX = 0; 
 	speedY = 0;
 
-	// Constraints for objects
+	// Hitbox for objects
+	ObjectHitbox = new Hitbox(width,height, positionX,positionY);
 
 
 }
@@ -25,14 +28,12 @@ Objects::~Objects()
 void Objects::update() 
 {
 
-this->nextFrame();
-this->movement();
+this-> nextFrame();
+this-> ObjectHitbox->updateHitbox(positionX,positionY);
 
 }
 
-
-/* Movement
-*/
+/* Movement */
 void Objects::movementGo(unsigned char key) //Keyboard down
 	{
 		
@@ -95,8 +96,6 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 
 	}
 	
-	
-
 void Objects::movementStop(unsigned char key) //Keyboard Up
 	{
 				switch(key)
@@ -137,22 +136,6 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 	}
 
 
-void Objects::movement()
-	{
-		
-		float newPositionX, newPositionY;
-		newPositionX = positionX + speedX;
-		newPositionY = positionY + speedY;
-
-		this->positionX = newPositionX;
-		this->positionY = newPositionY;
-
-		
-	
-
-	}
-
-
 /* Creation of Characters
 * It will be derived into the Player (human) class, NPC's and enemies
 */
@@ -166,5 +149,6 @@ Characters::~Characters(void)
 {
 	/* Deconstructor */
 }
+
 
 

@@ -1,7 +1,5 @@
 #include "Objects.h"
-/*	glutKeyboardFunc(KeyboardCallbackFunction);
-	glutKeyboardUpFunc(KeyboardUpCallbackFunction);
-	*/
+
 
 
 
@@ -21,15 +19,17 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this->setCurrentAnimation(3);
 	this->direction = 3; // Facing down
 
-	this->centerX = width/2;
-	this->centerY = height/2;
-
 	this->setLayerID(11);
 	this-> speedX = 0; // Character starts NOT moving
 	this-> speedY = 0;
 	this-> human = true;
 	this-> player = true;
 	this-> stationary = false;
+
+	this-> collidable = true;
+
+		// Hitbox for objects
+	ObjectHitbox = new Hitbox(28,48, positionX,positionY);
 	
 
 }

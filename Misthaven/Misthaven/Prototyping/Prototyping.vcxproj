@@ -14,6 +14,7 @@
     <ClInclude Include="CImg.h" />
     <ClInclude Include="Constraints.h" />
     <ClInclude Include="DrawPrimitives.h" />
+    <ClInclude Include="Hitbox.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Sprite.h" />
@@ -22,6 +23,7 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Constraints.cpp" />
+    <ClCompile Include="Hitbox.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />

@@ -1,5 +1,5 @@
 #include "Sprite.h"
-
+#include "Hitbox.h"
 
 class Objects : public Sprite
 {
@@ -9,7 +9,8 @@ public:
 
 	bool human; // True, everything moves to the player's input. False, everything moves in relation to the player.
 	bool stationary; // In reference to HUD. Static objects that NEVER move.
-	bool player; // Animation reference. 
+	bool player; // Animation reference. Stationary.
+	bool collidable; // Does it collide?
 	virtual void update();
 
 
@@ -19,10 +20,9 @@ public:
 
 	void movementGo(unsigned char key); //Keyboard down
 	void movementStop(unsigned char key); //Keyboard Up
-	void movement();
 
-	// Constraints for objects
-
+	/* Creation of a hitbox */
+	Hitbox *ObjectHitbox;
 
 };
 
@@ -44,6 +44,7 @@ public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
 
+	Hitbox *ObjectHitbox;
 
 };
 
@@ -55,3 +56,5 @@ public:
 	Background::Background(std::string filename, int width, int height);
 	~Background(void);
 };
+
+
