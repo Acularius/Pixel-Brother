@@ -1,6 +1,31 @@
 #include <iostream>
 using namespace std;
 
+class keybinding
+{
+public:
+	char upkey;
+	char leftkey;
+	char downkey;
+	char rightkey;
+	
+	char keys;
+
+	private:
+		keybinding(char,char,char,char);
+		int optionnum;
+};
+
+
+//Unsure if it would affect by the keybinding code below
+/*keybinding::keybinding(char upkey, char leftkey, char downkey, char rightkey)
+{
+		upkey=119;
+		leftkey=97;
+		downkey=115;
+		rightkey=100;
+}*/
+
 int main()
 {
 
@@ -30,7 +55,7 @@ int main()
 
 	/* based on optionnumber have a list of if statements with seperate individual keybinding. change below code*/
 	
-	if(keys=='o')
+	/*if(keys=='o')
 	{
 		cout<<"Type a key to move up" << endl;
 		cin >> upkey;
@@ -52,13 +77,13 @@ int main()
 		leftkey=97;
 		downkey=115;
 		rightkey=100;
-	}
+	}*/
 
 
 	//the bolow code won't work. you read the keys variable only once, and it was initinalized to 'o' therefore none of it will work.
 	//for testing make a do while loop. and "cin>>keys" after every iteration at the begining of the loop. 
 
-	if(keys==upkey)
+	/*if(keys==upkey)
 	{
 		cout<<"up";
 	}
@@ -75,7 +100,7 @@ int main()
 	if(keys==downkey)
 	{
 		cout<<"down";
-	}
+	}*/
 
 	return 0;
 }

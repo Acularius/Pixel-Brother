@@ -62,7 +62,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Keybinding.cpp" />
+    <ClCompile Include="ignore.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Keybinding.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
