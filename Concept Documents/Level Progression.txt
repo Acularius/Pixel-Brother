@@ -11,7 +11,7 @@ Level 1:
 
 
 Level 2: 
-- a ghost will be chasing you when it stops, it will spawn enemy minions and you have to defeat the enemies
+- a ghost will be chasing you and when it stops, it will spawn enemy minions and you have to defeat the enemies
 and the ghost will become vulnerable to attack during a limited time interval after the enemies are defeated
 - this will happen a total of 4 times before he dies and you can get to the next level.
 - The portal to the next level will be locked until the ghost has been defeated
