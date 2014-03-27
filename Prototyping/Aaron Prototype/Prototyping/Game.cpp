@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "DrawPrimitives.h"
 
+using std::find;
+
 //int Gamestatevar=5;
 
 /* this is called by std::sort to sort the list based on layerID 
@@ -70,8 +72,7 @@ void Game::initializeGame()
 	StateThree->Init(this);
 	states.push_back(StateThree);
 
-	
-
+	MenuControl(StateThree, true);
 	
 	/*
 	switch(gameState)
@@ -419,16 +420,21 @@ int Game::playSound()
 	}
 
 
-void Game::MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5)
+//void Game::MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5)
+void Game::MenuControl (GameState* g, bool a)
 {  
  
-				std::cout<<"CHANGING STATE\n";
-				OB1->active=switch1;
-				OB2->active=switch2;
-				OB3->active=switch3;
-				OB4->active=switch4;
-				OB5->active=switch5;
+	std::cout<<"CHANGING STATE\n";
 
+	std::vector<GameState*>::iterator position = find(states.begin(), states.end(), g);
+	if (position != states.end()) // == vector.end() means the element was not found
+	{
+		GameState *g = *position;
+		if (*position)
+		{
+			g->active = a;
+		}
+	}
 }
    
 //MenuControl (1, 0, 0, 0, 0)

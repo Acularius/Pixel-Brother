@@ -263,7 +263,6 @@ void LevelHome::Init(Game* Local)
 		UISample ->addSpriteAnimRow(0,0,0,480,261,1);
 		UISample -> setCurrentAnimation(1);
 		this->addSpriteToDrawList(UISample);
-	
 
 		/*initialization*/
 
@@ -593,7 +592,7 @@ void LevelOne::KeyUp(unsigned char key)
 void LevelTwo::Init(Game* Local)
 {
 	LocalGame=Local;
-	active=true;
+	active=false;
 
 	//LocalGame -> playSound();
 

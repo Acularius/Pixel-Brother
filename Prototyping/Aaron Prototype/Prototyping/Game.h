@@ -170,7 +170,8 @@ public:
 	LevelTwo* S4;
 	LevelThree* S5;
 
-	void MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5); //<-----
+	//void MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5); //<-----
+	void MenuControl (GameState* g, bool a);
 
 	/* sprite list to draw */
 	//std::vector<Sprite*> spriteListToDraw;
