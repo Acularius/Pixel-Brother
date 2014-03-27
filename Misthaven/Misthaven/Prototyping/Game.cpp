@@ -47,13 +47,33 @@ void Game::initializeGame()
 	this->addSpriteToDrawList(Player);
 	this->addToObjectsList(Player);
 
+	Ghosty1 = new Ghost ("images/Water Sprite.png", 28,48);
+	Ghosty1 -> setPosition(0,0);
+	this->addSpriteToDrawList(Ghosty1);
+	this->addToObjectsList(Ghosty1);
+
+	Ghosty2 = new Ghost ("images/Water Sprite.png", 28,48);
+	Ghosty2 -> setPosition(0,0);
+	this->addSpriteToDrawList(Ghosty2);
+	this->addToObjectsList(Ghosty2);
+
+	Ghosty3 = new Ghost ("images/Water Sprite.png", 28,48);
+	Ghosty3 -> setPosition(0,0);
+	this->addSpriteToDrawList(Ghosty3);
+	this->addToObjectsList(Ghosty3);
+
+	Ghosty4 = new Ghost ("images/Water Sprite.png", 28,48);
+	Ghosty4 -> setPosition(0,0);
+	this->addSpriteToDrawList(Ghosty4);
+	this->addToObjectsList(Ghosty4);
+
 	fMirrorX = -687;
 	fMirrorY= -891;
 
 	Map01Base = new Objects ("images/Levels/Map 1 Base.png", 2500,2000);
 	Map01Base -> setNumberOfAnimations(1);
 	Map01Base -> setPosition(fMirrorX,fMirrorY);
-	Map01Base -> setLayerID (2);
+	Map01Base -> setLayerID (3);
 	Map01Base -> addSpriteAnimFrame(0,0,0);
 	Map01Base -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Map01Base);
@@ -62,7 +82,7 @@ void Game::initializeGame()
 	Map01Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500,2000);
 	Map01Objects-> setNumberOfAnimations(1);
 	Map01Objects -> setPosition(fMirrorX,fMirrorY);
-	Map01Objects -> setLayerID (3);
+	Map01Objects -> setLayerID (15);
 	Map01Objects -> addSpriteAnimFrame(0,0,0);
 	Map01Objects -> setCurrentAnimation(0);
 	this->addSpriteToDrawList(Map01Objects);
@@ -81,7 +101,7 @@ void Game::initializeGame()
 	Health = new Objects ("images/Player&HUD/Hearts.png",132,32);
 	Health -> setNumberOfAnimations(1);
 	Health -> setPosition(5,5);
-	Health -> setLayerID (4);
+	Health -> setLayerID (20);
 	Health -> addSpriteAnimFrame(0,0,0);
 	Health -> setCurrentAnimation(0);
 	Health -> stationary = true;
@@ -240,12 +260,16 @@ void Game::update()
 		// Time
 		updateTimer->tick();
 
+
 		//Update all in-game Objects
 		updateObjects();
 		allowMovement();
 		movement();
 
-		
+		Ghosty1->movementGhost((Player->positionX),(Player->positionY));
+		Ghosty2->movementGhost((Player->positionX),(Player->positionY));
+		Ghosty3->movementGhost((Player->positionX),(Player->positionY));
+		Ghosty4->movementGhost((Player->positionX),(Player->positionY));
 		//Score
 //		iScore++;
 }
@@ -299,6 +323,13 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 {
 	switch(key)
 	{
+	case 'e':
+		{
+			std::cout<< updateTimer->getCurrentTime() << std::endl;
+			std::cout<< updateTimer->getElapsedTimeSeconds() << std::endl;
+			std::cout<< updateTimer->tick() << std::endl;
+			break;
+		};
 	case 32: // the space bar
 		break;
 	case 27: // the escape key
@@ -350,7 +381,7 @@ void Game::moveObjectsKeyboardUp(unsigned char key)
 /*Checks player's hitbox, current map position, and constraints*/
 void Game::allowMovement()
 {
-	std::cout << "allowmovementcheck begin" << std::endl;
+	//std::cout << "allowmovementcheck begin" << std::endl;
 	int interception; //Counts the occurences of interception
 	float stop = 0.f; //stops all movement when interception >=1
 	float newMapPositionX, newMapPositionY;
@@ -359,18 +390,18 @@ void Game::allowMovement()
 	int vecindexX, vecindexY;
 	interception = 0;
 
-	std::cout << " initialize allowMovement variables" << std::endl;
-	newMapPositionX = (Map01Base->positionX) + (Map01Base->speedX);
-	newMapPositionY = (Map01Base->positionY) + (Map01Base->speedY);
+	//std::cout << " initialize allowMovement variables" << std::endl;
+	newMapPositionX = (Map01Base->positionX) + (Map01Base->inMotionSpeedX);
+	newMapPositionY = (Map01Base->positionY) + (Map01Base->inMotionSpeedY);
 
 	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
 	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
 	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
 	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
 
-	std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
-	std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
-	std::cout << "Check constraint vector" << std::endl;
+	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	//std::cout << "Check constraint vector" << std::endl;
 	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
 		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
 		{
@@ -388,19 +419,19 @@ void Game::allowMovement()
 		};
 	std::cout << "Checked constraint vector" << std::endl;
 		if(interception >= 1){
-			std::cout << "Intercept detected" << std::endl;
+		//	std::cout << "Intercept detected" << std::endl;
 			std::vector<Objects*>::iterator itNoMove;
 			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
 			{
 				Objects *o = (*itNoMove);
-				o-> speedX = stop;
-				o-> speedY = stop;
+				o-> inMotionSpeedX = stop;
+				o-> inMotionSpeedY = stop;
 			};
 		}else
 		{
 			std::cout << "No intercept detected" << std::endl;
 		};
-	std::cout << "Yay! Success!" << std::endl;
+	//std::cout << "Yay! Success!" << std::endl;
 	interception = 0;
 }
 
@@ -416,7 +447,8 @@ void Game::movement()
 		Objects *o = (*itMovement);
 
 		currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
-		currentSpeedX = (o-> speedX); currentSpeedY = (o-> speedY);
+		currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
+		currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
 
 		newPositionX = currentPositionX + currentSpeedX;
 		newPositionY = currentPositionY + currentSpeedY;

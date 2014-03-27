@@ -47,6 +47,7 @@ void drawRectangle(bool filled, float cornerX, float cornerY, int width, int hei
 	glEnd();
 	glPopMatrix();
 }
+
 void drawText(std::string s, float posX, float posY)
 {
 	glPushMatrix();
