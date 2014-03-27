@@ -1,0 +1,36 @@
+CHANGELOG:
+
+Aaron Prototype Version 1.0
+
+1. Game has look and feel of what final game may look like. (screen will be made a big bigger) 
+2. Paralax scrolling added for backgrounds, and flowing water.
+3. Character animations, and controls. 
+4. Health bar sprite for future health implementation.
+5. Background water sprite doesn;t wrap around yet. will be implemented later. 
+
+Aaron Prototype Version 1.2
+
+1. Screen Standardized, Resized, Ratioed to actual game screen dimentions. 
+2. Water flowing Speed Increased.
+3. Maps Redone, now contains mulaple Sprite layer assets as well. (Base, Objects, constraints).
+4. Framerate set to 20. 
+5. Rough Background Scrolling added but the reset doesn't flow.
+
+Aaron Prototype Version 1.3
+
+1. Added very rough menu prototype and menu control
+
+-control the menu using A and D keys.
+-"Continue game" currently functionless.
+-Prototype is rough, no seperate class has been made, roughly translates directly in game.cpp
+-The "gameState" variable is what roughly controls the gamestates in this prototype.
+
+FUTURE MENU CONCEPT: (The sprites have been kept with a little transparency, the menu will later be transformed into an innovative menu with the main character on the menu screen, pressing right and left plays the walk animation, as the player walks the menu strip scrolls, pressing enter while the player walks over the menu option selects that option. for now the menu is kept simple so as to pass the gate). 
+
+Aaron Prototype Version 3.0
+
+-Implemented FMOD (Audio Engine). Now has background music.
+-Implemented 'GameState' class and children classes Menu, levelHome, levelone, leveltwo, levelthree.
+-All sprites in sprite folder, spawn points have been set for each individual state.
+-Vector iterators to transition states.
+-The state transitioning controler does not work, It needs a handler to externally switch the 'active' variables from true-> false, flase->true etc.
