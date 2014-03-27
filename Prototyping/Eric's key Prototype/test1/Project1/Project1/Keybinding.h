@@ -5,14 +5,16 @@ class Keybinding
 {
 public:
 	char upkey;
-	char leftkey;
-	char downkey;
-	char rightkey;
+	char leftKey;
+	char downKey;
+	char rightKey;
+	char interactKey;
+	char actionKey;
 	char keys;
 
 
 private:
-	Keybinding(char,char,char,char);
+	Keybinding(char,char,char,char,char,char,char);
 	int optionnum;
 
 };
