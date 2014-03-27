@@ -23,6 +23,7 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Constraints.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Hitbox.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Game.cpp" />

@@ -22,14 +22,13 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this->setLayerID(11);
 	this-> speedX = 0; // Character starts NOT moving
 	this-> speedY = 0;
-	this-> human = true;
 	this-> player = true;
 	this-> stationary = false;
 
 	this-> collidable = true;
 
 		// Hitbox for objects
-	ObjectHitbox = new Hitbox(28,48, positionX,positionY);
+	ObjectHitbox = new Hitbox(28,36, positionX,positionY);
 	
 
 }
