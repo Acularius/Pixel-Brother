@@ -1,20 +1,33 @@
 Level Progression
 
 Level 1:
-- starts off in the house
-- the screen shakes signifying something is happening outside
-- the hero goes outside and sees monsters destroying the town
-- then the tutorial happens where the hero has to defend the houses from the waves of monsters
-- after the waves, the hero can talk to the npc's and find out more about the story
+- spawns in the village and can find out whats happening from the npcs
+- the hero is interrupted by a flock of seagulls while talking to the npcs
+- this is where the tutorial starts where the player has to shoo away the seagulls by using abilities
+- this will give the player some experience with combat
+- after the seagulls have gone, the hero can continue to talk to the npc's and find out more about the story
 - one of the npc's tell him about the sacrifices and how his wife/gf has been taken
-- next he goes into the portal and moves on to the next level
-- while going through the portal, there's a cutscene where the ghost is flying around and chasing the hero
-- the ghost chases the hero through the level and the hero also encounters monsters along the way
-- the monsters are only at the purified areas where the ghost cant touch the hero
-- the hero must kill the monsters so he can use these areas as safe areas
-- eventually the hero must get to the main safe area where there is a puzzle
-- after the puzzle the hero must fight the ghost
-- the hero will get a big peice of plasma from the ghost when it is defeated
-- the plasma unlocks the next portal
+- next he goes into the portal and moves on to the next level when the player is ready
 
-Level 2:
+
+Level 2: 
+- a ghost will be chasing you when it stops, it will spawn enemy minions and you have to defeat the enemies
+and the ghost will become vulnerable to attack during a limited time interval after the enemies are defeated
+- this will happen a total of 4 times before he dies and you can get to the next level.
+- The portal to the next level will be locked until the ghost has been defeated
+
+Level 3: 
+- there are a total of 4 nests where enmies will be spawning in this level
+- each will be set to a timer once you cross the safe area in the portal and each will spawn once u cross near
+them. 
+- when you kill all the monsters and pass all 4 pillars you can pass to the next level by going through the
+portal.
+- The portal will be locked until all 4 pillars have been completed
+
+Level 4: 
+There are nests like level 3
+The end will be a sacrifice
+there will be a dragon spitting fire which you have to try and avoid
+
+endgoal: save the sacrifices from being sacrificed
+
