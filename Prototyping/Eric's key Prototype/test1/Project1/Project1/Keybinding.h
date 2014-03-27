@@ -4,19 +4,17 @@
 class Keybinding
 {
 public:
-	char upkey;
+	Keybinding();
+	~Keybinding(void);
+
+	char upKey;
 	char leftKey;
 	char downKey;
 	char rightKey;
 	char interactKey;
 	char actionKey;
-	char keys;
 
-
-private:
-	Keybinding(char,char,char,char,char,char,char);
-	int optionnum;
-
+	void keybindFunc();
 };
 
 

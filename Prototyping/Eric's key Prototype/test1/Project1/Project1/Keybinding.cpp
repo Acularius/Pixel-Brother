@@ -4,18 +4,25 @@
 using namespace std;
 using std::cout;
 
-void keybinding(char upKey, char leftKey, char downKey, char rightKey, char interactKey, char actionKey, int optionnum)
+Keybinding::Keybinding()
 {
-
-	//default keysetting
+		//default keysetting
 		upKey=119; //up
 		leftKey=97; //left
 		downKey=115; //down
 		rightKey=100; //right
 		interactKey=101; //interact
 		actionKey=32; //action
+}
 
-	
+Keybinding::~Keybinding(void)
+{
+	/* Default Deconstructor */
+}
+
+void Keybinding::keybindFunc()
+{
+	int optionnum;
 	//Keybinding
 	cout<<"Which Keybinding do you wish to change? \n";
 	cout<<"1.upkey "<<upKey<<endl;
@@ -63,7 +70,6 @@ void keybinding(char upKey, char leftKey, char downKey, char rightKey, char inte
 	case 7:
 		cout<<"Keys stay the same"<<endl;
 		break;
-
-
+	}
 }
 
