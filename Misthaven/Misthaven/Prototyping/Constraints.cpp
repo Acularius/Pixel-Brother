@@ -25,7 +25,7 @@ void Constraints::createResizeWriteVector( )
 	cimg_library::CImg<unsigned char> imgload(fileLocation);
 	iWidth = imgload.width();
 	iHeight = imgload.height();
-	std::vector< std::vector<std::string> > vWriteVector (iWidth, std::vector<std::string>(iHeight));
+	std::vector< std::vector<bool> > vWriteVector (iWidth, std::vector<bool>(iHeight));
 	
 	int iVx,iVy; //Writing the Vector
 	float fVRed, fVGreen, fVBlue;
@@ -38,12 +38,12 @@ void Constraints::createResizeWriteVector( )
 			fVGreen = imgload(iVx,revVy,0, 1);
 			fVBlue = imgload(iVx,revVy,0, 2);
 
-			if ( (fVRed==0) && (fVGreen==255) && (fVBlue==0) ) //Green = traversable
+			if ( (fVRed==0) && (fVGreen==255) && (fVBlue==0) ) //Green = traversable = true
 			{
-				vWriteVector[iVx][iVy] = "traverse";
+				vWriteVector[iVx][iVy] = true;
 			}
 			else{
-				vWriteVector[iVx][iVy] = "nopass";
+				vWriteVector[iVx][iVy] = false;
 			};
 		};
 		vConstraintVector = vWriteVector;

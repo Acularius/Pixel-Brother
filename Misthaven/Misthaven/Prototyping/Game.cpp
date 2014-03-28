@@ -405,10 +405,10 @@ void Game::allowMovement()
 	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
 		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
 		{
-			if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == "traverse")
+			if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == true)
 			{
 				/* Nothing */
-			} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == "nopass") {
+			} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == false) {
 				interception++;
 				break; //ends the loop
 

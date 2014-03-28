@@ -12,7 +12,7 @@ public:
 	~Constraints(void);
 
 	const char *fileLocation;
-	std::vector< std::vector<std::string> > vConstraintVector ;
+	std::vector< std::vector<bool> > vConstraintVector ;
 
 	void createResizeWriteVector();
 	void constraintMessageBegin();
