@@ -34,3 +34,10 @@ Aaron Prototype Version 3.0
 -All sprites in sprite folder, spawn points have been set for each individual state.
 -Vector iterators to transition states.
 -The state transitioning controler does not work, It needs a handler to externally switch the 'active' variables from true-> false, flase->true etc.
+
+Aaron Prototype Version 4.0
+
+-State transitioning now works perfectly and smoothly. 
+-StateManager.cpp functions were made to handle state transitioning. 
+-Spawn points set, maps coordinates are reset whenever player leaves map/returns/dies. 
+-I commented all my code neatly :) ! Readibility ! 

@@ -27,11 +27,7 @@ Game::Game(void)
 	renderingTimer = new Timer("RENDER");
 	updateTimer = new Timer("UPDATE");
 
-	gameState=1;
-
-
 }
-
 
 
 /* destructor */
@@ -47,6 +43,10 @@ Game::~Game(void)
  * - MUST be called prior to any drawing/updating (you should add in checks to ensure this occurs in the right order)
  */
 
+
+//===========================================================================================
+//							 ALL SPRITE INITIALIZATION/LOADING
+//===========================================================================================
 
 void Game::initializeGame()
 {
@@ -72,41 +72,10 @@ void Game::initializeGame()
 	StateThree->Init(this);
 	states.push_back(StateThree);
 
-	MenuControl(StateThree, true);
-	
-	/*
-	switch(gameState)
-	{
-	case 1: {  MainMenu* MenuState = new MainMenu();
-			   MenuState->Init(this);
-			   states.push_back(MenuState);
-			   break;
-			   //std::vector <GameState*> MenuState;
-			   //MenuState.push_back(new MainMenu);
-			
-			}
-	case 2: {  LevelHome* StateHome = new LevelHome();
-			   StateHome->Init(this);
-			   states.push_back(StateHome);
-			   break; }
-	case 3: {  LevelOne* StateOne = new LevelOne();
-			   StateOne->Init(this);
-			   states.push_back(StateOne);
-			   break; }
-	case 4: {  LevelTwo* StateTwo = new LevelTwo();
-			   StateTwo->Init(this);
-			   states.push_back(StateTwo);
-			   break; }
-	case 5:{   LevelThree* StateThree = new LevelThree();
-			   StateThree->Init(this);
-			   states.push_back(StateThree); 
-			   break; }
-	default: std::cout<<"TRANSITION FAILED!\a\n";
-	}
-	*/
-
-
 }
+
+//===========================================================================================
+//===========================================================================================
 
 /* draw()
  * - this gets called automatically about 30 times per second
@@ -216,7 +185,9 @@ void Game::drawSprites()
 		Sprite *s = (*it);
 		s->draw();
 	}*/
-
+//===========================================================================================
+//								 SPRITE ITERATOR
+//===========================================================================================
 	std::vector<GameState*>::iterator it;
 	for (it = states.begin(); it != states.end(); it++)
 	{
@@ -268,7 +239,9 @@ void Game::update()
 {
 		//updateTimer->tick();
 
-
+//===========================================================================================
+//								 UPDATE ITERATOR
+//===========================================================================================
 
 	std::vector<GameState*>::iterator it;
 	for (it = states.begin(); it != states.end(); it++)
@@ -319,6 +292,11 @@ void Game::addSpriteToDrawList(Sprite *s)
 
 void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 {
+
+//===========================================================================================
+//								 KEYDOWN ITERATOR
+//===========================================================================================
+
 	std::vector<GameState*>::iterator it;
 	for (it = states.begin(); it != states.end(); it++)
 	{
@@ -329,31 +307,30 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 			s->KeyDown(key);
 		}
 	}
-			/*switch(key)
+
+//===========================================================================================
+//								 TESTING KEYS (StateChanges)
+//===========================================================================================
+
+			switch(key)
 			{
-			case '1': {		//MenuControl (0, 1, 0, 0, 0);
-							/*MenuState->active=false;
-							StateHome->active=true;
-							StateOne->active=false;
-							StateTwo->active=false;
-							StateThree->active=false;*/
-							/*break;  }
-			case '2': {		MenuControl (MenuState, HomeState, LevelOne LevelHome, 0, 1, 0, 0);
+			case '1': {		SwitchStateTo (StateHome, 1);
 							break;  }
-			case '3': {		MenuControl (0, 0, 0, 1, 0);
+			case '2': {		SwitchStateTo (StateHome, 2);
 							break;  }
-			case '4': {		MenuControl (0, 0, 0, 0, 1);
+			case '3': {		SwitchStateTo (StateHome, 3);
 							break;  }
-			case 'p': {		MenuControl (1, 0, 0, 0, 0);
+			case '4': {		SwitchStateTo (StateHome, 4);
+							break;  }
+			case '5': {		SwitchStateTo (StateHome, 5);
 							break;  }
 			case 't': {     std::cout<<"YOLO\n"; break; }
-			}*/
-
-
+			}
 	
 }
 
-
+//===========================================================================================
+//===========================================================================================
 
 /* keyboardUp()
    - this gets called when you lift a key up
@@ -376,6 +353,11 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	
 }
 
+//===========================================================================================
+//								 FMOD SOUND FUNCTION
+//===========================================================================================
+
+//Audio.lib seems much easier to use. Consider reimplementing sounds later. 
 
 int Game::playSound()
 	{
@@ -419,26 +401,5 @@ int Game::playSound()
 
 	}
 
-
-//void Game::MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5)
-void Game::MenuControl (GameState* g, bool a)
-{  
- 
-	std::cout<<"CHANGING STATE\n";
-
-	std::vector<GameState*>::iterator position = find(states.begin(), states.end(), g);
-	if (position != states.end()) // == vector.end() means the element was not found
-	{
-		GameState *g = *position;
-		if (*position)
-		{
-			g->active = a;
-		}
-	}
-}
-   
-//MenuControl (1, 0, 0, 0, 0)
-//MenuControl (0, 1, 0, 0, 0)
-//MenuControl (0, 0, 1, 0, 0)
-//MenuControl (0, 0, 0, 1, 0)
-//MenuControl (0, 0, 0, 0, 1)
+//===========================================================================================
+//===========================================================================================

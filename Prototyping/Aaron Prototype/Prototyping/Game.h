@@ -1,29 +1,33 @@
-#pragma once
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <iostream>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include "GL/glut.h"
-#include "IL/il.h"
-#include "IL/ilu.h"
-#include "IL/ilut.h"
-#include "Objects.h"
-#include "Timer.h"
-#include <algorithm>
-#include <cmath>
 
-#include <fmod.h>
-#include <fmod.hpp>
+	#pragma once
+	#include <windows.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <vector>
+	#include <algorithm>
+	#include <iostream>
+	#include <GL/gl.h>
+	#include <GL/glu.h>
+	#include "GL/glut.h"
+	#include "IL/il.h"
+	#include "IL/ilu.h"
+	#include "IL/ilut.h"
+	#include "Objects.h"
+	#include "Timer.h"
+	#include <algorithm>
+	#include <cmath>
+	
+	//SOUND HEADER FILES:
+	#include <fmod.h>
+	#include <fmod.hpp>
+	
+	//STATE CONTROL HEADERS:
+	#include "GameState.h"
+	#include "StateManager.h"
 
-#include "GameState.h"
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+	#ifndef M_PI
+	#define M_PI 3.14159265358979323846
+	#endif
 
 /* these are enumerated types (just names) of game states
    that the game can be in at any moment.  These help you
@@ -143,7 +147,6 @@ public:
 	GameStateInfo stateInfo;
 
 	//GAME STATES:
-	std::vector<GameState*> states;
 	std::vector<Sprite*> spriteListToDraw;
 
 	/* Player Sprite */
@@ -155,32 +158,44 @@ public:
 	Sprite *Map1_Objects;
 	Sprite *WaterBackground;
 	Sprite *UISample;
+
+	/*
 	int gameState;
 	int mapSpeed;
 	int WaterSpeed;
 	bool test;
+	*/
 
 	int playSound(); //FMOD SOUND FUNCTION 1;
 
 	InputInfo input;
 
-	MainMenu* S1;
-	LevelHome* S2;
-	LevelOne* S3;
-	LevelTwo* S4;
-	LevelThree* S5;
+	//GAME STATE VARIABLES:
+	GameState* MenuState;
+	GameState* StateHome;
+	GameState* StateOne;
+	GameState* StateTwo;
+	GameState* StateThree;
 
-	//void MenuControl (MainMenu* OB1, LevelHome* OB2, LevelOne* OB3, LevelTwo* OB4, LevelThree* OB5, bool switch1, bool switch2, bool switch3, bool switch4, bool switch5); //<-----
-	void MenuControl (GameState* g, bool a);
+
+//===========================================================================================
+
+		//STATE MANAGER.CPP DEFINATIONS
+		void StateReset();
+		void StateControl (GameState* g, bool a,int num);
+		void SwitchStateTo (GameState* g, int num);
+		std::vector<GameState*> states;
+
+//===========================================================================================
+
 
 	/* sprite list to draw */
 	//std::vector<Sprite*> spriteListToDraw;
 
-		/* you could have more lists of sprite pointers */
+	/* you could have more lists of sprite pointers */
 	/* such as spritesToUpdateForPhysics  
 	   or      spritesToUpdateForCollisions 
-	   etc....
-    */
+	   etc....*/
 
 	/* timer's for rendering and animation/physics update */
 	Timer *renderingTimer;
