@@ -64,7 +64,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Eric%27s key Prototype\test1\Project1\Project1\main.cpp" />
     <ClCompile Include="Keybinding.cpp" />
-    <ClCompile Include="ignore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keybinding.h" />

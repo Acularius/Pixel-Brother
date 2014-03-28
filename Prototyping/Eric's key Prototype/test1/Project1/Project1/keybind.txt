@@ -1,0 +1,12 @@
+Up key = w.
+
+left key = a.
+
+down key = s.
+
+right key = d.
+
+interact key = e.
+
+action key = f.
+

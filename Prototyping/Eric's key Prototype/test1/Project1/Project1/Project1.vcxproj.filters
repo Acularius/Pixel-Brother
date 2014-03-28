@@ -18,9 +18,6 @@
     <ClCompile Include="Keybinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ignore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Eric%27s key Prototype\test1\Project1\Project1\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

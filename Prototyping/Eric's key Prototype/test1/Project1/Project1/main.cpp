@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 int main()
 {
 	Keybinding Keybind;
@@ -16,6 +17,7 @@ int main()
 		if (yesno == 'n')
 		{
 			loop = false;
+		
 		} else {
 			loop = true;
 		}

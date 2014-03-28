@@ -15,6 +15,9 @@ public:
 	char actionKey;
 
 	void keybindFunc();
+	//void keyfile (int sol);
+
+
 };
 
 
