@@ -6,15 +6,32 @@
 using namespace std;
 using std::cout;
 
+
 Keybinding::Keybinding()
 {
+	
 		//default keysetting
+	// note: must make code used only when
+	fstream ifile("keybind.txt");
+	if(!ifile.is_open())
+	{
+		//set default
 		upKey=119; //up
 		leftKey=97; //left
 		downKey=115; //down
 		rightKey=100; //right
 		interactKey=101; //interact
 		actionKey=102; //action space = 32, f = 102 for place holder
+		//write code
+		ifile<<"Up key = " << upKey <<".\n"<<endl;
+		ifile<<"Left key = " << leftKey <<".\n"<<endl;
+		ifile<<"Down key = " << downKey <<".\n"<<endl;
+		ifile<<"Right key = " << rightKey <<".\n"<<endl;
+		ifile<<"Interact key = " << interactKey <<".\n"<<endl;
+		ifile<<"Action key = " << actionKey <<".\n"<<endl;
+
+	}
+		
 }
 
 Keybinding::~Keybinding(void)
@@ -24,6 +41,7 @@ Keybinding::~Keybinding(void)
 
 void Keybinding::keybindFunc()
 {
+	//read file
 	ifstream Keybindfile;
 	Keybindfile.open("keybind.txt");
 	if (Keybindfile.is_open())
@@ -37,7 +55,7 @@ void Keybinding::keybindFunc()
 	Keybindfile.close();
 	}
 	else cout << "Unable to open file"<<endl;
-
+	//replace lines in file
 	ofstream Keyeditor;
 	Keyeditor.open("keybind.txt");
 
@@ -52,7 +70,8 @@ void Keybinding::keybindFunc()
 	cout<<"6.actionKey "<<actionKey<<endl;
 	cout<<"7.set defaults"<<endl;
 	cin >> optionnum;
-
+	
+	//pressing num to change keys
 	switch(optionnum)
 	{
 	case 1:
@@ -122,22 +141,3 @@ void Keybinding::keybindFunc()
 		break;
 	}
 }
-/*void Keybinding::keyfile(int sol)
-{
-	//if(sol==0)
-	//{
-	ofstream Keybindfile;
-	Keybindfile.open("keybind.txt");
-	if (Keybindfile.is_open())
-	{
-	Keybindfile<<"Up key = " << upKey <<".\n"<<endl;
-	Keybindfile<<"left key = " <<leftKey<<".\n"<<endl;
-	Keybindfile<<"down key = " <<downKey<<".\n"<<endl;
-	Keybindfile<<"right key = " <<rightKey<<".\n"<<endl;
-	Keybindfile<<"interact key = " <<interactKey<<".\n"<<endl;
-	Keybindfile<<"action key = " <<actionKey<<"space"<<".\n"<<endl;
-	Keybindfile.close();
-	}
-	else cout << "Unable to open file"<<endl;
-	//}
-}*/

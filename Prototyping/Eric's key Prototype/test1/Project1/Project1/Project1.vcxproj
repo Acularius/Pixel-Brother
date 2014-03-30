@@ -66,6 +66,7 @@
     <ClCompile Include="Keybinding.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Eric%27s key Prototype\test1\Project1\Project1\DrawText.h" />
     <ClInclude Include="Keybinding.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

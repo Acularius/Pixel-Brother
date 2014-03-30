@@ -26,5 +26,8 @@
     <ClInclude Include="Keybinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Eric%27s key Prototype\test1\Project1\Project1\DrawText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
