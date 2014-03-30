@@ -15,7 +15,7 @@ Game::Game(void)
 {
 	/* green background */
 	stateInfo.bgClearColor.red = 0;
-	stateInfo.bgClearColor.green = 1;
+	stateInfo.bgClearColor.green = 0;
 	stateInfo.bgClearColor.blue = 0;
 
 	/* init state */
@@ -41,81 +41,28 @@ Game::~Game(void)
 
 void Game::initializeGame()
 {
-		float fMirrorX, fMirrorY; //Where I desire the map and object layer of the map to be in relation to the player and their origin point
+	std::cout<<"\n\n    BOOT UP: LOADING SPRITES: "; //Loading Text
 
-	Player = new MainCharacter ("images/Player&HUD/PlayerSprite.png", 28,48);
-	this->addSpriteToDrawList(Player);
-	this->addToObjectsList(Player);
+	MainMenu* MenuState = new MainMenu();
+	MenuState->Init(this);
+	states.push_back(MenuState);
 
-	Ghosty1 = new Ghost ("images/Water Sprite.png", 28,48);
-	Ghosty1 -> setPosition(0,0);
-	this->addSpriteToDrawList(Ghosty1);
-	this->addToObjectsList(Ghosty1);
+	LevelHome* StateHome = new LevelHome();
+	StateHome->Init(this);
+	states.push_back(StateHome);
 
-	Ghosty2 = new Ghost ("images/Water Sprite.png", 28,48);
-	Ghosty2 -> setPosition(0,0);
-	this->addSpriteToDrawList(Ghosty2);
-	this->addToObjectsList(Ghosty2);
+	LevelOne* StateOne = new LevelOne();
+	StateOne->Init(this);
+	states.push_back(StateOne);
 
-	Ghosty3 = new Ghost ("images/Water Sprite.png", 28,48);
-	Ghosty3 -> setPosition(0,0);
-	this->addSpriteToDrawList(Ghosty3);
-	this->addToObjectsList(Ghosty3);
+	LevelTwo* StateTwo = new LevelTwo();
+	StateTwo->Init(this);
+	states.push_back(StateTwo);
 
-	Ghosty4 = new Ghost ("images/Water Sprite.png", 28,48);
-	Ghosty4 -> setPosition(0,0);
-	this->addSpriteToDrawList(Ghosty4);
-	this->addToObjectsList(Ghosty4);
-
-	fMirrorX = -687;
-	fMirrorY= -891;
-
-	Map01Base = new Objects ("images/Levels/Map 1 Base.png", 2500,2000);
-	Map01Base -> setNumberOfAnimations(1);
-	Map01Base -> setPosition(fMirrorX,fMirrorY);
-	Map01Base -> setLayerID (3);
-	Map01Base -> addSpriteAnimFrame(0,0,0);
-	Map01Base -> setCurrentAnimation(0);
-	this->addSpriteToDrawList(Map01Base);
-	this->addToObjectsList(Map01Base);
-
-	Map01Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500,2000);
-	Map01Objects-> setNumberOfAnimations(1);
-	Map01Objects -> setPosition(fMirrorX,fMirrorY);
-	Map01Objects -> setLayerID (15);
-	Map01Objects -> addSpriteAnimFrame(0,0,0);
-	Map01Objects -> setCurrentAnimation(0);
-	this->addSpriteToDrawList(Map01Objects);
-	this->addToObjectsList(Map01Objects);
-
-
-	WaterBackground = new Objects ("images/Water Sprite.png",2860,1488);
-	WaterBackground -> setNumberOfAnimations(1);
-	WaterBackground -> setPosition(fMirrorX,fMirrorY);
-	WaterBackground -> setLayerID (1);
-	WaterBackground -> addSpriteAnimFrame(0,0,0);
-	WaterBackground -> setCurrentAnimation(0);
-	this->addSpriteToDrawList(WaterBackground);
-	this->addToObjectsList(WaterBackground);
-
-	Health = new Objects ("images/Player&HUD/Hearts.png",132,32);
-	Health -> setNumberOfAnimations(1);
-	Health -> setPosition(5,5);
-	Health -> setLayerID (20);
-	Health -> addSpriteAnimFrame(0,0,0);
-	Health -> setCurrentAnimation(0);
-	Health -> stationary = true;
-	this->addSpriteToDrawList(Health);
-	this->addToObjectsList(Health);
+	LevelThree* StateThree = new LevelThree();
+	StateThree->Init(this);
+	states.push_back(StateThree);
 	
-	// vvvv Works vvvv
-	std::cout << "Map01Base position (x,y) : (" << (Map01Base->positionX) << ", " << (Map01Base->positionY)<< ") " << std::endl;
-	std::cout << "Map01Base speed for x: " << (Map01Base->speedX) << " and for y: " << (Map01Base->speedY) << std::endl;
-	std::cout << "Map 01 width and height, width : " << (Map01Base->sz.width) << " and height: " << (Map01Base->sz.height) << std::endl; 
-
-	// No work
-	std::cout << "Player corners, bottom left X: " << (Player->ObjectHitbox->leftCornerX) << ", bottom right X: " << (Player->ObjectHitbox->rightCornerX) << std::endl;
-	std::cout << "bottom cornerY: " << (Player->ObjectHitbox->bottomCornerY) << ", and top corner Y: " << (Player->ObjectHitbox->topCornerY) << std::endl;
 
 	// vvvv Works vvvv
 	std::cout << "Before Biscuit" << std::endl;
@@ -226,12 +173,30 @@ void Game::drawSprites()
 	
 	/* better way */
 	/* this is better because it doesn't matter how many sprites we have, they will always be drawn */
-	std::vector<Sprite*>::iterator it; 
-	for(it=spriteListToDraw.begin(); it != spriteListToDraw.end(); it++)
+//	std::vector<Sprite*>::iterator it; 
+//	for(it=spriteListToDraw.begin(); it != spriteListToDraw.end(); it++)
+//	{
+//		Sprite *s = (*it);
+//		s->draw();
+//	}
+//
+
+//===========================================================================================
+//								 SPRITE ITERATOR
+//===========================================================================================
+	std::vector<GameState*>::iterator it;
+	for (it = states.begin(); it != states.end(); it++)
 	{
-		Sprite *s = (*it);
-		s->draw();
+		if (*it)
+		{  
+			  GameState* s = (*it);
+			  if(s->active==true)
+			  s->Draw();
+		}
+
 	}
+
+
 
 }
 
@@ -266,10 +231,19 @@ void Game::update()
 		allowMovement();
 		movement();
 
-		Ghosty1->movementGhost((Player->positionX),(Player->positionY));
-		Ghosty2->movementGhost((Player->positionX),(Player->positionY));
-		Ghosty3->movementGhost((Player->positionX),(Player->positionY));
-		Ghosty4->movementGhost((Player->positionX),(Player->positionY));
+		/* Beginning of integration*/
+			std::vector<GameState*>::iterator it;
+	for (it = states.begin(); it != states.end(); it++)
+	{
+		if (*it)
+		{  
+			  GameState* s = (*it);
+			  if(s->active==true)
+			  s->Update();
+		}
+
+	}
+
 		//Score
 //		iScore++;
 }
@@ -323,13 +297,6 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 {
 	switch(key)
 	{
-	case 'e':
-		{
-			std::cout<< updateTimer->getCurrentTime() << std::endl;
-			std::cout<< updateTimer->getElapsedTimeSeconds() << std::endl;
-			std::cout<< updateTimer->tick() << std::endl;
-			break;
-		};
 	case 32: // the space bar
 		break;
 	case 27: // the escape key
@@ -337,6 +304,41 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 		exit(1);
 		break;
 	}
+
+	//===========================================================================================
+//								 KEYDOWN ITERATOR
+//===========================================================================================
+
+	std::vector<GameState*>::iterator it;
+	for (it = states.begin(); it != states.end(); it++)
+	{
+		if (*it)
+		{
+			GameState* s = (*it);
+			if(s->active==true)
+			s->KeyDown(key);
+		}
+	}
+
+//===========================================================================================
+//								 TESTING KEYS (StateChanges)
+//===========================================================================================
+
+			switch(key)
+			{
+			case '1': {		SwitchStateTo (StateHome, 1);
+							break;  }
+			case '2': {		SwitchStateTo (StateHome, 2);
+							break;  }
+			case '3': {		SwitchStateTo (StateHome, 3);
+							break;  }
+			case '4': {		SwitchStateTo (StateHome, 4);
+							break;  }
+			case '5': {		SwitchStateTo (StateHome, 5);
+							break;  }
+			case 't': {     std::cout<<"YOLO\n"; break; }
+			}
+
 }
 /* keyboardUp()
    - this gets called when you lift a key up
@@ -353,6 +355,17 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	case 'q': // the 'q' key
 		exit(1);
 		break;
+	}
+
+		std::vector<GameState*>::iterator it;
+	for (it = states.begin(); it != states.end(); it++)
+	{
+		if (*it)
+		{
+			GameState* s = (*it);
+			if(s->active==true)
+			s->KeyUp(key);
+		}
 	}
 }
 
@@ -381,80 +394,81 @@ void Game::moveObjectsKeyboardUp(unsigned char key)
 /*Checks player's hitbox, current map position, and constraints*/
 void Game::allowMovement()
 {
-	//std::cout << "allowmovementcheck begin" << std::endl;
-	int interception; //Counts the occurences of interception
-	float stop = 0.f; //stops all movement when interception >=1
-	float newMapPositionX, newMapPositionY;
-	int indexStartX,indexStartY, indexEndX,indexEndY;
+	////std::cout << "allowmovementcheck begin" << std::endl;
+	//int interception; //Counts the occurences of interception
+	//float stop = 0.f; //stops all movement when interception >=1
+	//float newMapPositionX, newMapPositionY;
+	//int indexStartX,indexStartY, indexEndX,indexEndY;
 
-	int vecindexX, vecindexY;
-	interception = 0;
+	//int vecindexX, vecindexY;
+	//interception = 0;
 
-	//std::cout << " initialize allowMovement variables" << std::endl;
-	newMapPositionX = (Map01Base->positionX) + (Map01Base->inMotionSpeedX);
-	newMapPositionY = (Map01Base->positionY) + (Map01Base->inMotionSpeedY);
+	////std::cout << " initialize allowMovement variables" << std::endl;
+	//newMapPositionX = (Map01Base->positionX) + (Map01Base->inMotionSpeedX);
+	//newMapPositionY = (Map01Base->positionY) + (Map01Base->inMotionSpeedY);
 
-	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
-	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
-	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
-	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+	//indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+	//indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+	//indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+	//indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
 
-	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
-	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
-	//std::cout << "Check constraint vector" << std::endl;
-	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
-		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
-		{
-			if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == true)
-			{
-				/* Nothing */
-			} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == false) {
-				interception++;
-				break; //ends the loop
+	////std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	////std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	////std::cout << "Check constraint vector" << std::endl;
+	//for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+	//	for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
+	//	{
+	//		if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == true)
+	//		{
+	//			/* Nothing */
+	//		} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == false) {
+	//			interception++;
+	//			break; //ends the loop
 
-			} else{
-				//Nothing
-			};
+	//		} else{
+	//			//Nothing
+	//		};
 
-		};
-	std::cout << "Checked constraint vector" << std::endl;
-		if(interception >= 1){
-		//	std::cout << "Intercept detected" << std::endl;
-			std::vector<Objects*>::iterator itNoMove;
-			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
-			{
-				Objects *o = (*itNoMove);
-				o-> inMotionSpeedX = stop;
-				o-> inMotionSpeedY = stop;
-			};
-		}else
-		{
-			std::cout << "No intercept detected" << std::endl;
-		};
-	//std::cout << "Yay! Success!" << std::endl;
-	interception = 0;
+	//	};
+	//std::cout << "Checked constraint vector" << std::endl;
+	//	if(interception >= 1){
+	//	//	std::cout << "Intercept detected" << std::endl;
+	//		std::vector<Objects*>::iterator itNoMove;
+	//		for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+	//		{
+	//			Objects *o = (*itNoMove);
+	//			o-> inMotionSpeedX = stop;
+	//			o-> inMotionSpeedY = stop;
+	//		};
+	//	}else
+	//	{
+	//		std::cout << "No intercept detected" << std::endl;
+	//	};
+	////std::cout << "Yay! Success!" << std::endl;
+	//interception = 0;
 }
 
 void Game::movement()
 {
 
-	std::vector<Objects*>::iterator itMovement;
-	for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
-	{
-		float newPositionX, newPositionY;
-		float currentPositionX, currentPositionY;
-		float currentSpeedX, currentSpeedY;
-		Objects *o = (*itMovement);
+	//std::vector<Objects*>::iterator itMovement;
+	//for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
+	//{
+	//	float newPositionX, newPositionY;
+	//	float currentPositionX, currentPositionY;
+	//	float currentSpeedX, currentSpeedY;
+	//	Objects *o = (*itMovement);
 
-		currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
-		currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
-		currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
+	//	currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
+	//	currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
+	//	currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
 
-		newPositionX = currentPositionX + currentSpeedX;
-		newPositionY = currentPositionY + currentSpeedY;
+	//	newPositionX = currentPositionX + currentSpeedX;
+	//	newPositionY = currentPositionY + currentSpeedY;
 
-		o-> positionX = newPositionX;
-		o-> positionY = newPositionY;
-	};
+	//	o-> positionX = newPositionX;
+	//	o-> positionY = newPositionY;
+	//};
 
 }
+

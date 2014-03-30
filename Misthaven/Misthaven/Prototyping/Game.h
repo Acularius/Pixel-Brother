@@ -18,6 +18,9 @@
 
 #include "Constraints.h"
 
+	//STATE CONTROL HEADERS:
+#include "GameState.h"
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -144,38 +147,37 @@ public:
 	/* game state info */
 	GameStateInfo stateInfo;
 
-	/* Player Sprite */
-	MainCharacter *Player;
+	/*Integration old code -clean up*/
+	///* Player Sprite					-In GameState.h
+	//MainCharacter *Player;			-In GameState.h
+
+
+	//// Ze Ghost
+	//Ghost *Ghosty1;
+	//Ghost *Ghosty2;
+	//Ghost *Ghosty3;
+	//Ghost *Ghosty4;
+
+	//	//Background Sprite Test
+	//Objects *Map01Base;
+	//Objects *Map01Objects;
+	//Objects *WaterBackground;
 	
-	Objects *Health;
 
-	// Ze Ghost
-	Ghost *Ghosty1;
-	Ghost *Ghosty2;
-	Ghost *Ghosty3;
-	Ghost *Ghosty4;
-
-		//Background Sprite Test
-	Objects *Map01Base;
-	Objects *Map01Objects;
-	Objects *WaterBackground;
-
-
+/*Below will be put somewhere else*/
 	Constraints MapConstraints;
 
 	InputInfo input;
 
 
 
+
 	/* sprite list to draw */
 	std::vector<Sprite*> spriteListToDraw;
 
-	/* Object list for movement */
-	std::vector<Objects*> objectsList;
 
-		//Add things to the Object List
 
-		void addToObjectsList(Objects *o);
+
 
 		/* you could have more lists of sprite pointers */
 	/* such as spritesToUpdateForPhysics  
@@ -184,16 +186,10 @@ public:
     */
 
 
-	// Objects to a list for movement
-	
-	void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
-	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
-	void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
 
-	void allowMovement(); //checks constraints to allow for player movement
 
-	// Update Objects
-	void updateObjects();
+
+	/*End of old code for integration*/
 
 	/* timer's for rendering and animation/physics update */
 	Timer *renderingTimer;
@@ -201,4 +197,40 @@ public:
 
 	//std::string sScore;
 	//int iScore;
+
+	/*New Integration code - Organize*/
+		//GAME STATE VARIABLES:
+	GameState* MenuState;
+	GameState* StateHome;
+	GameState* StateOne;
+	GameState* StateTwo;
+	GameState* StateThree;
+	//===========================================================================================
+
+		//STATE MANAGER.CPP DEFINITIONS
+		void StateReset();
+		void StateControl (GameState* g, bool a,int num);
+		void SwitchStateTo (GameState* g, int num);
+		std::vector<GameState*> states;
+
+//===========================================================================================
+
+		/* Old Code - Needs to be re integrated */
+			// Objects to a list for movement
+
+			//Add things to the Object List
+
+		void addToObjectsList(Objects *o);
+
+			/* Object list for movement */
+	std::vector<Objects*> objectsList;
+
+			// Update Objects
+	void updateObjects();
+	
+	void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
+	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
+	void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
+
+	void allowMovement(); //checks constraints to allow for player movement
 };

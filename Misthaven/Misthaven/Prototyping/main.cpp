@@ -9,8 +9,8 @@
 /******************************************/
 /* GLOBAL VARIABLES */
 /******************************************/
-#define WINDOW_SCREEN_WIDTH 464 //464
-#define WINDOW_SCREEN_HEIGHT 312 //312
+#define WINDOW_SCREEN_WIDTH 480 //464
+#define WINDOW_SCREEN_HEIGHT 260 //312
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 260
 
