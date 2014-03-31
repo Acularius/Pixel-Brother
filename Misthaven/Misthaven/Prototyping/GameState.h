@@ -120,13 +120,10 @@
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
 			 Objects *Map1_Objects;
-		     Objects *WaterBackground;
+		     Objects *WaterBackgroundHome;
 			// Sprite *Player;
 			 Sprite *UISample;
 
-		int mapSpeed;   // Speed of player (basically);
-		int WaterSpeed; // Speed of scrolling water BG;
-		bool test;      // To test movement control;
 		
 		
 		MainCharacter *Player;
@@ -149,18 +146,19 @@
 		 void KeyDown(unsigned char key);
 		 ~LevelOne(void);
 
+		 void allowMovement();
+
 			 //SPRITE DECLARATIONS
-			 Sprite *Map2_Base;
-			 Sprite *Map2_Objects;
-		     Sprite *WaterBackground;
+			 Objects *Map2_Base;
+			 Objects *Map2_Objects;
+		     Objects *WaterBackgroundOne;
 			// Sprite *Player;
 			 Sprite *UISample;
 
 			 MainCharacter *Player;
+			 Constraints MapConstraintsOne;
 
-		int mapSpeed;   // Speed of player (basically);
-		int WaterSpeed; // Speed of scrolling water BG;
-		bool test;      // To test movement control;
+
 
 	};
 
@@ -179,18 +177,17 @@
 		 void KeyDown(unsigned char key);
 		 ~LevelTwo(void);
 
+		 void allowMovement();
+
 			 //SPRITE DECLARATIONS
-			 Sprite *Map3_Base;
-			 Sprite *Map3_Objects;
-		     Sprite *WaterBackground;
+			 Objects *Map3_Base;
+			 Objects *Map3_Objects;
+		     Objects *WaterBackgroundTwo;
 			 //Sprite *Player;
 			 MainCharacter *Player;
+			 Constraints MapConstraintsTwo;
 
 			 Sprite *UISample;
-
-		int mapSpeed;   // Speed of player (basically);
-		int WaterSpeed; // Speed of scrolling water BG;
-		bool test;      // To test movement control;
 
 	};
 

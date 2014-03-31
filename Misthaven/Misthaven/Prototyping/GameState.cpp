@@ -159,6 +159,7 @@ void GameState::movement()
 				//Main Character - PlayerSprite.
 				Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
 				this->addSpriteToDrawList(Player);
+				Player->setPosition(230,90);
 				Player->setCurrentAnimation(1);
 				Player->setLayerID(4);
 
@@ -272,19 +273,17 @@ void GameState::movement()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		mapSpeed = 0;
-		WaterSpeed = 0;
 
 		    //Sprite - Water Background.
-			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
-			WaterBackground -> setNumberOfAnimations(1);
-			WaterBackground -> setPosition(-1700,-750);
-			WaterBackground -> setCenter(0,0);
-			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackground -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackground);
-			this->addToObjectsList(WaterBackground);
+			WaterBackgroundHome = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
+			WaterBackgroundHome -> setNumberOfAnimations(1);
+			WaterBackgroundHome -> setPosition(-1700,-750);
+			WaterBackgroundHome -> setCenter(0,0);
+			WaterBackgroundHome -> setLayerID (1);
+			WaterBackgroundHome ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackgroundHome -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackgroundHome);
+			this->addToObjectsList(WaterBackgroundHome);
 
 			//Sprite - Map 1 Base.
 			Map1_Base = new Objects ("images/Levels/Map 1 Base.png", 2500, 2000);
@@ -308,7 +307,7 @@ void GameState::movement()
 			//Sprite - Map 1 Objects.
 			Map1_Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500, 2000);
 			Map1_Objects -> setNumberOfAnimations(1);
-			Map1_Objects -> setPosition(-1422,-1033);
+			Map1_Objects -> setPosition(-1422,-1033);  //-1422, -1033
 			Map1_Objects -> setCenter(0,0);
 			Map1_Objects -> setLayerID (6);
 			Map1_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
@@ -328,7 +327,7 @@ void GameState::movement()
 			this->addSpriteToDrawList(UISample);
 
 			std::cout << "Before Biscuit" << std::endl;
-			MapConstraintsHome = Constraints("images/Levels/Map01Constraints.bmp");
+			MapConstraintsHome = Constraints("images/Levels/Map 1 Constraints.bmp");
 			std::cout << "At Biscuit" << std::endl;
 			std::cout << "Location of 919, 1047: " << MapConstraintsHome.vConstraintVector[919][1047] << std::endl;
 
@@ -337,11 +336,14 @@ void GameState::movement()
 
 	void LevelHome::ResetMap()
 	{ 
-				WaterBackground -> setPosition(-1700,-750);
-				Map1_Base -> setPosition(-1422,-1033);
+				WaterBackgroundHome -> setPosition(-1700,-750);
+				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
 				Player->setPosition(230,130);
 				Player->setCurrentAnimation(1);
-				Map1_Objects -> setPosition(-1422,-1033);
+				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
+				std::cout << "Player's position (x,y): (" << Player->positionX << ", " << Player->positionY << ")" <<std::endl;
+				std::cout << "Corners, left x: " << Player->ObjectHitbox->leftCornerX << ", right x: " << Player->ObjectHitbox->rightCornerX << std::endl;
+				std::cout << "Corners cont,  bottom y: " << Player->ObjectHitbox->bottomCornerY << ", top y: " << Player->ObjectHitbox->topCornerY << std::endl;
 	}
 
 
@@ -442,30 +444,28 @@ void GameState::movement()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		mapSpeed = 0;
-		WaterSpeed = 0;
 
 		    //Sprite - Water Background.
-			WaterBackground = new Sprite ("images/Backgrounds/Water Sprite 2.png");
-			WaterBackground -> setNumberOfAnimations(1);
-			WaterBackground -> setSpriteFrameSize(2500,2000);
-			WaterBackground -> setPosition(-1700,-750);
-			WaterBackground -> setCenter(0,0);
-			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackground -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackground);
+			WaterBackgroundOne = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
+			WaterBackgroundOne -> setNumberOfAnimations(1);
+			WaterBackgroundOne -> setPosition(-1700,-750);
+			WaterBackgroundOne -> setCenter(0,0);
+			WaterBackgroundOne -> setLayerID (1);
+			WaterBackgroundOne ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackgroundOne -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackgroundOne);
+			this->addToObjectsList(WaterBackgroundOne);
 
 			//Sprite - Map 2 Base.
-			Map2_Base = new Sprite ("images/Levels/Map 2 Base.png");
+			Map2_Base = new Objects ("images/Levels/Map 2 Base.png", 2500,2000);
 			Map2_Base -> setNumberOfAnimations(1);
-			Map2_Base -> setSpriteFrameSize(2500,2000);
 			Map2_Base -> setPosition(-475,-1410);
 			Map2_Base -> setCenter(0,0);
 			Map2_Base -> setLayerID (2);
 			Map2_Base -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map2_Base -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map2_Base);
+			this->addToObjectsList(Map2_Base);
 
 			//Sprite - Player Sprites.
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
@@ -473,17 +473,18 @@ void GameState::movement()
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
 			
 			//Sprite - Map 1 Objects.
-			Map2_Objects = new Sprite ("images/Levels/Map 2 Objects.png");
+			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 2500, 2000);
 			Map2_Objects -> setNumberOfAnimations(1);
-			Map2_Objects -> setSpriteFrameSize(2500,2000);
 			Map2_Objects -> setPosition(-475,-1410);
 			Map2_Objects -> setCenter(0,0);
 			Map2_Objects -> setLayerID (6);
 			Map2_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map2_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map2_Objects);
+			this->addToObjectsList(Map2_Objects);
 
 			//Sprite - UI Sample.
 			UISample = new Sprite ("images/Test UI.png");
@@ -496,12 +497,15 @@ void GameState::movement()
 			UISample -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(UISample);
 
+			std::cout << "Before Biscuit One" << std::endl;
+			MapConstraintsOne = Constraints("images/Levels/Map 2 Constraints.bmp");
+			std::cout << "At Biscuit One" << std::endl;
 	}
 
 
 	void LevelOne::ResetMap()
 	{ 
-				WaterBackground -> setPosition(-1700,-750);
+				WaterBackgroundOne -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
 				Player-> setPosition(230,130);
 				Player-> setCurrentAnimation(1);
@@ -517,105 +521,78 @@ void GameState::movement()
 
 	void LevelOne::Update()
 	{
-	 		if (test == true) //Horozontal Movement:
-			{
-				// MAP SPEED:
-				Map2_Base -> positionX+=mapSpeed;
-				Map2_Objects -> positionX+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY-=1;
-				WaterBackground -> positionX+=WaterSpeed;
-			}
-			else //Vertical Movement:
-			{
-				// MAP SPEED:
-				Map2_Base ->positionY+=mapSpeed;
-				Map2_Objects ->positionY+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY+=(WaterSpeed-1);
-			}
-
-			if (WaterBackground-> positionY < -1000)
-			{ WaterBackground -> setPosition(-1700,-750); } //RESETTING SCROLLING BACKGROUND. 
-
-			// ENABLE TO PRINT (X,Y) PLAYER (MAP) COORDINATES:
-			// std::cout<<"x:"<<Map1_Base->positionX<<" ""y:"<<Map1_Base->positionY<<std::endl;
+		updateObjects();
+		allowMovement();
+		movement();
 	}
 
 
 	void LevelOne::KeyDown(unsigned char key)
 	{
-
-			switch(key)
-			{
-				case 32: // the space bar
-					     break;
-				case 27: // the escape key
-					     break;
-
-				case 'w':
-					     test = false;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(2);
-						 Player->nextFrame();
-						 break;
-
-				case 'a':
-						 test = true;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(4);
-						 Player->nextFrame();
-						 break;
-
-				case 'd':
-						 test = true;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(3);
-						 Player->nextFrame();
-						 break;
-
-				case 's':
-						 test = false;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(1);
-						 Player->nextFrame();
-						 break;
-			}
+		moveObjectsKeyboardDown(key);
 	}
 
 
 	void LevelOne::KeyUp(unsigned char key)
 	{
-			switch(key)
-			{
-				case 32: // the space bar
-						 break;
-				case 27: // the escape key
-						 break;
-		
-				case 'w':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'a':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'd':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 's':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-			}
+		moveObjectsKeyboardUp(key);
 	}
 
+	void LevelOne::allowMovement()
+{
+	//std::cout << "allowmovementcheck begin" << std::endl;
+	int interception; //Counts the occurences of interception
+	float stop = 0.f; //stops all movement when interception >=1
+	float newMapPositionX, newMapPositionY;
+	int indexStartX,indexStartY, indexEndX,indexEndY;
+
+	int vecindexX, vecindexY;
+	interception = 0;
+
+	//std::cout << " initialize allowMovement variables" << std::endl;
+	newMapPositionX = (Map2_Base->positionX) + (Map2_Base->inMotionSpeedX);
+	newMapPositionY = (Map2_Base->positionY) + (Map2_Base->inMotionSpeedY);
+
+	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+
+	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	//std::cout << "Check constraint vector" << std::endl;
+	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
+		{
+			if (MapConstraintsOne.vConstraintVector[vecindexX][vecindexY] == true)
+			{
+				/* Nothing */
+			} else if (MapConstraintsOne.vConstraintVector[vecindexX][vecindexY] == false) {
+				interception++;
+				break; //ends the loop
+
+			} else{
+				//Nothing
+			};
+
+		};
+	//std::cout << "Checked constraint vector" << std::endl;
+		if(interception >= 1){
+		//	std::cout << "Intercept detected" << std::endl;
+			std::vector<Objects*>::iterator itNoMove;
+			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+			{
+				Objects *o = (*itNoMove);
+				o-> inMotionSpeedX = stop;
+				o-> inMotionSpeedY = stop;
+			};
+		}else
+		{
+		//	std::cout << "No intercept detected" << std::endl;
+		};
+	//std::cout << "Yay! Success!" << std::endl;
+	interception = 0;
+}
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -631,22 +608,20 @@ void GameState::movement()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		mapSpeed = 0;
-		WaterSpeed = 0;
 
 		    //Sprite - Water Background.
-			WaterBackground = new Sprite ("images/Backgrounds/Water Sprite 5.png");
-			WaterBackground -> setNumberOfAnimations(1);
-			WaterBackground -> setSpriteFrameSize(2500,2000);
-			WaterBackground -> setPosition(-1700,-750);
-			WaterBackground -> setCenter(0,0);
-			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackground -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackground);
+			WaterBackgroundTwo = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
+			WaterBackgroundTwo -> setNumberOfAnimations(1);
+			WaterBackgroundTwo -> setPosition(-1700,-750);
+			WaterBackgroundTwo -> setCenter(0,0);
+			WaterBackgroundTwo -> setLayerID (1);
+			WaterBackgroundTwo ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackgroundTwo -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackgroundTwo);
+			this->addToObjectsList(WaterBackgroundTwo);
 
 			//Sprite - Map 2 Base.
-			Map3_Base = new Sprite ("images/Levels/Map 3 Base.png");
+			Map3_Base = new Objects ("images/Levels/Map 3 Base.png",2500,2000);
 			Map3_Base -> setNumberOfAnimations(1);
 			Map3_Base -> setSpriteFrameSize(2500,2000);
 			Map3_Base -> setPosition(-1552,-1402);
@@ -655,24 +630,25 @@ void GameState::movement()
 			Map3_Base -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map3_Base -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map3_Base);
+			this->addToObjectsList(Map3_Base);
 
 			//Sprite - Player Sprites.
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
-
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
 			
 			//Sprite - Map 1 Objects.
-			Map3_Objects = new Sprite ("images/Levels/Map 3 Objects.png");
+			Map3_Objects = new Objects ("images/Levels/Map 3 Objects.png",2500,2000);
 			Map3_Objects -> setNumberOfAnimations(1);
-			Map3_Objects -> setSpriteFrameSize(2500,2000);
 			Map3_Objects -> setPosition(-1552,-1402);
 			Map3_Objects -> setCenter(0,0);
 			Map3_Objects -> setLayerID (6);
 			Map3_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map3_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map3_Objects);
+			this->addToObjectsList(Map3_Objects);
 
 			//Sprite - UI Sample.
 			UISample = new Sprite ("images/Test UI.png");
@@ -685,12 +661,16 @@ void GameState::movement()
 			UISample -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(UISample);
 
+			std::cout << "Before Biscuit Two" << std::endl;
+			MapConstraintsTwo = Constraints("images/Levels/Map 3 Constraints.bmp");
+			std::cout << "At Biscuit Two" << std::endl;
+
 	}
 
 
 	void LevelTwo::ResetMap()
 	{ 
-				WaterBackground -> setPosition(-1700,-750);
+				WaterBackgroundTwo -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
 				Player-> setPosition(230,130);
 				Player-> setCurrentAnimation(1);
@@ -706,106 +686,78 @@ void GameState::movement()
 
 	void LevelTwo::Update()
 	{
-	 		if (test == true) //Horozontal Movement:
-			{
-				// MAP SPEED:
-				Map3_Base -> positionX+=mapSpeed;
-				Map3_Objects -> positionX+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY-=1;
-				WaterBackground -> positionX+=WaterSpeed;
-			}
-			else //Vertical Movement:
-			{
-				// MAP SPEED:
-				Map3_Base ->positionY+=mapSpeed;
-				Map3_Objects ->positionY+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY+=(WaterSpeed-1);
-			}
-
-			if (WaterBackground-> positionY < -1000)
-			{ WaterBackground -> setPosition(-1700,-750); } //RESETTING SCROLLING BACKGROUND. 
-
-			// ENABLE TO PRINT (X,Y) PLAYER (MAP) COORDINATES:
-			// std::cout<<"x:"<<Map1_Base->positionX<<" ""y:"<<Map1_Base->positionY<<std::endl;
+		updateObjects();
+		allowMovement();
+		movement();	
 	}
 
 
 	void LevelTwo::KeyDown(unsigned char key)
 	{
-
-			switch(key)
-			{
-				case 32: // the space bar
-					     break;
-				case 27: // the escape key
-					     break;
-
-				case 'w':
-					     test = false;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(2);
-						 Player->nextFrame();
-						 break;
-
-				case 'a':
-						 test = true;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(4);
-						 Player->nextFrame();
-						 break;
-
-				case 'd':
-						 test = true;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(3);
-						 Player->nextFrame();
-						 break;
-
-				case 's':
-						 test = false;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(1);
-						 Player->nextFrame();
-						 break;
-			}
+		moveObjectsKeyboardDown(key);
 	}
 
 
 	void LevelTwo::KeyUp(unsigned char key)
 	{
-			switch(key)
-			{
-				case 32: // the space bar
-						 break;
-				case 27: // the escape key
-						 break;
-		
-				case 'w':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'a':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'd':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 's':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-			}
+		moveObjectsKeyboardUp(key);
 	}
 
+	void LevelTwo::allowMovement()
+{
+	//std::cout << "allowmovementcheck begin" << std::endl;
+	int interception; //Counts the occurences of interception
+	float stop = 0.f; //stops all movement when interception >=1
+	float newMapPositionX, newMapPositionY;
+	int indexStartX,indexStartY, indexEndX,indexEndY;
 
+	int vecindexX, vecindexY;
+	interception = 0;
+
+	//std::cout << " initialize allowMovement variables" << std::endl;
+	newMapPositionX = (Map3_Base->positionX) + (Map3_Base->inMotionSpeedX);
+	newMapPositionY = (Map3_Base->positionY) + (Map3_Base->inMotionSpeedY);
+
+	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+
+	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	//std::cout << "Check constraint vector" << std::endl;
+	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
+		{
+			if (MapConstraintsTwo.vConstraintVector[vecindexX][vecindexY] == true)
+			{
+				/* Nothing */
+			} else if (MapConstraintsTwo.vConstraintVector[vecindexX][vecindexY] == false) {
+				interception++;
+				break; //ends the loop
+
+			} else{
+				//Nothing
+			};
+
+		};
+	//std::cout << "Checked constraint vector" << std::endl;
+		if(interception >= 1){
+		//	std::cout << "Intercept detected" << std::endl;
+			std::vector<Objects*>::iterator itNoMove;
+			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+			{
+				Objects *o = (*itNoMove);
+				o-> inMotionSpeedX = stop;
+				o-> inMotionSpeedY = stop;
+			};
+		}else
+		{
+		//	std::cout << "No intercept detected" << std::endl;
+		};
+	//std::cout << "Yay! Success!" << std::endl;
+	interception = 0;
+}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL THREE ----- STATE 5								   ||
