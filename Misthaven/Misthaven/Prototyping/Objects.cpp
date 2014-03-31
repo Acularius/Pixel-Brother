@@ -9,6 +9,8 @@ Objects::Objects(std::string filename, int width, int height)
 	this-> stationary = false;
 	this-> player = false;
 	this-> collidable = false;
+	this-> ghost = false;
+	this-> direction = 0;
 
 	this-> inMotion = false;
 	this-> inMotionSpeed = 10.f;
@@ -65,7 +67,8 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				this-> inMotionSpeedY = speed;
 				if(player == true)
 				{
-					this->setCurrentAnimation(5);
+					this->setCurrentAnimation(2);
+					this->direction = 2;
 				};
 				break;
 			};
@@ -76,7 +79,8 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				this-> inMotionSpeedY = -speed;
 				if(player == true)
 				{
-					this->setCurrentAnimation(7);
+					this->setCurrentAnimation(1);
+					this->direction = 1;
 				};
 				break;
 			};
@@ -87,7 +91,8 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				this-> inMotionSpeedY = stop;
 				if(player == true)
 				{
-					this->setCurrentAnimation(6);
+					this->setCurrentAnimation(4);
+					this->direction=4;
 				};
 				break;
 			};
@@ -99,10 +104,19 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				this-> inMotionSpeedY = stop;
 				if(player == true)
 				{
-					this-> setCurrentAnimation(4);
+					this-> setCurrentAnimation(3);
+					this->direction=3;
 				};
 				break;
 			};
+		case 32:
+			{
+				if(player == true){
+				this->setCurrentAnimation(direction+4);
+				};
+			};
+			break;
+
 		};
 	}
 	
@@ -118,7 +132,8 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
-				this-> setCurrentAnimation(1);
+				this-> setCurrentAnimation(2);
+				this->direction = 2;
 			};
 			break;
 		};
@@ -129,7 +144,8 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
-				this-> setCurrentAnimation(7);
+				this-> setCurrentAnimation(1);
+				this->direction = 1;
 			};
 			break;
 		};
@@ -140,7 +156,8 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
-				this-> setCurrentAnimation(2);
+				this-> setCurrentAnimation(4);
+				this-> direction = 4;
 			};
 		break;
 			 };
@@ -151,10 +168,19 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			this-> inMotionSpeedY = stop;
 			if(player==true)
 			{
-				this-> setCurrentAnimation(0);
+				this-> setCurrentAnimation(3);
+				this->direction=3;
 			}
 			break;
 		};
+
+	case 32:
+			{
+				if(player==true){
+			this->setCurrentAnimation(direction);
+				};
+			break;
+			};
 	}
 
 }

@@ -51,7 +51,7 @@
 			menuSpeed=0;
 			active=true;
 
-			//LocalGame -> playSound(false); //PLAY'S FMOD LOOP BACKGROUND SOUND.
+			LocalGame -> playSound(false); //PLAY'S FMOD LOOP BACKGROUND SOUND.
 
 				//Sprite - Menu Background.
 				MenuBG = new Sprite("images/Menu Background.png");
@@ -93,13 +93,17 @@
 			//Sprite - Player Sprites.
 			Player = new Sprite("images/PlayerSprite.png"); //Layer 4- Player Sprite.
 			Player->setSpriteFrameSize(60, 60);
-			Player->setNumberOfAnimations(8);
+			Player->setNumberOfAnimations(16);
 			Player->setCenter(0,0);
 			Player->addSpriteAnimRow(1,0,0,60,0,4);
 			Player->addSpriteAnimRow(2,0,60,60,0,4);
 			Player->addSpriteAnimRow(3,0,120,60,0,4);
 			Player->addSpriteAnimRow(4,0,180,60,0,4);
-			Player->setPosition(210,86);
+			Player->addSpriteAnimRow(5,0,240,60,0,4);
+			Player->addSpriteAnimRow(6,0,300,60,0,4);
+			Player->addSpriteAnimRow(7,0,360,60,0,4);
+			Player->addSpriteAnimRow(8,0,420,60,0,4);
+			Player->setPosition(210,85);
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
@@ -213,7 +217,7 @@
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
 					LocalGame->playEnvironment();
 					LocalGame->StateControl(LocalGame->UI,true,6);
-					LocalGame->MessageControl(LocalGame->Msg, 2, 7);
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
 					std::cout<<"OPTION 1 \a"<<std::endl;
 					break;
 				  }
@@ -287,6 +291,13 @@
 			Map1_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map1_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map1_Objects);
+
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+
 
 	}
 
@@ -905,17 +916,22 @@
 
 		Health=10; //Player at full health.
 		Score=0;   //Player at zero score.
+		anynumber=1;
 
 
 			//Sprite - Player Sprites.
 			Player = new Sprite("images/PlayerSprite.png"); //Layer 4- Player Sprite.
 			Player->setSpriteFrameSize(60, 60);
-			Player->setNumberOfAnimations(8);
+			Player->setNumberOfAnimations(16);
 			Player->setCenter(0,0);
 			Player->addSpriteAnimRow(1,0,0,60,0,4);
 			Player->addSpriteAnimRow(2,0,60,60,0,4);
 			Player->addSpriteAnimRow(3,0,120,60,0,4);
 			Player->addSpriteAnimRow(4,0,180,60,0,4);
+			Player->addSpriteAnimRow(5,0,240,60,0,4);
+			Player->addSpriteAnimRow(6,0,300,60,0,4);
+			Player->addSpriteAnimRow(7,0,360,60,0,4);
+			Player->addSpriteAnimRow(8,0,420,60,0,4);
 			Player->setPosition(160,95);
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
@@ -955,7 +971,7 @@
 			ScoreUpdate();
 
 			//Sprite - UI Actionbar.
-			UISample = new Sprite ("images/UIActionbar.png");
+			/*UISample = new Sprite ("images/UIActionbar.png");
 			UISample -> setNumberOfAnimations(1);
 			UISample -> setSpriteFrameSize(200,50);
 			UISample -> setPosition(140,10);
@@ -963,7 +979,7 @@
 			UISample -> setLayerID (14);
 			UISample ->addSpriteAnimRow(0,0,0,200,50,1);
 			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
+			this->addSpriteToDrawList(UISample);*/
 			
 			//Sprite - UI Sample.
 			UISample = new Sprite ("images/Test UI.png");
@@ -1025,30 +1041,34 @@
 
 			switch(key)
 			{
-				case 32: // the space bar
-					     break;
+
 				case 27: // the escape key
 					     break;
 
 				case 'w':
 						 Player->setCurrentAnimation(2);
+						 anynumber=2;
 						 Player->nextFrame();
 						 break;
 
 				case 'a':
 						 Player->setCurrentAnimation(4);
 						 Player->nextFrame();
-						 break;
-
-				case 'd':
-						 Player->setCurrentAnimation(3);
-						 Player->nextFrame();
+						 anynumber=4;
 						 break;
 
 				case 's':
 						 Player->setCurrentAnimation(1);
 						 Player->nextFrame();
+						 anynumber=1;
 						 break;
+
+				case 'd':
+						 Player->setCurrentAnimation(3);
+						 Player->nextFrame();
+						 anynumber=3;
+						 break;
+
 				case 45: if(0<Health)
 						 Health--;
 						 UIHealth->setCurrentAnimation(Health);
@@ -1057,6 +1077,10 @@
 						 Health++;
 						 UIHealth->setCurrentAnimation(Health);
 						 break;
+				case 32: Player->setCurrentAnimation(anynumber+4);
+						 Player->nextFrame();
+					     break;
+
 				case 'o': Score--;
 						  //UIScore[6]->setCurrentAnimation(Score);
 						  ScoreUpdate();
@@ -1073,21 +1097,13 @@
 	{
 			switch(key)
 			{
-				case 32: // the space bar
+				case 32: Player->setCurrentAnimation(anynumber);
 						 break;
 				case 27: // the escape key
 						 break;
-		
-				case 'w':
-						break;
-				case 'a':
-						break;
-				case 'd':
-						break;
-				case 's':
-						break;
+
 			}
-	}
+	}//Aaron's a prodigy
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -1103,21 +1119,25 @@
 		LocalGame=Local;
 		active=true;
 		loadcheck=false;
-		anynumber=0;
+		anynumber=4;
 
 
 			//Sprite - Transition Sprites
 			Transition = new Sprite("images/Transition Sprites.png"); //Layer 17- Transition.
-			Transition->setSpriteFrameSize(480,261);
-			Transition->setNumberOfAnimations(5);
+			Transition->setSpriteFrameSize(480,260);
+			Transition->setNumberOfAnimations(16);
 			Transition->setCenter(0,0);
-			Transition->addSpriteAnimRow(4,0,0,480,0,1);
-			Transition->addSpriteAnimRow(3,0,261,480,0,1);
-			Transition->addSpriteAnimRow(2,0,522,480,0,1);
-			Transition->addSpriteAnimRow(1,0,783,480,0,1);
-			Transition->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Transition->addSpriteAnimRow(0,0,0,480,0,1);
+			Transition->addSpriteAnimRow(1,0,260,480,0,1);
+			Transition->addSpriteAnimRow(2,0,520,480,0,1);
+			Transition->addSpriteAnimRow(3,0,780,480,0,1);
+			Transition->addSpriteAnimRow(4,0,1040,480,0,1);
+			Transition->addSpriteAnimRow(5,0,1300,480,0,1);
+			Transition->addSpriteAnimRow(6,0,1560,480,0,1);
+			Transition->addSpriteAnimRow(7,0,1820,480,0,1);
+			Transition->addSpriteAnimRow(8,0,2080,480,0,1);
 			Transition->setPosition(0,0);
-			Transition->setCurrentAnimation(0);
+			Transition->setCurrentAnimation(6);
 			Transition->setLayerID(16);
 			this->addSpriteToDrawList(Transition);
 

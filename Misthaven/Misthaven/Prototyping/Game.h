@@ -18,6 +18,10 @@
 
 #include "Constraints.h"
 
+	//SOUND HEADER FILES:
+#include <fmod.h>
+#include <fmod.hpp>
+
 	//STATE CONTROL HEADERS:
 #include "GameState.h"
 
@@ -154,6 +158,9 @@ public:
 	/* sprite list to draw */
 	std::vector<Sprite*> spriteListToDraw;
 
+	//int playSound(bool Sound); //FMOD SOUND FUNCTION 1;
+	//int playBeepSound();
+	//int playEnvironment();
 
 	/* timer's for rendering and animation/physics update */
 	Timer *renderingTimer;

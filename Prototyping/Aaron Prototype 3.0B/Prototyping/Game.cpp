@@ -330,7 +330,7 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 							SwitchStateTo (StateHome, 2);
 							playEnvironment();
 							StateControl(UI,true,6);
-							MessageControl(Msg, 1, 7);
+							MessageControl(Msg, 3, 7);
 							break;  }
 			case '3': {		
 							SwitchStateTo (StateHome, 3);
@@ -339,11 +339,11 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 							break;  }
 			case '4': {		SwitchStateTo (StateHome, 4);
 							StateControl(UI,true,6);
-							MessageControl(Msg, 3, 7);
+							MessageControl(Msg, 1, 7);
 							break;  }
 			case '5': {		SwitchStateTo (StateHome, 5);
 							StateControl(UI,true,6);
-							MessageControl(Msg, 4, 7);
+							MessageControl(Msg, 0, 7);
 							break;  }
 			case 't': {     std::cout<<"YOLO\n"; break; }
 			case 'm': {     playBeepSound(); break; }

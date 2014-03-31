@@ -259,7 +259,7 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 	{
 	case 32: // the space bar
 		break;
-	case 27: // the escape key
+	//case 27: // the escape key
 	case 'q': // the 'q' key
 		exit(1);
 		break;
@@ -289,9 +289,9 @@ switch(key)
 							break;  }
 			case '2': {		
 							SwitchStateTo (StateHome, 2);
-							//playEnvironment();
+//							playEnvironment();
 							//StateControl(UI,true,6);
-							MessageControl(Msg, 1, 7);
+							MessageControl(Msg, 3, 7);
 							break;  }
 			case '3': {		
 							SwitchStateTo (StateHome, 3);
@@ -300,11 +300,11 @@ switch(key)
 							break;  }
 			case '4': {		SwitchStateTo (StateHome, 4);
 							//StateControl(UI,true,6);
-							MessageControl(Msg, 3, 7);
+							MessageControl(Msg, 1, 7);
 							break;  }
 			case '5': {		SwitchStateTo (StateHome, 5);
 							//StateControl(UI,true,6);
-							MessageControl(Msg, 4, 7);
+							MessageControl(Msg, 0, 7);
 							break;  }
 			case 't': {     std::cout<<"YOLO\n"; break; }
 			case 'm': {    // playBeepSound(); break; }
@@ -348,3 +348,131 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	}
 }
 
+
+
+////===========================================================================================
+////								 FMOD SOUND FUNCTION
+////===========================================================================================
+//
+////Audio.lib seems much easier to use. Consider reimplementing sounds later. 
+//
+//	int Game::playSound(bool Sound)
+//	{
+//
+//			bool soundDone= false;
+//			//declare variable for FMOD system object
+//			FMOD::System* system;
+//			//allocate memory for the FMOD system object
+//			FMOD_RESULT result = FMOD::System_Create(&system);
+//			//initialize the FMOD system object
+//			system->init(32, FMOD_INIT_NORMAL, NULL);
+//			//declare variable for the sound object
+//			FMOD::Sound* sound;
+//			//created sound object and specify the sound 
+//			
+//			result = system->createSound("Cathedral_of_Light.mp3",FMOD_LOOP_NORMAL,NULL, &sound);
+//			// play sound - 1st parameter can be combined flags (| separator)
+//			FMOD::Channel* channel = 0;
+//
+//			//start sound
+//
+//			bool pauseSound=false;
+//
+//			channel->isPlaying(&pauseSound);
+//
+//			result = system->playSound(FMOD_CHANNEL_FREE, sound, Sound, &channel);
+//			soundDone=true;
+//
+//
+//			while (soundDone!=true)
+//			{
+//			channel->setPaused(false);
+//			system->update();
+//
+//			//}
+//			// release resources
+//			result = sound->release();
+//			result = system->close();
+//			result = system->release();
+//			}
+//			return 0;
+//
+//	}
+//
+//
+//int Game::playBeepSound()
+//	{
+//
+//			bool soundDone=false;
+//			//declare variable for FMOD system object
+//			FMOD::System* system;
+//			//allocate memory for the FMOD system object
+//			FMOD_RESULT result = FMOD::System_Create(&system);
+//			//initialize the FMOD system object
+//			system->init(32, FMOD_INIT_NORMAL, NULL);
+//			//declare variable for the sound object
+//			FMOD::Sound* sound;
+//			//created sound object and specify the sound
+//
+//			result = system->createSound("Futuristic Fly.mp3",FMOD_DEFAULT,NULL, &sound);
+//			// play sound - 1st parameter can be combined flags (| separator)
+//			FMOD::Channel* channel = 0;
+//			bool pauseSound = false;
+//
+//			//start sound
+//
+//			channel->isPlaying(&pauseSound);
+//
+//			result = system->playSound(FMOD_CHANNEL_FREE, sound,false, &channel);
+//			soundDone=true;
+//
+//
+//			while (soundDone!=true)
+//			{
+//			channel->setPaused(false);
+//			system->update();
+//
+//			//}
+//			// release resources
+//			result = sound->release();
+//			result = system->close();
+//			result = system->release();
+//			}
+//			return 0;
+//
+//	}
+//
+//
+//	int Game::playEnvironment()
+//	{
+//			bool soundDone=false;
+//			FMOD::System* system;
+//			FMOD_RESULT result = FMOD::System_Create(&system);
+//			system->init(32, FMOD_INIT_NORMAL, NULL);
+//			FMOD::Sound* sound;
+//			
+//			result = system->createSound("Ocean.WAV",FMOD_LOOP_NORMAL,NULL, &sound);
+//			FMOD::Channel* channel = 0;
+//			bool pauseSound = false;
+//
+//
+//			channel->isPlaying(&pauseSound);
+//
+//			result = system->playSound(FMOD_CHANNEL_FREE, sound,false, &channel);
+//			soundDone=true;
+//
+//
+//			while (soundDone!=true)
+//			{
+//			channel->setPaused(false);
+//			system->update();
+//
+//			result = sound->release();
+//			result = system->close();
+//			result = system->release();
+//			}
+//			return 0;
+//	}
+//
+////===========================================================================================
+//===========================================================================================

@@ -12,10 +12,12 @@ public:
 	bool stationary; // In reference to HUD. Static objects that NEVER move.
 	bool player; // Animation reference. Stationary. Everything moves in respect to the player.
 	bool collidable; // Does it collide?
+	bool ghost;
 
 	bool inMotion; // In motion in relation to the player
 	float inMotionSpeed; // The speed that everyone moves in relation to the player
 	float respectiveSpeed; //The speed an object moves whether or not the player is moving or not. Max Speed.
+	int direction;
 
 	virtual void update();
 
@@ -73,6 +75,7 @@ class Ghost : public Characters
 public:
 	Ghost::Ghost (std::string filename, int width, int height);
 	~Ghost(void);
+
 
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
 };

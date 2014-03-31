@@ -90,14 +90,14 @@
 			 Sprite* MenuBG;
 			 Sprite* MenuOverlay;
 			 Sprite* MenuStrip;
-	//		 Sprite* Player;
+			 Sprite* Player;
 
 		 int menuSpeed; // Speed of scrolling strip;
 		 int option;    // Option: for menu control;
 		 bool test;     // To test movement control;
 
 		 //* Player Sprite */
-			MainCharacter *Player;
+//			MainCharacter *Player;
 	};
 
 //===========================================================================================
@@ -117,6 +117,13 @@
 
 		 void allowMovement();
 		 void transitionCheck();
+		 void ghostPlayCollide();
+		 void tutorialLoad1();
+		 void tutorialLoad2();
+		 void tutorialLoad3();
+		 void tutorialLoad4();
+		 void tutorialLoad5();
+		 bool tutorialDone;
 
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
@@ -130,6 +137,10 @@
 		
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
+		Ghost *Ghosty1;
+		Ghost *Ghosty2;
+		Ghost *Ghosty3;
+		Ghost *Ghosty4;
 
 	};
 
@@ -271,6 +282,8 @@
 		 void MCtrl();
 		 ~MessageState(void);
 
+
+
 			 //SPRITE DECLARATIONS
 		 	 Sprite *Transition;
 			 Sprite *Tutorials;
@@ -278,6 +291,10 @@
 		bool test;      // To test movement control;
 		int MsgType;
 		int MsgNumber;
+		bool ticked;
+		int ticks;
+
+		Timer *transitionTimer;
 
 	};
 

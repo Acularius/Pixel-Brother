@@ -4,13 +4,14 @@ Ghost::Ghost (std::string filename, int width, int height)
 		:Characters(filename, width, height)
 {
 	this-> setNumberOfAnimations(1);
-	this-> addSpriteAnimFrame(0,0,0);
+	this->addSpriteAnimRow(0, 0,0, 40,0,2);
 	this-> setCurrentAnimation(0);
 	this-> direction=0;
+	this-> ghost=true;
 
 	this-> respectiveSpeed = 3;
 
-	this-> setLayerID(12);
+	this-> setLayerID(6);
 
 }
 

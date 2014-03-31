@@ -103,6 +103,8 @@ void GameState::movement()
 	};
 
 }
+
+
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 MAIN MENU ----- STATE 1								   ||
@@ -156,15 +158,19 @@ void GameState::movement()
 				MenuStrip -> setCurrentAnimation(0);
 				this -> addSpriteToDrawList(MenuStrip);
 
-				//Main Character - PlayerSprite.
-				Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
-				this->addSpriteToDrawList(Player);
-				Player->setPosition(230,90);
-				Player->setCurrentAnimation(1);
-				Player->setLayerID(4);
-
-
-
+			//Sprite - Player Sprites.
+			Player = new Sprite("images/Player&HUD/PlayerSprite.png"); //Layer 4- Player Sprite.
+			Player->setSpriteFrameSize(60, 60);
+			Player->setNumberOfAnimations(8);
+			Player->setCenter(0,0);
+			Player->addSpriteAnimRow(1,0,0,60,0,4);
+			Player->addSpriteAnimRow(2,0,60,60,0,4);
+			Player->addSpriteAnimRow(3,0,120,60,0,4);
+			Player->addSpriteAnimRow(4,0,180,60,0,4);
+			Player->setPosition(210,86);
+			Player->setCurrentAnimation(1);
+			Player->setLayerID(4);
+			this->addSpriteToDrawList(Player);
 	}
 
 
@@ -172,8 +178,9 @@ void GameState::movement()
 	{ 
 			MenuBG -> setPosition(0,0);
 			MenuStrip -> setPosition(0,80);
-			Player->setPosition(160,95);
+			Player->setPosition(210,85);
 			Player->setCurrentAnimation(1);
+			MenuStrip -> setCurrentAnimation(0);
 	}
 
 
@@ -200,7 +207,6 @@ void GameState::movement()
 
 				if ( MenuBG -> positionX < -480 )
 				{ MenuBG -> setPosition(0,0); } //Looping the scrolling background.
-
 
 	}
 
@@ -273,7 +279,7 @@ void GameState::movement()
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
 					//LocalGame->playEnvironment();
 					//LocalGame->StateControl(LocalGame->UI,true,6);
-					LocalGame->MessageControl(LocalGame->Msg, 2, 7);
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
 					std::cout<<"OPTION 1 \a"<<std::endl;
 					break;
 				  }
@@ -312,6 +318,7 @@ void GameState::movement()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
+		tutorialDone = false;
 
 		    //Sprite - Water Background.
 			WaterBackgroundHome = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
@@ -374,10 +381,28 @@ void GameState::movement()
 			this->addSpriteToDrawList(TransitionHomeOne);
 			this->addToObjectsList(TransitionHomeOne);
 
+			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty1);
+			this->addToObjectsList(Ghosty1);
+
+			Ghosty2 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty2);
+			this->addToObjectsList(Ghosty2);
+
+			Ghosty3 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty3);
+			this->addToObjectsList(Ghosty3);
+
+			Ghosty4 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty4);
+			this->addToObjectsList(Ghosty4);
+
 			std::cout << "Before Biscuit" << std::endl;
 			MapConstraintsHome = Constraints("images/Levels/Map 1 Constraints.bmp");
 			std::cout << "At Biscuit" << std::endl;
 			std::cout << "Location of 919, 1047: " << MapConstraintsHome.vConstraintVector[919][1047] << std::endl;
+
+
 
 	}
 
@@ -390,9 +415,11 @@ void GameState::movement()
 				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
 				TransitionHomeOne->setPosition(-595,-54);
-				std::cout << "Player's position (x,y): (" << Player->positionX << ", " << Player->positionY << ")" <<std::endl;
-				std::cout << "Corners, left x: " << Player->ObjectHitbox->leftCornerX << ", right x: " << Player->ObjectHitbox->rightCornerX << std::endl;
-				std::cout << "Corners cont,  bottom y: " << Player->ObjectHitbox->bottomCornerY << ", top y: " << Player->ObjectHitbox->topCornerY << std::endl;
+				Ghosty1 ->setPosition(0,2000);
+				Ghosty2 ->setPosition(2500,0);
+				Ghosty3 ->setPosition(0,-2000);
+				Ghosty4 ->setPosition(-2500,0);
+
 	}
 
 
@@ -404,11 +431,23 @@ void GameState::movement()
 
 	void LevelHome::Update()
 	{
+		tutorialLoad1();
+		tutorialLoad2();
+		tutorialLoad3();
+		tutorialLoad4();
+		tutorialLoad5();
+		Ghosty1->movementGhost(Player->positionX, Player->positionY);
+		Ghosty2->movementGhost(Player->positionX, Player->positionY);
+		Ghosty3->movementGhost(Player->positionX, Player->positionY);
+		Ghosty4->movementGhost(Player->positionX, Player->positionY);
 
 		updateObjects();
 		allowMovement();
 		movement();
 		transitionCheck();
+
+		ghostPlayCollide();
+		
 
 	}
 
@@ -496,12 +535,138 @@ void GameState::movement()
 		{
 			std::cout << "BING!" << std::endl;
 			this->LocalGame->SwitchStateTo(this, 3); // To Level 3~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 2,7);
 
 		}
 		else
 		{
 			//NOTHING!
 		};
+	}
+
+	void LevelHome::ghostPlayCollide()
+	{
+		float playBotY,playTopY,playLeftX,playRightX;
+		float ghostBotY,ghostTopY,ghostLeftX,ghostRightX;
+
+		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+
+			std::vector<Objects*>::iterator Ghost;
+			for(Ghost= objectsList.begin(); Ghost !=objectsList.end() ; Ghost++)
+			{
+				Objects *o = (*Ghost);
+				if (o->ghost == true)
+				{
+		ghostBotY = o->ObjectHitbox->bottomCornerY; ghostTopY = o->ObjectHitbox->topCornerY;
+		ghostLeftX = o->ObjectHitbox->leftCornerX; ghostRightX = o->ObjectHitbox->rightCornerX;
+				if( ( (playBotY >= ghostBotY  ) && (playBotY <= ghostTopY) || ( playTopY >= ghostBotY ) && ( playTopY <= ghostTopY) ) && 
+			( (playLeftX >= ghostLeftX  ) && (playLeftX <= ghostRightX) || (playRightX >= ghostLeftX  ) && (playRightX <= ghostRightX) ) )
+		{
+			std::cout << "bing!" << std::endl;
+			int randspot = rand() % 3;
+			switch(randspot)
+			{
+				case 0: { 
+					o->setPosition(0,2000);
+					break;
+				  }
+					case 1: { 
+					o->setPosition(0,-2000);
+					break;
+				  }
+					case 2: { 
+					o->setPosition(2500,0);
+					break;
+				  }
+					case 3: { 
+					o->setPosition(-2500,2000);
+					break;
+				  }
+			}
+
+		}
+		else
+		{
+			//NOTHING!
+		};
+				}
+		else{};
+
+
+			};
+
+	}
+
+	void LevelHome::tutorialLoad1()
+	{
+
+		if (tutorialDone ==true){}
+		else
+		{
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+			tutorialDone= true;
+		}
+	}
+		void LevelHome::tutorialLoad2()
+	{
+
+		if (tutorialDone ==true){}
+		else
+		{
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+			tutorialDone= true;
+		}
+	}
+			void LevelHome::tutorialLoad3()
+	{
+
+		if (tutorialDone ==true){}
+		else
+		{
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+			tutorialDone= true;
+		}
+	}
+void LevelHome::tutorialLoad4()
+	{
+
+		if (tutorialDone ==true){}
+		else
+		{
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+			tutorialDone= true;
+		}
+	}
+void LevelHome::tutorialLoad5()
+	{
+
+		if (tutorialDone ==true){}
+		else
+		{
+			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
+			tutorialDone= true;
+		}
 	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -1199,22 +1364,29 @@ void GameState::movement()
 		StateNum=7;
 		LocalGame=Local;
 		active=true;
+		ticked=false;
+		ticks= 0;
 		loadcheck=false;
-		anynumber=0;
+		anynumber=4;
 
+		transitionTimer = new Timer("TRANSITION");
 
 			//Sprite - Transition Sprites
 			Transition = new Sprite("images/Transition Sprites.png"); //Layer 17- Transition.
-			Transition->setSpriteFrameSize(480,261);
-			Transition->setNumberOfAnimations(5);
+			Transition->setSpriteFrameSize(480,260);
+			Transition->setNumberOfAnimations(16);
 			Transition->setCenter(0,0);
-			Transition->addSpriteAnimRow(4,0,0,480,0,1);
-			Transition->addSpriteAnimRow(3,0,261,480,0,1);
-			Transition->addSpriteAnimRow(2,0,522,480,0,1);
-			Transition->addSpriteAnimRow(1,0,783,480,0,1);
-			Transition->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Transition->addSpriteAnimRow(0,0,0,480,0,1);
+			Transition->addSpriteAnimRow(1,0,260,480,0,1);
+			Transition->addSpriteAnimRow(2,0,520,480,0,1);
+			Transition->addSpriteAnimRow(3,0,780,480,0,1);
+			Transition->addSpriteAnimRow(4,0,1040,480,0,1);
+			Transition->addSpriteAnimRow(5,0,1300,480,0,1);
+			Transition->addSpriteAnimRow(6,0,1560,480,0,1);
+			Transition->addSpriteAnimRow(7,0,1820,480,0,1);
+			Transition->addSpriteAnimRow(8,0,2080,480,0,1);
 			Transition->setPosition(0,0);
-			Transition->setCurrentAnimation(0);
+			Transition->setCurrentAnimation(6);
 			Transition->setLayerID(16);
 			this->addSpriteToDrawList(Transition);
 
@@ -1255,8 +1427,32 @@ void GameState::movement()
 
 	void MessageState::Update()
 	{
-
+		
+		
 		Transition->setCurrentAnimation(anynumber);
+
+		if (active == true && ticked == false )
+		{
+			transitionTimer->tick();
+			ticked = true;
+			ticks++;
+		}
+		else if(active == true && ticked == true)
+		{
+			if (ticks >= 20)
+			{
+				active = false;
+				ticked = false;
+				ticks = 0;
+			}
+			else{
+				ticks++;
+			};
+
+		}
+		else
+		{};
+
 
 	}
 
