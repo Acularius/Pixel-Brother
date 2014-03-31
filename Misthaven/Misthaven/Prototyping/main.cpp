@@ -47,7 +47,7 @@ void KeyboardCallbackFunction(unsigned char key, int x, int y)
 
 
 	/*Movement*/
-	theGame->moveObjectsKeyboardDown(key);
+//	theGame->moveObjectsKeyboardDown(key);
 	
 	
 }
@@ -61,7 +61,7 @@ void KeyboardUpCallbackFunction(unsigned char key, int x, int y)
 	theGame->keyboardUp(key,x,y);
 
 		/*Movement*/
-	theGame->moveObjectsKeyboardUp(key);
+	//theGame->moveObjectsKeyboardUp(key);
 
 
 }

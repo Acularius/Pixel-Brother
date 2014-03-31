@@ -165,7 +165,7 @@ public:
 	
 
 /*Below will be put somewhere else*/
-	Constraints MapConstraints;
+//	Constraints MapConstraints;
 
 	InputInfo input;
 
@@ -220,17 +220,17 @@ public:
 
 			//Add things to the Object List
 
-		void addToObjectsList(Objects *o);
+	//	void addToObjectsList(Objects *o);
 
-			/* Object list for movement */
-	std::vector<Objects*> objectsList;
+	//		/* Object list for movement */
+	//std::vector<Objects*> objectsList;
 
-			// Update Objects
-	void updateObjects();
-	
-	void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
-	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
-	void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
+	//		// Update Objects
+	//void updateObjects();
+	//
+	//void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
+	//void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
+	//void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
 
-	void allowMovement(); //checks constraints to allow for player movement
+	//void allowMovement(); //checks constraints to allow for player movement
 };

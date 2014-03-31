@@ -53,7 +53,19 @@
 		void addSpriteToDrawList(Sprite *s);
 
 //-------------------------------------------------------------------------------------------
+	void addToObjectsList(Objects *o);
 
+			/* Object list for movement */
+	std::vector<Objects*> objectsList;
+
+			// Update Objects
+	void updateObjects();
+	
+	void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
+	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
+	void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
+
+//	void allowMovement(); //checks constraints to allow for player movement
 
 };
 
@@ -85,6 +97,7 @@
 		 //* Player Sprite */
 			MainCharacter *Player;
 
+
 	};
 
 //===========================================================================================
@@ -102,10 +115,12 @@
 		 void KeyDown(unsigned char key);
 		 ~LevelHome(void);
 
+		 void allowMovement();
+
 			 //SPRITE DECLARATIONS
-			 Sprite *Map1_Base;
-			 Sprite *Map1_Objects;
-		     Sprite *WaterBackground;
+			 Objects *Map1_Base;
+			 Objects *Map1_Objects;
+		     Objects *WaterBackground;
 			// Sprite *Player;
 			 Sprite *UISample;
 
@@ -115,6 +130,7 @@
 		
 		
 		MainCharacter *Player;
+		Constraints MapConstraintsHome;
 
 	};
 
