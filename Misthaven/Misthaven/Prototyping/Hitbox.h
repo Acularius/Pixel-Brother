@@ -13,5 +13,6 @@ public:
 	float leftCornerX, rightCornerX, bottomCornerY, topCornerY; //Corners of the hitbox.
 
 	void createHitBox(float startWidth,float startHeight, float initialPositionX,float initialPositionY);
-	void updateHitbox(float inputPositionX, float inputPositionY);
+	void updateHitbox(float inputPositionX, float inputPositionY, bool playerCheck);
 };
+

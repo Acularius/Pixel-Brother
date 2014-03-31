@@ -4,6 +4,7 @@
 class Objects : public Sprite
 {
 public:
+	Objects(){}; //Default Constructor
 	Objects(std::string filename, int width, int height);
 	~Objects(void);
 
@@ -51,6 +52,9 @@ public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
 
+	int Health;		// PlayerHealth;
+	int Score;		// PlayerScore;
+
 	Hitbox *ObjectHitbox;
 
 };
@@ -72,3 +76,24 @@ public:
 
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
 };
+
+class UI : public Objects
+{
+public:
+	UI::UI(std::string filename, int width, int height);
+	~UI(void);
+};
+
+
+	class Transition : public Objects 
+	{
+public:
+		~Transition(void);
+		Transition(std::string filename, int width, int height);
+
+
+		bool transition;
+		int toLevel;
+
+	};
+

@@ -166,7 +166,9 @@ public:
 	bool test;
 	*/
 
-	int playSound(); //FMOD SOUND FUNCTION 1;
+	int playSound(bool Sound); //FMOD SOUND FUNCTION 1;
+	int playBeepSound();
+	int playEnvironment();
 
 	InputInfo input;
 
@@ -177,6 +179,7 @@ public:
 	GameState* StateTwo;
 	GameState* StateThree;
 	GameState* UI;
+	GameState* Msg;
 
 
 //===========================================================================================
@@ -185,6 +188,8 @@ public:
 		void StateReset();
 		void StateControl (GameState* g, bool a,int num);
 		void SwitchStateTo (GameState* g, int num);
+		void StateToggle (GameState* g, int num);
+		void MessageControl (GameState* MessageStateObject, int Message_Number, int num);
 		std::vector<GameState*> states;
 
 //===========================================================================================

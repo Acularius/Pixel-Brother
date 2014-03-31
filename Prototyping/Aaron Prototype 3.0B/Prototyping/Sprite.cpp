@@ -127,7 +127,5 @@ void Sprite::draw()
  */
 void Sprite::update()
 {
-	positionX = positionX + 5.f;
-	if(positionX > 800) positionX = 0;
-	theta += 1; // increment orientation
+	this->nextFrame();
 }

@@ -73,6 +73,7 @@ typedef struct _SpriteSize
 class Sprite
 {
 public:
+	Sprite(){}; // Default Constructor
 	Sprite(std::string spriteSheetFilename);
 	~Sprite(void);
 

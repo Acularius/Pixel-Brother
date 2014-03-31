@@ -28,6 +28,7 @@ Objects::Objects(std::string filename, int width, int height)
 
 }
 
+
 Objects::~Objects()
 {
 	/* Deconstructor */
@@ -36,7 +37,7 @@ void Objects::update()
 {
 
 this-> nextFrame();
-this-> ObjectHitbox->updateHitbox(positionX,positionY);
+this-> ObjectHitbox->updateHitbox(positionX,positionY, player);
 
 }
 
@@ -128,7 +129,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
-				this-> setCurrentAnimation(3);
+				this-> setCurrentAnimation(7);
 			};
 			break;
 		};

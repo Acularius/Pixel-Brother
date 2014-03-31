@@ -44,6 +44,7 @@
 		bool active;    //Class ON/OFF Switch. 
 		bool loadcheck; //Checks If already Initialized.
 		int StateNum;   //State Number for transitioning.
+		int anynumber;  //Various purpose number.
 
 //-------------------------------------------------------------------------------------------
 
@@ -82,6 +83,7 @@
 		 void Update();
 		 void KeyUp(unsigned char key);
 		 void KeyDown(unsigned char key);
+		 void MenuControl (int opt);
 		 ~MainMenu(void);
 
 		 	 //SPRITE DECLARATIONS
@@ -96,8 +98,6 @@
 
 		 //* Player Sprite */
 			MainCharacter *Player;
-
-
 	};
 
 //===========================================================================================
@@ -116,11 +116,13 @@
 		 ~LevelHome(void);
 
 		 void allowMovement();
+		 void transitionCheck();
 
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
 			 Objects *Map1_Objects;
 		     Objects *WaterBackgroundHome;
+			 Transition *TransitionHomeOne;
 			// Sprite *Player;
 			 Sprite *UISample;
 
@@ -220,6 +222,65 @@
 
 
 	};
+
+//===========================================================================================
+//								 UI STATE -------- STATE 6
+//===========================================================================================
+
+	class UIState:public GameState
+	{
+	  public:
+
+		 void Init(Game* Local);
+		 void ResetMap();
+		 void Update();
+		 void KeyUp(unsigned char key);
+		 void KeyDown(unsigned char key);
+		 void ScoreUpdate();
+		 ~UIState(void);
+
+			 //SPRITE DECLARATIONS
+		 	 Sprite *UISample;
+			 Sprite *UIHealth;
+			 Sprite *UIActionbar;
+			 Sprite *UIScore[7];
+
+			 MainCharacter *Player;
+
+		int Health;		// PlayerHealth;
+		int Score;		// PlayerScore;
+		int tempscore;  // Variable for ScoreUpdate;
+		bool test;      // To test movement control;
+
+	};
+
+
+//===========================================================================================
+//								 ON SCREEN MSG STATE --- STATE 7
+//===========================================================================================
+
+	class MessageState:public GameState
+	{
+	  public:
+
+		 void Init(Game* Local);
+		 void ResetMap();
+		 void Update();
+		 void KeyUp(unsigned char key);
+		 void KeyDown(unsigned char key);
+		 void MCtrl();
+		 ~MessageState(void);
+
+			 //SPRITE DECLARATIONS
+		 	 Sprite *Transition;
+			 Sprite *Tutorials;
+
+		bool test;      // To test movement control;
+		int MsgType;
+		int MsgNumber;
+
+	};
+
 
 #endif
 //																			|Aaron Alphonso|

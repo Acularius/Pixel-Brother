@@ -51,7 +51,7 @@
 			menuSpeed=0;
 			active=true;
 
-			//LocalGame -> playSound(); //PLAY'S FMOD LOOP BACKGROUND SOUND.
+			//LocalGame -> playSound(false); //PLAY'S FMOD LOOP BACKGROUND SOUND.
 
 				//Sprite - Menu Background.
 				MenuBG = new Sprite("images/Menu Background.png");
@@ -112,6 +112,7 @@
 			MenuStrip -> setPosition(0,80);
 			Player->setPosition(210,85);
 			Player->setCurrentAnimation(1);
+			MenuStrip -> setCurrentAnimation(0);
 	}
 
 
@@ -138,6 +139,7 @@
 
 				if ( MenuBG -> positionX < -480 )
 				{ MenuBG -> setPosition(0,0); } //Looping the scrolling background.
+
 
 
 	}
@@ -173,10 +175,18 @@
 								MenuStrip->setCurrentAnimation(option-1); 
 								break;
 						   }
+				case 'w':{		//since int will down to option;
+								option=int((MenuStrip -> positionX/200)*-1)+1;
+								MenuControl(option);
+								break;}
 
 				case 13: {		//since int will down to option;
 								option=int((MenuStrip -> positionX/200)*-1)+1;
-								//MenuControl(option);
+								MenuControl(option);
+								break;}
+				case 8:  {      ResetMap();
+								break;}
+				case 's':{		ResetMap();
 								break;}
 			}
 	}
@@ -196,30 +206,36 @@
 			}
 	}
 
-	/*void MainMenu::MenuControl (int opt)
+	void MainMenu::MenuControl (int opt)
 	{  
 		switch(opt)
 	   { 
-		  case 1: { 
+		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
+					LocalGame->playEnvironment();
+					LocalGame->StateControl(LocalGame->UI,true,6);
+					LocalGame->MessageControl(LocalGame->Msg, 2, 7);
 					std::cout<<"OPTION 1 \a"<<std::endl;
-
-					break;
-				
-
 					break;
 				  }
-		  case 2: { std::cout<<"OPTION 2 \a"<<std::endl;
+		  case 2: { 
+					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
+					LocalGame->playEnvironment();
+					LocalGame->StateControl(LocalGame->UI,true,6);
+					LocalGame->MessageControl(LocalGame->Msg, 1, 7);
+					std::cout<<"OPTION 2 \a"<<std::endl;
 					break;
 				  }
 		  case 3: { std::cout<<"OPTION 3 \a"<<std::endl;
+					//CALL THE KEYBINDING STATE HERE JUST LIKE ABOVE; 
 					break;
 				  }
 		  case 4: { std::cout<<"OPTION 4 \a"<<std::endl;
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
 					break;
 				  }
 		  case 5: exit(1); break;
 	   }
-	}*/
+	}
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
@@ -280,6 +296,7 @@
 				WaterBackground -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033);
 				Map1_Objects -> setPosition(-1422,-1033);
+				LocalGame -> playSound(true);
 	}
 
 
@@ -314,6 +331,12 @@
 
 			// ENABLE TO PRINT (X,Y) PLAYER (MAP) COORDINATES:
 			// std::cout<<"x:"<<Map1_Base->positionX<<" ""y:"<<Map1_Base->positionY<<std::endl;
+					std::vector<Sprite*>::iterator it; 
+		for(it=spriteListToDraw.begin(); it != spriteListToDraw.end(); it++)
+		{ 
+			Sprite *s = (*it);
+			s->update();
+		}
 	}
 
 
@@ -324,8 +347,8 @@
 			{
 				case 32: // the space bar
 					     break;
-				case 27: // the escape key
-					     break;
+				case 27: { //escape key
+							 break; }
 
 				case 'w':
 					     test = false;
@@ -968,6 +991,7 @@
 		/*Default deconstructor */
 	}
 
+
 	void UIState::ScoreUpdate()
 	{
 		tempscore=Score;
@@ -978,9 +1002,11 @@
 		}
 	}
 
+
 	void UIState::Update()
 	{
 
+	
 
 	 		if (test == true) //Horozontal Movement:
 			{
@@ -1062,5 +1088,115 @@
 						break;
 			}
 	}
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+//																						   ||
+//								 UI STATE ------- STATE 6								   ||
+//																						   ||
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+
+
+	void MessageState::Init(Game* Local)
+	{
+		//INITIALIZATION:
+		StateNum=7;
+		LocalGame=Local;
+		active=true;
+		loadcheck=false;
+		anynumber=0;
+
+
+			//Sprite - Transition Sprites
+			Transition = new Sprite("images/Transition Sprites.png"); //Layer 17- Transition.
+			Transition->setSpriteFrameSize(480,261);
+			Transition->setNumberOfAnimations(5);
+			Transition->setCenter(0,0);
+			Transition->addSpriteAnimRow(4,0,0,480,0,1);
+			Transition->addSpriteAnimRow(3,0,261,480,0,1);
+			Transition->addSpriteAnimRow(2,0,522,480,0,1);
+			Transition->addSpriteAnimRow(1,0,783,480,0,1);
+			Transition->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Transition->setPosition(0,0);
+			Transition->setCurrentAnimation(0);
+			Transition->setLayerID(16);
+			this->addSpriteToDrawList(Transition);
+
+			//Sprite - Tutorials.
+			Tutorials = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
+			Tutorials->setSpriteFrameSize(480,261);
+			Tutorials->setNumberOfAnimations(5);
+			Tutorials->setCenter(0,0);
+			Tutorials->addSpriteAnimRow(4,0,0,480,0,1);
+			Tutorials->addSpriteAnimRow(3,0,261,480,0,1);
+			Tutorials->addSpriteAnimRow(2,0,522,480,0,1);
+			Tutorials->addSpriteAnimRow(1,0,783,480,0,1);
+			Tutorials->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Tutorials->setPosition(0,0);
+			Tutorials->setCurrentAnimation(0);
+			Tutorials->setLayerID(16);
+			this->addSpriteToDrawList(Tutorials);
+
+
+	}
+
+
+	void MessageState::ResetMap()
+	{ 
+
+	}
+
+
+	MessageState::~MessageState(void) 
+	{ 
+		/*Default deconstructor */
+	}
+
+	void MessageState::MCtrl()
+	{ 
+
+	}
+
+	void MessageState::Update()
+	{
+
+		Transition->setCurrentAnimation(anynumber);
+
+	}
+
+
+	void MessageState::KeyDown(unsigned char key)
+	{
+
+			switch(key)
+			{
+			    case 'x': active=false; //need at least 1 case.
+				default: {
+							//active=false; //if active=false is here, "press any key to continue doesn't work,
+							//program just skipps through the switch. 
+						 }
+			}
+	}
+
+
+	void MessageState::KeyUp(unsigned char key)
+	{
+			switch(key)
+			{
+				case 32: // the space bar
+						 break;
+				case 27: // the escape key
+						 break;
+		
+				case 'w':
+						break;
+				case 'a':
+						break;
+				case 'd':
+						break;
+				case 's':
+						break;
+			}
+	}
+
 //																			|Aaron Alphonso|
 //###########################################################################################

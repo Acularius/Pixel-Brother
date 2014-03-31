@@ -172,7 +172,7 @@ void GameState::movement()
 	{ 
 			MenuBG -> setPosition(0,0);
 			MenuStrip -> setPosition(0,80);
-			Player->setPosition(230,90);
+			Player->setPosition(160,95);
 			Player->setCurrentAnimation(1);
 	}
 
@@ -235,10 +235,18 @@ void GameState::movement()
 								MenuStrip->setCurrentAnimation(option-1); 
 								break;
 						   }
+				case 'w':{		//since int will down to option;
+								option=int((MenuStrip -> positionX/200)*-1)+1;
+								MenuControl(option);
+								break;}
 
 				case 13: {		//since int will down to option;
 								option=int((MenuStrip -> positionX/200)*-1)+1;
-								//MenuControl(option);
+								MenuControl(option);
+								break;}
+				case 8:  {      ResetMap();
+								break;}
+				case 's':{		ResetMap();
 								break;}
 			}
 	}
@@ -256,6 +264,37 @@ void GameState::movement()
 					menuSpeed = 0;
 					break;
 			}
+	}
+
+	void MainMenu::MenuControl (int opt)
+	{  
+		switch(opt)
+	   { 
+		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
+					//LocalGame->playEnvironment();
+					//LocalGame->StateControl(LocalGame->UI,true,6);
+					LocalGame->MessageControl(LocalGame->Msg, 2, 7);
+					std::cout<<"OPTION 1 \a"<<std::endl;
+					break;
+				  }
+		  case 2: { 
+					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
+					//LocalGame->playEnvironment();
+					//LocalGame->StateControl(LocalGame->UI,true,6);
+					LocalGame->MessageControl(LocalGame->Msg, 1, 7);
+					std::cout<<"OPTION 2 \a"<<std::endl;
+					break;
+				  }
+		  case 3: { std::cout<<"OPTION 3 \a"<<std::endl;
+					//CALL THE KEYBINDING STATE HERE JUST LIKE ABOVE; 
+					break;
+				  }
+		  case 4: { std::cout<<"OPTION 4 \a"<<std::endl;
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+					break;
+				  }
+		  case 5: exit(1); break;
+	   }
 	}
 
 
@@ -297,8 +336,7 @@ void GameState::movement()
 			this->addToObjectsList(Map1_Base);
 
 			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
-			
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
@@ -310,7 +348,7 @@ void GameState::movement()
 			Map1_Objects -> setPosition(-1422,-1033);  //-1422, -1033
 			Map1_Objects -> setCenter(0,0);
 			Map1_Objects -> setLayerID (6);
-			Map1_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			Map1_Objects -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map1_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map1_Objects);
 			this->addToObjectsList(Map1_Objects);
@@ -326,6 +364,16 @@ void GameState::movement()
 			UISample -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(UISample);
 
+			TransitionHomeOne = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
+			TransitionHomeOne-> setNumberOfAnimations(1);
+			TransitionHomeOne-> addSpriteAnimFrame(0,0,50);
+			TransitionHomeOne-> setCurrentAnimation(0);
+			TransitionHomeOne-> setLayerID(7);
+			TransitionHomeOne-> setPosition(-595,-54);
+			TransitionHomeOne-> toLevel = 2;
+			this->addSpriteToDrawList(TransitionHomeOne);
+			this->addToObjectsList(TransitionHomeOne);
+
 			std::cout << "Before Biscuit" << std::endl;
 			MapConstraintsHome = Constraints("images/Levels/Map 1 Constraints.bmp");
 			std::cout << "At Biscuit" << std::endl;
@@ -338,9 +386,10 @@ void GameState::movement()
 	{ 
 				WaterBackgroundHome -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
-				Player->setPosition(230,130);
+				Player->setPosition(160,95);
 				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
+				TransitionHomeOne->setPosition(-595,-54);
 				std::cout << "Player's position (x,y): (" << Player->positionX << ", " << Player->positionY << ")" <<std::endl;
 				std::cout << "Corners, left x: " << Player->ObjectHitbox->leftCornerX << ", right x: " << Player->ObjectHitbox->rightCornerX << std::endl;
 				std::cout << "Corners cont,  bottom y: " << Player->ObjectHitbox->bottomCornerY << ", top y: " << Player->ObjectHitbox->topCornerY << std::endl;
@@ -359,6 +408,7 @@ void GameState::movement()
 		updateObjects();
 		allowMovement();
 		movement();
+		transitionCheck();
 
 	}
 
@@ -430,6 +480,29 @@ void GameState::movement()
 	interception = 0;
 }
 
+	void LevelHome::transitionCheck()
+	{
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+		float playBotY,playTopY,playLeftX,playRightX;
+
+		tranBotY = TransitionHomeOne->ObjectHitbox->bottomCornerY; tranTopY = TransitionHomeOne->ObjectHitbox->topCornerY;
+		tranLeftX = TransitionHomeOne->ObjectHitbox->leftCornerX; tranRightX = TransitionHomeOne->ObjectHitbox->rightCornerX;
+
+		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+// work on
+		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
+			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
+		{
+			std::cout << "BING!" << std::endl;
+			this->LocalGame->SwitchStateTo(this, 3); // To Level 3~!
+
+		}
+		else
+		{
+			//NOTHING!
+		};
+	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL ONE ----- STATE 3								   ||
@@ -468,7 +541,7 @@ void GameState::movement()
 			this->addToObjectsList(Map2_Base);
 
 			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
 
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
@@ -507,7 +580,7 @@ void GameState::movement()
 	{ 
 				WaterBackgroundOne -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
-				Player-> setPosition(230,130);
+				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
 				Map2_Objects -> setPosition(-475,-1410);
 	}
@@ -633,7 +706,7 @@ void GameState::movement()
 			this->addToObjectsList(Map3_Base);
 
 			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
@@ -672,7 +745,7 @@ void GameState::movement()
 	{ 
 				WaterBackgroundTwo -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
-				Player-> setPosition(230,130);
+				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
 				Map3_Objects -> setPosition(-1552,-1402);
 	}
@@ -796,7 +869,7 @@ void GameState::movement()
 			this->addToObjectsList(Map4_Base);
 
 			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
 
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
@@ -838,7 +911,7 @@ void GameState::movement()
 	{ 
 				WaterBackgroundThree -> setPosition(-1700,-750);
 				Map4_Base -> setPosition(-1404,-1384);
-				Player-> setPosition(230,130);
+				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
 				Map4_Objects -> setPosition(-1404,-1384);
 	}
@@ -924,5 +997,303 @@ void GameState::movement()
 	//std::cout << "Yay! Success!" << std::endl;
 	interception = 0;
 }
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+//																						   ||
+//								 UI STATE ------- STATE 6								   ||
+//			Eventually work into its own class											   ||
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+
+
+	void UIState::Init(Game* Local)
+	{
+		//INITIALIZATION:
+		StateNum=6;
+		LocalGame=Local;
+		active=false;
+		loadcheck=false;
+
+		Health=10; //Player at full health.
+		Score=0;   //Player at zero score.
+
+
+			//Sprite - Player Sprites.
+			Player = new MainCharacter("images/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
+			Player->setCurrentAnimation(1);
+			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
+
+			//Sprite - UI Health
+			UIHealth = new Sprite("images/UIHealth.png"); //Layer 12- Health
+			UIHealth->setSpriteFrameSize(184, 24);
+			UIHealth->setNumberOfAnimations(11);
+			UIHealth->setCenter(0,0);
+				for(int i=0 ; i<11 ; i++)
+				{
+					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
+				}
+			UIHealth->setPosition(8,227);
+			UIHealth->setCurrentAnimation(Health);
+			UIHealth->setLayerID(12);
+			this->addSpriteToDrawList(UIHealth);
+
+			//Sprite - UI Score.
+			for(int i=0 ; i<7; i++)
+			{ 	
+			UIScore[i] = new Sprite("images/UIScore.png"); //Layer 13- Score
+			UIScore[i]->setSpriteFrameSize(16,16);
+			UIScore[i]->setNumberOfAnimations(10); //0-9
+			UIScore[i]->setCenter(0,0);
+			UIScore[i]->addSpriteAnimFrame(1,16,16);
+				for(int j=0 ; j<10 ; j++)
+				{
+					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
+				}
+			UIScore[i]->setLayerID(13);
+			UIScore[i]->setCurrentAnimation(i);
+			UIScore[i]->setPosition((380+(i*12)),233);
+			this->addSpriteToDrawList(UIScore[i]); 
+			}
+			ScoreUpdate();
+
+			//Sprite - UI Actionbar.
+			UISample = new Sprite ("images/UIActionbar.png");
+			UISample -> setNumberOfAnimations(1);
+			UISample -> setSpriteFrameSize(200,50);
+			UISample -> setPosition(140,10);
+			UISample -> setCenter(0,0);
+			UISample -> setLayerID (14);
+			UISample ->addSpriteAnimRow(0,0,0,200,50,1);
+			UISample -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(UISample);
+			
+			//Sprite - UI Sample.
+			UISample = new Sprite ("images/Test UI.png");
+			UISample -> setNumberOfAnimations(1);
+			UISample -> setSpriteFrameSize(480,261);
+			UISample -> setPosition(0,0);
+			UISample -> setCenter(0,0);
+			UISample -> setLayerID (7);
+			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
+			UISample -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(UISample);
+
+	}
+
+
+	void UIState::ResetMap()
+	{ 
+				Player->setPosition(210,110);
+				Player-> setCurrentAnimation(1);
+	}
+
+
+	UIState::~UIState(void) 
+	{ 
+		/*Default deconstructor */
+	}
+
+	void UIState::ScoreUpdate()
+	{
+		tempscore=Score;
+		for(int i=6 ; i>0; i--)
+		{	
+			UIScore[i]->setCurrentAnimation(tempscore%10);
+			tempscore=tempscore/10;
+		}
+	}
+
+	void UIState::Update()
+	{
+
+
+	 		if (test == true) //Horozontal Movement:
+			{
+				
+			}
+			else //Vertical Movement:
+			{
+				
+			}
+
+	}
+
+
+	void UIState::KeyDown(unsigned char key)
+	{
+
+			switch(key)
+			{
+				case 32: // the space bar
+					     break;
+				case 27: // the escape key
+					     break;
+
+				case 'w':
+						 Player->setCurrentAnimation(2);
+						 Player->nextFrame();
+						 break;
+
+				case 'a':
+						 Player->setCurrentAnimation(4);
+						 Player->nextFrame();
+						 break;
+
+				case 'd':
+						 Player->setCurrentAnimation(3);
+						 Player->nextFrame();
+						 break;
+
+				case 's':
+						 Player->setCurrentAnimation(1);
+						 Player->nextFrame();
+						 break;
+				case 45: if(0<Health)
+						 Health--;
+						 UIHealth->setCurrentAnimation(Health);
+						 break;
+				case 61: if(Health<10)
+						 Health++;
+						 UIHealth->setCurrentAnimation(Health);
+						 break;
+				case 'o': Score--;
+						  //UIScore[6]->setCurrentAnimation(Score);
+						  ScoreUpdate();
+						  break;
+				case 'p': Score++;
+						  //UIScore[6]->setCurrentAnimation(Score);
+						  ScoreUpdate();
+						  break;
+			}
+	}
+
+
+	void UIState::KeyUp(unsigned char key)
+	{
+			switch(key)
+			{
+				case 32: // the space bar
+						 break;
+				case 27: // the escape key
+						 break;
+		
+				case 'w':
+						break;
+				case 'a':
+						break;
+				case 'd':
+						break;
+				case 's':
+						break;
+			}
+	}
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+//																						   ||
+//								 UI STATE ------- STATE 6								   ||
+//																						   ||
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
+
+
+	void MessageState::Init(Game* Local)
+	{
+		//INITIALIZATION:
+		StateNum=7;
+		LocalGame=Local;
+		active=true;
+		loadcheck=false;
+		anynumber=0;
+
+
+			//Sprite - Transition Sprites
+			Transition = new Sprite("images/Transition Sprites.png"); //Layer 17- Transition.
+			Transition->setSpriteFrameSize(480,261);
+			Transition->setNumberOfAnimations(5);
+			Transition->setCenter(0,0);
+			Transition->addSpriteAnimRow(4,0,0,480,0,1);
+			Transition->addSpriteAnimRow(3,0,261,480,0,1);
+			Transition->addSpriteAnimRow(2,0,522,480,0,1);
+			Transition->addSpriteAnimRow(1,0,783,480,0,1);
+			Transition->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Transition->setPosition(0,0);
+			Transition->setCurrentAnimation(0);
+			Transition->setLayerID(16);
+			this->addSpriteToDrawList(Transition);
+
+			//Sprite - Tutorials.
+			Tutorials = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
+			Tutorials->setSpriteFrameSize(480,261);
+			Tutorials->setNumberOfAnimations(5);
+			Tutorials->setCenter(0,0);
+			Tutorials->addSpriteAnimRow(4,0,0,480,0,1);
+			Tutorials->addSpriteAnimRow(3,0,261,480,0,1);
+			Tutorials->addSpriteAnimRow(2,0,522,480,0,1);
+			Tutorials->addSpriteAnimRow(1,0,783,480,0,1);
+			Tutorials->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
+			Tutorials->setPosition(0,0);
+			Tutorials->setCurrentAnimation(0);
+			Tutorials->setLayerID(16);
+			this->addSpriteToDrawList(Tutorials);
+
+
+	}
+
+
+	void MessageState::ResetMap()
+	{ 
+
+	}
+
+
+	MessageState::~MessageState(void) 
+	{ 
+		/*Default deconstructor */
+	}
+
+	void MessageState::MCtrl()
+	{ 
+
+	}
+
+	void MessageState::Update()
+	{
+
+		Transition->setCurrentAnimation(anynumber);
+
+	}
+
+
+	void MessageState::KeyDown(unsigned char key)
+	{
+
+			switch(key)
+			{
+			    case 'x': active=false; //need at least 1 case.
+				default: {
+							//active=false; //if active=false is here, "press any key to continue doesn't work,
+							//program just skipps through the switch. 
+						 }
+			}
+	}
+
+
+	void MessageState::KeyUp(unsigned char key)
+	{
+			switch(key)
+			{
+				case 32: // the space bar
+						 break;
+				case 27: // the escape key
+						 break;
+		
+				case 'w':
+						break;
+				case 'a':
+						break;
+				case 'd':
+						break;
+				case 's':
+						break;
+			}
+	}
+
 //																			|Aaron Alphonso|
 //###########################################################################################

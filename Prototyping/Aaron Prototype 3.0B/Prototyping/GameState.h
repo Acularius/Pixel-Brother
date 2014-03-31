@@ -8,6 +8,7 @@
 			#include "Game.h"
 			#include "StateManager.h"
 			#include <vector>
+			#include <cstdlib>
 
 //-------------------------------------------------------------------------------------------
 //   Game State is an abstract class from which other states can be derived. Such as menus,
@@ -31,6 +32,7 @@
 
 		void InitGameState();
 		Game* LocalGame;
+
 //-------------------------------------------------------------------------------------------
 
 		//CORE STATE FUNCTIONS:
@@ -45,6 +47,7 @@
 		bool active;    //Class ON/OFF Switch. 
 		bool loadcheck; //Checks If already Initialized.
 		int StateNum;   //State Number for transitioning.
+		int anynumber;  //Various purpose number.
 
 //-------------------------------------------------------------------------------------------
 
@@ -218,6 +221,33 @@
 		bool test;      // To test movement control;
 
 	};
+
+//===========================================================================================
+//								 ON SCREEN MSG STATE --- STATE 7
+//===========================================================================================
+
+	class MessageState:public GameState
+	{
+	  public:
+
+		 void Init(Game* Local);
+		 void ResetMap();
+		 void Update();
+		 void KeyUp(unsigned char key);
+		 void KeyDown(unsigned char key);
+		 void MCtrl();
+		 ~MessageState(void);
+
+			 //SPRITE DECLARATIONS
+		 	 Sprite *Transition;
+			 Sprite *Tutorials;
+
+		bool test;      // To test movement control;
+		int MsgType;
+		int MsgNumber;
+
+	};
+
 
 #endif
 //																			|Aaron Alphonso|

@@ -62,25 +62,15 @@ void Game::initializeGame()
 	LevelThree* StateThree = new LevelThree();
 	StateThree->Init(this);
 	states.push_back(StateThree);
+
+	MessageState* Msg = new MessageState();
+	Msg->Init(this);
+	states.push_back(Msg);
 	
-
-	// vvvv Works vvvv
-	//std::cout << "Before Biscuit" << std::endl;
-	//MapConstraints = Constraints("images/Levels/Map01Constraints.bmp");
-	//std::cout << "At Biscuit" << std::endl;
-	//std::cout << "Location of 919, 1047: " << MapConstraints.vConstraintVector[919][1047] << std::endl;
-
-	/*
-	newMapPositionX = (Map01Base->positionX) + (Map01Base->speedX);
-	newMapPositionY = (Map01Base->positionY) + (Map01Base->speedY);
-
-	indexStartX = (Map01Base->sz.width) + (Player->ObjectHitbox->leftCornerX) + newMapPositionX; 
-	indexStartY = (Map01Base->sz.normalizedHeight) + (Player->ObjectHitbox->bottomCornerY) + newMapPositionY;
-	indexEndX = indexStartX + (Player->ObjectHitbox->rightCornerX); indexEndY = indexStartY + (Player->ObjectHitbox->topCornerY);
-	*/
-
-
 }
+
+//===========================================================================================
+//===========================================================================================
 
 /* draw()
  * - this gets called automatically about 30 times per second
@@ -225,9 +215,11 @@ void Game::update()
 		// Time
 		updateTimer->tick();
 
+//===========================================================================================
+//								 UPDATE ITERATOR
+//===========================================================================================
 
-		/* Beginning of integration*/
-			std::vector<GameState*>::iterator it;
+	std::vector<GameState*>::iterator it;
 	for (it = states.begin(); it != states.end(); it++)
 	{
 		if (*it)
@@ -236,11 +228,7 @@ void Game::update()
 			  if(s->active==true)
 			  s->Update();
 		}
-
 	}
-
-		//Score
-//		iScore++;
 }
 
 /* 
@@ -256,29 +244,6 @@ void Game::addSpriteToDrawList(Sprite *s)
 	}
 }
 
-
-/*ALL THINGS RELATED TO THE OBJECT LIST*/
-
-///*All things related to adding to the ObjectsList*/
-//void Game::addToObjectsList(Objects *o)
-//{
-//	if(o)
-//	{
-//		/* push the Object to the back of the list */
-//		this->objectsList.push_back(o);
-//	}
-//}
-//
-//// To streamline the code, update all the Objects from object list at once.
-//void Game::updateObjects()
-//{
-//			std::vector<Objects*>::iterator itUpdate; 
-//		for(itUpdate= objectsList.begin() ; itUpdate !=objectsList.end() ; itUpdate++)
-//	{
-//		Objects *o = (*itUpdate);
-//		o-> update();
-//	}
-//}
 
 /*************************************************/
 /* INPUT - keyboard/mouse functions below        */
@@ -299,8 +264,7 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 		exit(1);
 		break;
 	}
-
-	//===========================================================================================
+//===========================================================================================
 //								 KEYDOWN ITERATOR
 //===========================================================================================
 
@@ -319,22 +283,42 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 //								 TESTING KEYS (StateChanges)
 //===========================================================================================
 
-			switch(key)
+switch(key)
 			{
 			case '1': {		SwitchStateTo (StateHome, 1);
 							break;  }
-			case '2': {		SwitchStateTo (StateHome, 2);
+			case '2': {		
+							SwitchStateTo (StateHome, 2);
+							//playEnvironment();
+							//StateControl(UI,true,6);
+							MessageControl(Msg, 1, 7);
 							break;  }
-			case '3': {		SwitchStateTo (StateHome, 3);
+			case '3': {		
+							SwitchStateTo (StateHome, 3);
+							//StateControl(UI,true,6);
+							MessageControl(Msg, 2, 7);
 							break;  }
 			case '4': {		SwitchStateTo (StateHome, 4);
+							//StateControl(UI,true,6);
+							MessageControl(Msg, 3, 7);
 							break;  }
 			case '5': {		SwitchStateTo (StateHome, 5);
+							//StateControl(UI,true,6);
+							MessageControl(Msg, 4, 7);
 							break;  }
 			case 't': {     std::cout<<"YOLO\n"; break; }
+			case 'm': {    // playBeepSound(); break; }
+			case 27:  {     StateToggle (MenuState, 1);
+						    StateToggle (StateOne, 2);
+						    //StateToggle (UI,6);
+							break; }
 			}
+}
 
 }
+//===========================================================================================
+//===========================================================================================
+
 /* keyboardUp()
    - this gets called when you lift a key up
    - you are given the key that was pressed
@@ -346,7 +330,7 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	{
 	case 32: // the space bar
 		break;
-	case 27: // the escape key
+	//case 27: // the escape key
 	case 'q': // the 'q' key
 		exit(1);
 		break;
@@ -363,107 +347,4 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 		}
 	}
 }
-
-//void Game::moveObjectsKeyboardDown(unsigned char key)
-//{
-//
-//		std::vector<Objects*>::iterator itMoveGo; 
-//		for(itMoveGo=objectsList.begin() ; itMoveGo !=objectsList.end() ; itMoveGo++)
-//	{
-//		Objects *o = (*itMoveGo);
-//		o-> movementGo(key);
-//	}
-//}
-//
-//void Game::moveObjectsKeyboardUp(unsigned char key)
-//{
-//
-//		std::vector<Objects*>::iterator itMoveStop; 
-//		for(itMoveStop= objectsList.begin() ; itMoveStop !=objectsList.end() ; itMoveStop++)
-//	{
-//		Objects *o = (*itMoveStop);
-//		o-> movementStop(key);
-//	}
-//}
-
-/*Checks player's hitbox, current map position, and constraints*/
-//void Game::allowMovement()
-//{
-//	////std::cout << "allowmovementcheck begin" << std::endl;
-//	//int interception; //Counts the occurences of interception
-//	//float stop = 0.f; //stops all movement when interception >=1
-//	//float newMapPositionX, newMapPositionY;
-//	//int indexStartX,indexStartY, indexEndX,indexEndY;
-//
-//	//int vecindexX, vecindexY;
-//	//interception = 0;
-//
-//	////std::cout << " initialize allowMovement variables" << std::endl;
-//	//newMapPositionX = (Map01Base->positionX) + (Map01Base->inMotionSpeedX);
-//	//newMapPositionY = (Map01Base->positionY) + (Map01Base->inMotionSpeedY);
-//
-//	//indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
-//	//indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
-//	//indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
-//	//indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
-//
-//	////std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
-//	////std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
-//	////std::cout << "Check constraint vector" << std::endl;
-//	//for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
-//	//	for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
-//	//	{
-//	//		if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == true)
-//	//		{
-//	//			/* Nothing */
-//	//		} else if (MapConstraints.vConstraintVector[vecindexX][vecindexY] == false) {
-//	//			interception++;
-//	//			break; //ends the loop
-//
-//	//		} else{
-//	//			//Nothing
-//	//		};
-//
-//	//	};
-//	//std::cout << "Checked constraint vector" << std::endl;
-//	//	if(interception >= 1){
-//	//	//	std::cout << "Intercept detected" << std::endl;
-//	//		std::vector<Objects*>::iterator itNoMove;
-//	//		for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
-//	//		{
-//	//			Objects *o = (*itNoMove);
-//	//			o-> inMotionSpeedX = stop;
-//	//			o-> inMotionSpeedY = stop;
-//	//		};
-//	//	}else
-//	//	{
-//	//		std::cout << "No intercept detected" << std::endl;
-//	//	};
-//	////std::cout << "Yay! Success!" << std::endl;
-//	//interception = 0;
-//}
-
-//void Game::movement()
-//{
-//
-//	//std::vector<Objects*>::iterator itMovement;
-//	//for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
-//	//{
-//	//	float newPositionX, newPositionY;
-//	//	float currentPositionX, currentPositionY;
-//	//	float currentSpeedX, currentSpeedY;
-//	//	Objects *o = (*itMovement);
-//
-//	//	currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
-//	//	currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
-//	//	currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
-//
-//	//	newPositionX = currentPositionX + currentSpeedX;
-//	//	newPositionY = currentPositionY + currentSpeedY;
-//
-//	//	o-> positionX = newPositionX;
-//	//	o-> positionY = newPositionY;
-//	//};
-//
-//}
 

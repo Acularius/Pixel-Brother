@@ -56,6 +56,30 @@
 	}}}
 
 //===========================================================================================
+//						   STATETOGGLE ----- STATE CONTROL
+//===========================================================================================
+
+	void Game::StateToggle (GameState* g, int num)
+	{  
+		std::vector<GameState*>::iterator it;
+		for (it = states.begin(); it != states.end(); it++)
+		{ 
+			if (*it)
+			{	  
+				  GameState* s = (*it);
+				  if(s->StateNum==num)
+				  { 
+					  s->active = !s->active;    // Setting value to 'a' (true/false).
+
+					  //s->ResetMap();	// Resetting the sprite values,
+									    // spawn points, positions etc.
+					  std::cout<<"\n Toggle Value of State...";
+				  }
+	}}}
+
+
+
+//===========================================================================================
 //						   STATEMANAGER ----- SWITCH STATE TO
 //===========================================================================================
 
@@ -65,6 +89,31 @@
 		StateReset();
 		StateControl(g,true,num);
 		std::cout<<"\n Switching State...";
+	}
+
+//===========================================================================================
+//						   MESSAGE CONTROL ----- STATE CONTROL
+//===========================================================================================
+
+	void Game::MessageControl (GameState* MessageStateObject, int Message_Number, int num) //num=StateNum
+	{  
+			std::vector<GameState*>::iterator it;
+		for (it = states.begin(); it != states.end(); it++)
+		{ 
+			if (*it)
+			{	  
+				  GameState* s = (*it);
+				  if(s->StateNum==num)
+				  { 
+					  s->anynumber = Message_Number;   // Anynumber is just a multipurpose variable. 
+
+					  s->ResetMap();	// Resetting the sprite values,
+									    // spawn points, positions etc.
+					 
+				  }
+				  std::cout<<"\n Displaying Message...";
+			}}
+	StateControl(MessageStateObject,true,num);
 	}
 //																			|Aaron Alphonso|
 //###########################################################################################

@@ -1,6 +1,7 @@
 #include "Hitbox.h"
 
 
+
 /*
 Sets up the hitbox in relation to the object it is created for
 */
@@ -30,11 +31,23 @@ void Hitbox::createHitBox(float startWidth,float startHeight, float initialPosit
 	topCornerY = bottomCornerY + height;
 }
 
-void Hitbox::updateHitbox(float inputPositionX, float inputPositionY)
+void Hitbox::updateHitbox(float inputPositionX, float inputPositionY, bool playercheck)
 {
+	if (playercheck==true) // Due to the sprite sheet, player is offset.
+	{
+	leftCornerX = inputPositionX +20;
+	bottomCornerY = inputPositionY +10 ;
+	}
+	else{	
 	leftCornerX = inputPositionX;
 	bottomCornerY = inputPositionY;
+	};
+
 
 	rightCornerX = leftCornerX + width;
 	topCornerY = bottomCornerY + height;
 };
+
+// =======================================================================
+// =======================================================================
+

@@ -34,6 +34,8 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TransitionObject.cpp" />
+    <ClCompile Include="User Interface.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6D24E60A-56AA-4C79-ABE8-5BE24059E4E6}</ProjectGuid>
