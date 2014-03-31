@@ -772,30 +772,28 @@ void GameState::movement()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		mapSpeed = 0;
-		WaterSpeed = 0;
 
 		    //Sprite - Water Background.
-			WaterBackground = new Sprite ("images/Backgrounds/Water Sprite 5.png");
-			WaterBackground -> setNumberOfAnimations(1);
-			WaterBackground -> setSpriteFrameSize(2500,2000);
-			WaterBackground -> setPosition(-1700,-750);
-			WaterBackground -> setCenter(0,0);
-			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackground -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackground);
+			WaterBackgroundThree = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
+			WaterBackgroundThree -> setNumberOfAnimations(1);
+			WaterBackgroundThree -> setPosition(-1700,-750);
+			WaterBackgroundThree -> setCenter(0,0);
+			WaterBackgroundThree -> setLayerID (1);
+			WaterBackgroundThree ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackgroundThree -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackgroundThree);
+			this->addToObjectsList(WaterBackgroundThree);
 
 			//Sprite - Map 2 Base.
-			Map4_Base = new Sprite ("images/Levels/Map 4 Base.png");
+			Map4_Base = new Objects ("images/Levels/Map 4 Base.png",2500,2000);
 			Map4_Base -> setNumberOfAnimations(1);
-			Map4_Base -> setSpriteFrameSize(2500,2000);
 			Map4_Base -> setPosition(-1404,-1384);
 			Map4_Base -> setCenter(0,0);
 			Map4_Base -> setLayerID (2);
 			Map4_Base -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map4_Base -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map4_Base);
+			this->addToObjectsList(Map4_Base);
 
 			//Sprite - Player Sprites.
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 28,48);
@@ -803,9 +801,10 @@ void GameState::movement()
 			Player->setCurrentAnimation(1);
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
 			
 			//Sprite - Map 1 Objects.
-			Map4_Objects = new Sprite ("images/Levels/Map 4 Objects.png");
+			Map4_Objects = new Objects ("images/Levels/Map 4 Objects.png",2500,2000);
 			Map4_Objects -> setNumberOfAnimations(1);
 			Map4_Objects -> setSpriteFrameSize(2500,2000);
 			Map4_Objects -> setPosition(-1404,-1384);
@@ -814,6 +813,7 @@ void GameState::movement()
 			Map4_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map4_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map4_Objects);
+			this->addToObjectsList(Map4_Objects);
 
 			//Sprite - UI Sample.
 			UISample = new Sprite ("images/Test UI.png");
@@ -826,12 +826,17 @@ void GameState::movement()
 			UISample -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(UISample);
 
+			
+			std::cout << "Before Biscuit Three" << std::endl;
+			MapConstraintsThree = Constraints("images/Levels/Map 4 Constraints.bmp");
+			std::cout << "At Biscuit Three" << std::endl;
+
 	}
 
 
 	void LevelThree::ResetMap()
 	{ 
-				WaterBackground -> setPosition(-1700,-750);
+				WaterBackgroundThree -> setPosition(-1700,-750);
 				Map4_Base -> setPosition(-1404,-1384);
 				Player-> setPosition(230,130);
 				Player-> setCurrentAnimation(1);
@@ -847,104 +852,77 @@ void GameState::movement()
 
 	void LevelThree::Update()
 	{
-	 		if (test == true) //Horozontal Movement:
-			{
-				// MAP SPEED:
-				Map4_Base -> positionX+=mapSpeed;
-				Map4_Objects -> positionX+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY-=1;
-				WaterBackground -> positionX+=WaterSpeed;
-			}
-			else //Vertical Movement:
-			{
-				// MAP SPEED:
-				Map4_Base ->positionY+=mapSpeed;
-				Map4_Objects ->positionY+=mapSpeed;
-				// PARALAX SCROLLING:
-				WaterBackground -> positionY+=(WaterSpeed-1);
-			}
-
-			if (WaterBackground-> positionY < -1000)
-			{ WaterBackground -> setPosition(-1700,-750); } //RESETTING SCROLLING BACKGROUND. 
-
-			// ENABLE TO PRINT (X,Y) PLAYER (MAP) COORDINATES:
-			// std::cout<<"x:"<<Map1_Base->positionX<<" ""y:"<<Map1_Base->positionY<<std::endl;
+		updateObjects();
+		allowMovement();
+		movement();	
 	}
 
 
 	void LevelThree::KeyDown(unsigned char key)
 	{
-
-			switch(key)
-			{
-				case 32: // the space bar
-					     break;
-				case 27: // the escape key
-					     break;
-
-				case 'w':
-					     test = false;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(2);
-						 Player->nextFrame();
-						 break;
-
-				case 'a':
-						 test = true;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(4);
-						 Player->nextFrame();
-						 break;
-
-				case 'd':
-						 test = true;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 Player->setCurrentAnimation(3);
-						 Player->nextFrame();
-						 break;
-
-				case 's':
-						 test = false;
-						 mapSpeed = 9;
-						 WaterSpeed = 4;
-						 Player->setCurrentAnimation(1);
-						 Player->nextFrame();
-						 break;
-			}
+		moveObjectsKeyboardDown(key);
 	}
 
 
 	void LevelThree::KeyUp(unsigned char key)
 	{
-			switch(key)
-			{
-				case 32: // the space bar
-						 break;
-				case 27: // the escape key
-						 break;
-		
-				case 'w':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'a':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 'd':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-				case 's':
-						mapSpeed = 0;
-						WaterSpeed = 0;
-						break;
-			}
+		moveObjectsKeyboardUp(key);
 	}
 
+		void LevelThree::allowMovement()
+{
+	//std::cout << "allowmovementcheck begin" << std::endl;
+	int interception; //Counts the occurences of interception
+	float stop = 0.f; //stops all movement when interception >=1
+	float newMapPositionX, newMapPositionY;
+	int indexStartX,indexStartY, indexEndX,indexEndY;
+
+	int vecindexX, vecindexY;
+	interception = 0;
+
+	//std::cout << " initialize allowMovement variables" << std::endl;
+	newMapPositionX = (Map4_Base->positionX) + (Map4_Base->inMotionSpeedX);
+	newMapPositionY = (Map4_Base->positionY) + (Map4_Base->inMotionSpeedY);
+
+	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+
+	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+	//std::cout << "Check constraint vector" << std::endl;
+	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
+		{
+			if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == true)
+			{
+				/* Nothing */
+			} else if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == false) {
+				interception++;
+				break; //ends the loop
+
+			} else{
+				//Nothing
+			};
+
+		};
+	//std::cout << "Checked constraint vector" << std::endl;
+		if(interception >= 1){
+		//	std::cout << "Intercept detected" << std::endl;
+			std::vector<Objects*>::iterator itNoMove;
+			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+			{
+				Objects *o = (*itNoMove);
+				o-> inMotionSpeedX = stop;
+				o-> inMotionSpeedY = stop;
+			};
+		}else
+		{
+		//	std::cout << "No intercept detected" << std::endl;
+		};
+	//std::cout << "Yay! Success!" << std::endl;
+	interception = 0;
+}
 //																			|Aaron Alphonso|
 //###########################################################################################

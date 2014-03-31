@@ -206,18 +206,18 @@
 		 void KeyDown(unsigned char key);
 		 ~LevelThree(void);
 
+		 void allowMovement();
+
 			 //SPRITE DECLARATIONS
-			 Sprite *Map4_Base;
-			 Sprite *Map4_Objects;
-		     Sprite *WaterBackground;
+			 Objects *Map4_Base;
+			 Objects *Map4_Objects;
+		     Objects *WaterBackgroundThree;
 			 //Sprite *Player;
 			 MainCharacter *Player;
+			 Constraints MapConstraintsThree;
 
 			 Sprite *UISample;
 
-		int mapSpeed;   // Speed of player (basically);
-		int WaterSpeed; // Speed of scrolling water BG;
-		bool test;      // To test movement control;
 
 	};
 
