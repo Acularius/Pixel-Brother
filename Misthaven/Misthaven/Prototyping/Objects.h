@@ -21,6 +21,10 @@ public:
 
 	virtual void update();
 
+	//Interact Box
+	bool attack;
+	bool talk;
+	bool interboxactive;
 
 	//Movement
 	float inMotionSpeedX; // Object's move speed in pixels. X (left or right) - When the player moves - X Plane
@@ -33,6 +37,7 @@ public:
 
 	/* Creation of a hitbox */
 	Hitbox *ObjectHitbox;
+	InteractBox *ObjectActBox;
 
 };
 
@@ -59,6 +64,8 @@ public:
 
 	Hitbox *ObjectHitbox;
 
+	
+
 };
 
 /* Backgrounds */
@@ -80,12 +87,6 @@ public:
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
 };
 
-class UI : public Objects
-{
-public:
-	UI::UI(std::string filename, int width, int height);
-	~UI(void);
-};
 
 
 	class Transition : public Objects 
@@ -99,4 +100,5 @@ public:
 		int toLevel;
 
 	};
+
 

@@ -48,6 +48,7 @@
 
 //-------------------------------------------------------------------------------------------
 
+	
 		//SPRITE ITERATOR FUNCTIONS:
 		std::vector<Sprite*> spriteListToDraw;
 		void Draw();
@@ -96,8 +97,7 @@
 		 int option;    // Option: for menu control;
 		 bool test;     // To test movement control;
 
-		 //* Player Sprite */
-//			MainCharacter *Player;
+
 	};
 
 //===========================================================================================
@@ -107,6 +107,10 @@
 	class LevelHome:public GameState
 	{
 	  public:
+		int Health;		// PlayerHealth;
+		int Score;		// PlayerScore;
+		int tempscore;  // Variable for ScoreUpdate;
+		int tickstime, ticksX;
 
 		 void Init(Game* Local);
 		 void ResetMap();
@@ -130,13 +134,12 @@
 			 Objects *Map1_Objects;
 		     Objects *WaterBackgroundHome;
 			 Transition *TransitionHomeOne;
-			// Sprite *Player;
-			 Sprite *UISample;
-
 		
 		
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
+		Sprite *UIScore[7];
+		Sprite *UIHealth;
 		Ghost *Ghosty1;
 		Ghost *Ghosty2;
 		Ghost *Ghosty3;
@@ -151,7 +154,9 @@
 	class LevelOne:public GameState
 	{
 	  public:
-
+		int Health;		// PlayerHealth;
+		int Score;		// PlayerScore;
+		int tempscore;  // Variable for ScoreUpdate;
 		 void Init(Game* Local);
 		 void ResetMap();
 		 void Update();
@@ -165,12 +170,11 @@
 			 Objects *Map2_Base;
 			 Objects *Map2_Objects;
 		     Objects *WaterBackgroundOne;
-			// Sprite *Player;
-			 Sprite *UISample;
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsOne;
-
+			 Sprite *UIScore[7];
+			 Sprite *UIHealth;
 
 
 	};
@@ -182,7 +186,9 @@
 	class LevelTwo:public GameState
 	{
 	  public:
-
+		int Health;		// PlayerHealth;
+		int Score;		// PlayerScore;
+		int tempscore;  // Variable for ScoreUpdate;
 		 void Init(Game* Local);
 		 void ResetMap();
 		 void Update();
@@ -196,11 +202,11 @@
 			 Objects *Map3_Base;
 			 Objects *Map3_Objects;
 		     Objects *WaterBackgroundTwo;
-			 //Sprite *Player;
+
 			 MainCharacter *Player;
 			 Constraints MapConstraintsTwo;
-
-			 Sprite *UISample;
+			 Sprite *UIScore[7];
+			 Sprite *UIHealth;
 
 	};
 
@@ -211,6 +217,9 @@
 	class LevelThree:public GameState
 	{
 	  public:
+		int Health;		// PlayerHealth;
+		int Score;		// PlayerScore;
+		int tempscore;  // Variable for ScoreUpdate;
 
 		 void Init(Game* Local);
 		 void ResetMap();
@@ -225,11 +234,12 @@
 			 Objects *Map4_Base;
 			 Objects *Map4_Objects;
 		     Objects *WaterBackgroundThree;
-			 //Sprite *Player;
+
 			 MainCharacter *Player;
 			 Constraints MapConstraintsThree;
+			 Sprite *UIScore[7];
+			 Sprite *UIHealth;
 
-			 Sprite *UISample;
 
 
 	};
@@ -250,13 +260,15 @@
 		 void ScoreUpdate();
 		 ~UIState(void);
 
+			// Player
+		 MainCharacter *Player;
 			 //SPRITE DECLARATIONS
 		 	 Sprite *UISample;
 			 Sprite *UIHealth;
 			 Sprite *UIActionbar;
 			 Sprite *UIScore[7];
 
-			 MainCharacter *Player;
+			 
 
 		int Health;		// PlayerHealth;
 		int Score;		// PlayerScore;

@@ -102,6 +102,7 @@ void GameState::movement()
 		o-> positionY = newPositionY;
 	};
 
+
 }
 
 
@@ -278,7 +279,6 @@ void GameState::movement()
 	   { 
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
 					//LocalGame->playEnvironment();
-					//LocalGame->StateControl(LocalGame->UI,true,6);
 					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
 					std::cout<<"OPTION 1 \a"<<std::endl;
 					break;
@@ -286,7 +286,6 @@ void GameState::movement()
 		  case 2: { 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
 					//LocalGame->playEnvironment();
-					//LocalGame->StateControl(LocalGame->UI,true,6);
 					LocalGame->MessageControl(LocalGame->Msg, 1, 7);
 					std::cout<<"OPTION 2 \a"<<std::endl;
 					break;
@@ -319,6 +318,12 @@ void GameState::movement()
 		active=false;
 		loadcheck=false;
 		tutorialDone = false;
+		tickstime = 0;
+		ticksX = 0;
+
+
+		Health=10; //Player at full health.
+		Score=0;   //Player at zero score.
 
 		    //Sprite - Water Background.
 			WaterBackgroundHome = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
@@ -343,11 +348,14 @@ void GameState::movement()
 			this->addToObjectsList(Map1_Base);
 
 			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
+
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
 			Player->setCurrentAnimation(1);
+			Player->direction= 1;
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
 			this->addToObjectsList(Player);
+			
 			
 			//Sprite - Map 1 Objects.
 			Map1_Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500, 2000);
@@ -360,16 +368,6 @@ void GameState::movement()
 			this->addSpriteToDrawList(Map1_Objects);
 			this->addToObjectsList(Map1_Objects);
 
-			//Sprite - UI Sample.
-			UISample = new Sprite ("images/Test UI.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(480,261);
-			UISample -> setPosition(0,0);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (7);
-			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
 
 			TransitionHomeOne = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
 			TransitionHomeOne-> setNumberOfAnimations(1);
@@ -397,6 +395,38 @@ void GameState::movement()
 			this->addSpriteToDrawList(Ghosty4);
 			this->addToObjectsList(Ghosty4);
 
+			//Sprite - UI Score.
+			for(int i=0 ; i<7; i++)
+			{ 	
+			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
+			UIScore[i]->setSpriteFrameSize(16,16);
+			UIScore[i]->setNumberOfAnimations(10); //0-9
+			UIScore[i]->setCenter(0,0);
+			UIScore[i]->addSpriteAnimFrame(1,16,16);
+				for(int j=0 ; j<10 ; j++)
+				{
+					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
+				}
+			UIScore[i]->setLayerID(13);
+			UIScore[i]->setCurrentAnimation(i);
+			UIScore[i]->setPosition((380+(i*12)),233);
+			this->addSpriteToDrawList(UIScore[i]); 
+			}
+
+					//Sprite - UI Health
+			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
+			UIHealth->setSpriteFrameSize(184, 24);
+			UIHealth->setNumberOfAnimations(11);
+			UIHealth->setCenter(0,0);
+				for(int i=0 ; i<11 ; i++)
+				{
+					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
+				}
+			UIHealth->setPosition(8,227);
+			UIHealth->setCurrentAnimation(Health);
+			UIHealth->setLayerID(12);
+			this->addSpriteToDrawList(UIHealth);	
+
 			std::cout << "Before Biscuit" << std::endl;
 			MapConstraintsHome = Constraints("images/Levels/Map 1 Constraints.bmp");
 			std::cout << "At Biscuit" << std::endl;
@@ -411,8 +441,6 @@ void GameState::movement()
 	{ 
 				WaterBackgroundHome -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
-				Player->setPosition(160,95);
-				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
 				TransitionHomeOne->setPosition(-595,-54);
 				Ghosty1 ->setPosition(0,2000);
@@ -428,9 +456,11 @@ void GameState::movement()
 		/*Default deconstructor */
 	}
 
-
+	
 	void LevelHome::Update()
 	{
+		tickstime++;
+
 		tutorialLoad1();
 		tutorialLoad2();
 		tutorialLoad3();
@@ -455,12 +485,48 @@ void GameState::movement()
 	void LevelHome::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
+		if (key == 'x'){ ticksX++;};
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = true;
+				Player-> talk = true;
+				std::cout<< "I am talking" << std::endl;
+				break;
+			};
+		case 32:
+			{
+				Player-> interboxactive = true;
+				Player-> attack = true;
+				std::cout<< "I am attacking" << std::endl;	
+			};
+			break;
+		};
 	}
 
 
 	void LevelHome::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = false;
+				Player-> talk = false;
+				std::cout<< "Done talking" << std::endl;
+			};
+			break;
+		case 32:
+			{
+				Player-> interboxactive = false;
+				Player-> attack = false;
+				std::cout<< "Done attacking" << std::endl;
+			};
+			break;
+		};
+
 	}
 
 	void LevelHome::allowMovement()
@@ -601,71 +667,55 @@ void GameState::movement()
 	void LevelHome::tutorialLoad1()
 	{
 
-		if (tutorialDone ==true){}
+		if (tutorialDone ==false && tickstime < 30 && ticksX < 1){ 
+		LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+		}
 		else
 		{
-			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
-			tutorialDone= true;
+
 		}
 	}
 		void LevelHome::tutorialLoad2()
 	{
 
-		if (tutorialDone ==true){}
+		if (tutorialDone ==false && tickstime < 60 && ticksX  < 2){
+			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
+		}
 		else
 		{
-			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
-			tutorialDone= true;
+		
 		}
 	}
 			void LevelHome::tutorialLoad3()
 	{
 
-		if (tutorialDone ==true){}
+		if (tutorialDone ==false && tickstime < 90 && ticksX < 3){
+			
+			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
+		}
 		else
 		{
-			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
-			tutorialDone= true;
 		}
 	}
 void LevelHome::tutorialLoad4()
 	{
 
-		if (tutorialDone ==true){}
+		if (tutorialDone ==false && tickstime < 120 && ticksX < 4){
+			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+		}
 		else
 		{
-			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
-			tutorialDone= true;
 		}
 	}
 void LevelHome::tutorialLoad5()
 	{
 
-		if (tutorialDone ==true){}
-		else
-		{
-			LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
+		if (tutorialDone ==false && tickstime < 150 && ticksX < 5){
 			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
 			tutorialDone= true;
+		}
+		else
+		{
 		}
 	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
@@ -683,13 +733,16 @@ void LevelHome::tutorialLoad5()
 		active=false;
 		loadcheck=false;
 
+		Health=10; //Player at full health.
+		Score=0;   //Player at zero score.
+
 		    //Sprite - Water Background.
 			WaterBackgroundOne = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
 			WaterBackgroundOne -> setNumberOfAnimations(1);
 			WaterBackgroundOne -> setPosition(-1700,-750);
 			WaterBackgroundOne -> setCenter(0,0);
 			WaterBackgroundOne -> setLayerID (1);
-			WaterBackgroundOne ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackgroundOne -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			WaterBackgroundOne -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(WaterBackgroundOne);
 			this->addToObjectsList(WaterBackgroundOne);
@@ -705,13 +758,6 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map2_Base);
 			this->addToObjectsList(Map2_Base);
 
-			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
-
-			Player->setCurrentAnimation(1);
-			Player->setLayerID(4);
-			this->addSpriteToDrawList(Player);
-			this->addToObjectsList(Player);
 			
 			//Sprite - Map 1 Objects.
 			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 2500, 2000);
@@ -724,20 +770,52 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map2_Objects);
 			this->addToObjectsList(Map2_Objects);
 
-			//Sprite - UI Sample.
-			UISample = new Sprite ("images/Test UI.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(480,261);
-			UISample -> setPosition(0,0);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (7);
-			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
+			//Sprite - Player Sprites.
+
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
+			Player->setCurrentAnimation(1);
+			Player->direction= 1;
+			Player->setLayerID(4);
+			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
+
+			//Sprite - UI Score.
+			for(int i=0 ; i<7; i++)
+			{ 	
+			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
+			UIScore[i]->setSpriteFrameSize(16,16);
+			UIScore[i]->setNumberOfAnimations(10); //0-9
+			UIScore[i]->setCenter(0,0);
+			UIScore[i]->addSpriteAnimFrame(1,16,16);
+				for(int j=0 ; j<10 ; j++)
+				{
+					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
+				}
+			UIScore[i]->setLayerID(13);
+			UIScore[i]->setCurrentAnimation(i);
+			UIScore[i]->setPosition((380+(i*12)),233);
+			this->addSpriteToDrawList(UIScore[i]); 
+			}
+
+					//Sprite - UI Health
+			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
+			UIHealth->setSpriteFrameSize(184, 24);
+			UIHealth->setNumberOfAnimations(11);
+			UIHealth->setCenter(0,0);
+				for(int i=0 ; i<11 ; i++)
+				{
+					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
+				}
+			UIHealth->setPosition(8,227);
+			UIHealth->setCurrentAnimation(Health);
+			UIHealth->setLayerID(12);
+			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit One" << std::endl;
 			MapConstraintsOne = Constraints("images/Levels/Map 2 Constraints.bmp");
 			std::cout << "At Biscuit One" << std::endl;
+
+
 	}
 
 
@@ -745,8 +823,6 @@ void LevelHome::tutorialLoad5()
 	{ 
 				WaterBackgroundOne -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
-				Player-> setPosition(160,95);
-				Player-> setCurrentAnimation(1);
 				Map2_Objects -> setPosition(-475,-1410);
 	}
 
@@ -847,6 +923,9 @@ void LevelHome::tutorialLoad5()
 		active=false;
 		loadcheck=false;
 
+		Health=10; //Player at full health.
+		Score=0;   //Player at zero score.
+
 		    //Sprite - Water Background.
 			WaterBackgroundTwo = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
 			WaterBackgroundTwo -> setNumberOfAnimations(1);
@@ -870,12 +949,7 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map3_Base);
 			this->addToObjectsList(Map3_Base);
 
-			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
-			Player->setCurrentAnimation(1);
-			Player->setLayerID(4);
-			this->addSpriteToDrawList(Player);
-			this->addToObjectsList(Player);
+
 			
 			//Sprite - Map 1 Objects.
 			Map3_Objects = new Objects ("images/Levels/Map 3 Objects.png",2500,2000);
@@ -888,16 +962,46 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map3_Objects);
 			this->addToObjectsList(Map3_Objects);
 
-			//Sprite - UI Sample.
-			UISample = new Sprite ("images/Test UI.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(480,261);
-			UISample -> setPosition(0,0);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (7);
-			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
+			//Sprite - Player Sprites.
+
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
+			Player->setCurrentAnimation(1);
+			Player->direction= 1;
+			Player->setLayerID(4);
+			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
+
+			//Sprite - UI Score.
+			for(int i=0 ; i<7; i++)
+			{ 	
+			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
+			UIScore[i]->setSpriteFrameSize(16,16);
+			UIScore[i]->setNumberOfAnimations(10); //0-9
+			UIScore[i]->setCenter(0,0);
+			UIScore[i]->addSpriteAnimFrame(1,16,16);
+				for(int j=0 ; j<10 ; j++)
+				{
+					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
+				}
+			UIScore[i]->setLayerID(13);
+			UIScore[i]->setCurrentAnimation(i);
+			UIScore[i]->setPosition((380+(i*12)),233);
+			this->addSpriteToDrawList(UIScore[i]); 
+			}
+
+					//Sprite - UI Health
+			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
+			UIHealth->setSpriteFrameSize(184, 24);
+			UIHealth->setNumberOfAnimations(11);
+			UIHealth->setCenter(0,0);
+				for(int i=0 ; i<11 ; i++)
+				{
+					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
+				}
+			UIHealth->setPosition(8,227);
+			UIHealth->setCurrentAnimation(Health);
+			UIHealth->setLayerID(12);
+			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit Two" << std::endl;
 			MapConstraintsTwo = Constraints("images/Levels/Map 3 Constraints.bmp");
@@ -910,8 +1014,6 @@ void LevelHome::tutorialLoad5()
 	{ 
 				WaterBackgroundTwo -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
-				Player-> setPosition(160,95);
-				Player-> setCurrentAnimation(1);
 				Map3_Objects -> setPosition(-1552,-1402);
 	}
 
@@ -1011,6 +1113,9 @@ void LevelHome::tutorialLoad5()
 		active=false;
 		loadcheck=false;
 
+		Health=10; //Player at full health.
+		Score=0;   //Player at zero score.
+
 		    //Sprite - Water Background.
 			WaterBackgroundThree = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
 			WaterBackgroundThree -> setNumberOfAnimations(1);
@@ -1033,13 +1138,7 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map4_Base);
 			this->addToObjectsList(Map4_Base);
 
-			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60);
 
-			Player->setCurrentAnimation(1);
-			Player->setLayerID(4);
-			this->addSpriteToDrawList(Player);
-			this->addToObjectsList(Player);
 			
 			//Sprite - Map 1 Objects.
 			Map4_Objects = new Objects ("images/Levels/Map 4 Objects.png",2500,2000);
@@ -1053,18 +1152,47 @@ void LevelHome::tutorialLoad5()
 			this->addSpriteToDrawList(Map4_Objects);
 			this->addToObjectsList(Map4_Objects);
 
-			//Sprite - UI Sample.
-			UISample = new Sprite ("images/Test UI.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(480,261);
-			UISample -> setPosition(0,0);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (7);
-			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
+			//Sprite - Player Sprites.
 
-			
+			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
+			Player->setCurrentAnimation(1);
+			Player->direction= 1;
+			Player->setLayerID(4);
+			this->addSpriteToDrawList(Player);
+			this->addToObjectsList(Player);
+
+						//Sprite - UI Score.
+			for(int i=0 ; i<7; i++)
+			{ 	
+			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
+			UIScore[i]->setSpriteFrameSize(16,16);
+			UIScore[i]->setNumberOfAnimations(10); //0-9
+			UIScore[i]->setCenter(0,0);
+			UIScore[i]->addSpriteAnimFrame(1,16,16);
+				for(int j=0 ; j<10 ; j++)
+				{
+					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
+				}
+			UIScore[i]->setLayerID(13);
+			UIScore[i]->setCurrentAnimation(i);
+			UIScore[i]->setPosition((380+(i*12)),233);
+			this->addSpriteToDrawList(UIScore[i]); 
+			}
+
+					//Sprite - UI Health
+			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
+			UIHealth->setSpriteFrameSize(184, 24);
+			UIHealth->setNumberOfAnimations(11);
+			UIHealth->setCenter(0,0);
+				for(int i=0 ; i<11 ; i++)
+				{
+					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
+				}
+			UIHealth->setPosition(8,227);
+			UIHealth->setCurrentAnimation(Health);
+			UIHealth->setLayerID(12);
+			this->addSpriteToDrawList(UIHealth);	
+
 			std::cout << "Before Biscuit Three" << std::endl;
 			MapConstraintsThree = Constraints("images/Levels/Map 4 Constraints.bmp");
 			std::cout << "At Biscuit Three" << std::endl;
@@ -1078,6 +1206,7 @@ void LevelHome::tutorialLoad5()
 				Map4_Base -> setPosition(-1404,-1384);
 				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
+				Player->direction=1;
 				Map4_Objects -> setPosition(-1404,-1384);
 	}
 
@@ -1122,6 +1251,8 @@ void LevelHome::tutorialLoad5()
 	newMapPositionX = (Map4_Base->positionX) + (Map4_Base->inMotionSpeedX);
 	newMapPositionY = (Map4_Base->positionY) + (Map4_Base->inMotionSpeedY);
 
+	
+	
 	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
 	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
 	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
@@ -1181,11 +1312,7 @@ void LevelHome::tutorialLoad5()
 		Score=0;   //Player at zero score.
 
 
-			//Sprite - Player Sprites.
-			Player = new MainCharacter("images/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
-			Player->setCurrentAnimation(1);
-			this->addSpriteToDrawList(Player);
-			this->addToObjectsList(Player);
+
 
 			//Sprite - UI Health
 			UIHealth = new Sprite("images/UIHealth.png"); //Layer 12- Health
@@ -1218,6 +1345,7 @@ void LevelHome::tutorialLoad5()
 			UIScore[i]->setPosition((380+(i*12)),233);
 			this->addSpriteToDrawList(UIScore[i]); 
 			}
+
 			ScoreUpdate();
 
 			//Sprite - UI Actionbar.
@@ -1249,6 +1377,7 @@ void LevelHome::tutorialLoad5()
 	{ 
 				Player->setPosition(210,110);
 				Player-> setCurrentAnimation(1);
+				Player-> direction = 1;
 	}
 
 
@@ -1271,15 +1400,6 @@ void LevelHome::tutorialLoad5()
 	{
 
 
-	 		if (test == true) //Horozontal Movement:
-			{
-				
-			}
-			else //Vertical Movement:
-			{
-				
-			}
-
 	}
 
 
@@ -1292,26 +1412,6 @@ void LevelHome::tutorialLoad5()
 					     break;
 				case 27: // the escape key
 					     break;
-
-				case 'w':
-						 Player->setCurrentAnimation(2);
-						 Player->nextFrame();
-						 break;
-
-				case 'a':
-						 Player->setCurrentAnimation(4);
-						 Player->nextFrame();
-						 break;
-
-				case 'd':
-						 Player->setCurrentAnimation(3);
-						 Player->nextFrame();
-						 break;
-
-				case 's':
-						 Player->setCurrentAnimation(1);
-						 Player->nextFrame();
-						 break;
 				case 45: if(0<Health)
 						 Health--;
 						 UIHealth->setCurrentAnimation(Health);
@@ -1321,11 +1421,11 @@ void LevelHome::tutorialLoad5()
 						 UIHealth->setCurrentAnimation(Health);
 						 break;
 				case 'o': Score--;
-						  //UIScore[6]->setCurrentAnimation(Score);
+						  UIScore[6]->setCurrentAnimation(Score);
 						  ScoreUpdate();
 						  break;
 				case 'p': Score++;
-						  //UIScore[6]->setCurrentAnimation(Score);
+						  UIScore[6]->setCurrentAnimation(Score);
 						  ScoreUpdate();
 						  break;
 			}
@@ -1340,15 +1440,6 @@ void LevelHome::tutorialLoad5()
 						 break;
 				case 27: // the escape key
 						 break;
-		
-				case 'w':
-						break;
-				case 'a':
-						break;
-				case 'd':
-						break;
-				case 's':
-						break;
 			}
 	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
@@ -1439,7 +1530,7 @@ void LevelHome::tutorialLoad5()
 		}
 		else if(active == true && ticked == true)
 		{
-			if (ticks >= 20)
+			if (ticks >= 35)
 			{
 				active = false;
 				ticked = false;

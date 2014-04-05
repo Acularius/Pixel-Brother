@@ -2,9 +2,9 @@
 
 
 
-/*
-Sets up the hitbox in relation to the object it is created for
-*/
+
+//Sets up the hitbox in relation to the object it is created for
+
 
 Hitbox::Hitbox()
 {
@@ -48,6 +48,62 @@ void Hitbox::updateHitbox(float inputPositionX, float inputPositionY, bool playe
 	topCornerY = bottomCornerY + height;
 };
 
-// =======================================================================
-// =======================================================================
+ //=======================================================================
+ //=======================================================================
 
+InteractBox::InteractBox()
+{
+	faceHeight = 33; faceWidth = 30; 
+	sideWidth = 33; sideHeight = 35;
+
+	leftCornerX = rightCornerX = bottomCornerY= topCornerY = 0;
+	active, attack, talk = false;
+
+}
+
+InteractBox::~InteractBox(void)
+{
+// Default Deconstructor
+}
+
+
+void InteractBox::InteractBoxActive(bool inputactive, bool intalk, bool inattack, int indirection, float inPosX, float inPosY) // Bottom corner of hitbox
+{
+	active = inputactive;
+	talk = intalk;
+	attack = inattack;
+	
+	if ( active == true)
+	{
+		switch (indirection)
+		{
+		case 1: // Facing down, s key. (0,0) = top left of player's bottom left
+			{
+				leftCornerX = inPosX - 5; topCornerY = inPosY - 3;
+				rightCornerX = leftCornerX + faceWidth ; bottomCornerY = topCornerY - faceHeight; 
+			};
+		case 2: // Facing up, w key. (0,0) = bottom left of player's top left
+			{
+				leftCornerX = inPosX - 5; bottomCornerY = inPosY -3;
+				rightCornerX = leftCornerX + faceWidth; topCornerY = bottomCornerY + faceHeight;
+
+			};
+		case 3: // Facing right, d key. (0,0) = bottom right of player's bottom left
+			{
+				rightCornerX = inPosX +3 ; bottomCornerY  = inPosY -5;
+				leftCornerX = rightCornerX - sideWidth; topCornerY = bottomCornerY + sideHeight;
+ 			};
+		case 4: // Facing Left, a key. (0,0) = bottom left of player's bottom left
+			{
+				leftCornerX = inPosX - 3; bottomCornerY = inPosY -5;
+				rightCornerX = leftCornerX + sideWidth; topCornerY = bottomCornerY + sideHeight;
+
+			};
+		case 0:{break;} //Nothing happens with the default 0 direction
+
+		}
+	} 
+	else
+	{};
+
+}

@@ -63,6 +63,8 @@ void Game::initializeGame()
 	StateThree->Init(this);
 	states.push_back(StateThree);
 
+
+
 	MessageState* Msg = new MessageState();
 	Msg->Init(this);
 	states.push_back(Msg);
@@ -290,27 +292,22 @@ switch(key)
 			case '2': {		
 							SwitchStateTo (StateHome, 2);
 //							playEnvironment();
-							//StateControl(UI,true,6);
 							MessageControl(Msg, 3, 7);
 							break;  }
 			case '3': {		
 							SwitchStateTo (StateHome, 3);
-							//StateControl(UI,true,6);
 							MessageControl(Msg, 2, 7);
 							break;  }
 			case '4': {		SwitchStateTo (StateHome, 4);
-							//StateControl(UI,true,6);
 							MessageControl(Msg, 1, 7);
 							break;  }
 			case '5': {		SwitchStateTo (StateHome, 5);
-							//StateControl(UI,true,6);
 							MessageControl(Msg, 0, 7);
 							break;  }
 			case 't': {     std::cout<<"YOLO\n"; break; }
 			case 'm': {    // playBeepSound(); break; }
 			case 27:  {     StateToggle (MenuState, 1);
 						    StateToggle (StateOne, 2);
-						    //StateToggle (UI,6);
 							break; }
 			}
 }

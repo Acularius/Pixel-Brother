@@ -16,3 +16,20 @@ public:
 	void updateHitbox(float inputPositionX, float inputPositionY, bool playerCheck);
 };
 
+
+class InteractBox
+{
+public:
+	InteractBox::InteractBox();
+	~InteractBox(void);
+
+	bool active, attack, talk;
+
+	int faceWidth, faceHeight; // up or down facing
+	int sideWidth,sideHeight; //looking to the sides
+	float leftCornerX, rightCornerX, bottomCornerY, topCornerY; //Corners of the hitbox.
+
+	void createInteractBox();
+	void InteractBoxActive(bool inputactive, bool intalk, bool inattack, int indirection, float inPosX, float inPosY);
+
+};
