@@ -79,6 +79,10 @@ typedef struct _GameStateInfo
 	int screenWidth, screenHeight;
 
 	float ratioWidth,ratioHeight;
+
+	//Store UI information
+	int storePlayerHp;
+	int storePlayerScore;
 }GameStateInfo;
 
 /* 
@@ -153,7 +157,6 @@ public:
 	
 	/* game state info */
 	GameStateInfo stateInfo;
-
 
 	InputInfo input;
 

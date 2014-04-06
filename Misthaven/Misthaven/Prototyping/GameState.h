@@ -45,8 +45,7 @@
 		bool loadcheck; //Checks If already Initialized.
 		int StateNum;   //State Number for transitioning.
 		int anynumber;  //Various purpose number.
-		int scoreStore;	// Stores the score
-		int healthStore; // Stores the health
+
 
 //-------------------------------------------------------------------------------------------
 

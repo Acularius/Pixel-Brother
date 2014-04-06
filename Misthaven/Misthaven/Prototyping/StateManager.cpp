@@ -45,6 +45,17 @@
 			if (*it)
 			{	  
 				  GameState* s = (*it);
+				  if(s->active==true);
+				  {
+				  std::vector<GameState*>::iterator gsStateinfo;
+				  for (gsStateinfo = states.begin(); gsStateinfo != states.end(); gsStateinfo++)
+				  {
+						GameState* sStateChange = (*gsStateinfo);
+						sStateChange->LocalGame->stateInfo.storePlayerHp = s->LocalGame->stateInfo.storePlayerHp;
+						sStateChange->LocalGame->stateInfo.storePlayerScore = s->LocalGame->stateInfo.storePlayerScore;
+				  }
+
+				  }
 				  if(s->StateNum==num)
 				  { 
 					  s->active = a;    // Setting value to 'a' (true/false).

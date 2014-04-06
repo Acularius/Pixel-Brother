@@ -6,6 +6,7 @@
 
 			#include "GameState.h"
 
+
 //-------------------------------------------------------------------------------------------
 //  Uses GameState.h to implement the game states and define their respective functions. 
 //-------------------------------------------------------------------------------------------
@@ -384,8 +385,6 @@ void GameState::combatSystem() //
 		tutorialDone = false;
 		tickstime = 0;
 		ticksX = 0;
-		healthStore = 10;
-		scoreStore = 0;
 
 
 		    //Sprite - Water Background.
@@ -495,6 +494,12 @@ void GameState::combatSystem() //
 
 	void LevelHome::ResetMap()
 	{ 
+		
+		
+				LocalGame->stateInfo.storePlayerHp = 10;
+				LocalGame->stateInfo.storePlayerScore = 0; 
+				
+
 				WaterBackgroundHome -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
@@ -503,6 +508,11 @@ void GameState::combatSystem() //
 				Ghosty2 ->setPosition(2500,0);
 				Ghosty3 ->setPosition(0,-2000);
 				Ghosty4 ->setPosition(-2500,0);
+
+				Player->hP = LocalGame->stateInfo.storePlayerHp;
+				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
+
+
 
 	}
 
@@ -517,7 +527,6 @@ void GameState::combatSystem() //
 	{
 		tickstime++;
 		
-
 		tutorialLoad1();
 		tutorialLoad2();
 		tutorialLoad3();
@@ -665,11 +674,13 @@ void GameState::combatSystem() //
 		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
 			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
 		{
+			//Transfer points
+			LocalGame->stateInfo.storePlayerHp = Player->hP;
+			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
+
 			std::cout << "BING!" << std::endl;
 			this->LocalGame->SwitchStateTo(this, 3); // To Level 3~!
 			this->LocalGame->MessageControl(this->LocalGame->Msg, 2,7);
-			//Transfer points
-
 		}
 		else
 		{
@@ -901,6 +912,11 @@ void LevelHome::tutorialLoad5()
 				WaterBackgroundOne -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
 				Map2_Objects -> setPosition(-475,-1410);
+
+				
+				
+				Player->hP = LocalGame->stateInfo.storePlayerHp;
+				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
 
@@ -1006,8 +1022,6 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		healthStore = 10;
-		scoreStore = 0;
 
 
 		    //Sprite - Water Background.
@@ -1089,6 +1103,9 @@ void LevelHome::tutorialLoad5()
 				WaterBackgroundTwo -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
 				Map3_Objects -> setPosition(-1552,-1402);
+
+				Player->hP = LocalGame->stateInfo.storePlayerHp;
+				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
 
@@ -1192,8 +1209,6 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		healthStore = 10;
-		scoreStore = 0;
 
 		    //Sprite - Water Background.
 			WaterBackgroundThree = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
@@ -1277,6 +1292,9 @@ void LevelHome::tutorialLoad5()
 				Player-> setCurrentAnimation(1);
 				Player->direction=1;
 				Map4_Objects -> setPosition(-1404,-1384);
+				
+				Player->hP = LocalGame->stateInfo.storePlayerHp;
+				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
 
@@ -1380,8 +1398,6 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		healthStore = 10;
-		scoreStore = 0;
 
 		Health=10; //Player at full health.
 		Score=0;   //Player at zero score.
@@ -1531,8 +1547,6 @@ void LevelHome::tutorialLoad5()
 		ticked=false;
 		ticks= 0;
 		loadcheck=false;
-		healthStore = 10;
-		scoreStore = 0;
 		anynumber=4;
 
 		transitionTimer = new Timer("TRANSITION");

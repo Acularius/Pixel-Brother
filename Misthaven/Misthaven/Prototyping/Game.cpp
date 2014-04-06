@@ -22,7 +22,9 @@ Game::Game(void)
 	stateInfo.gameState = STATE_GAMEPLAY;
 	renderingTimer = new Timer("RENDER");
 	updateTimer = new Timer("UPDATE");
-//	iScore = 0;
+
+	stateInfo.storePlayerHp = 10;
+	stateInfo.storePlayerScore = 0;
 	
 }
 
