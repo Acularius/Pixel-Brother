@@ -18,6 +18,8 @@ public:
 	float inMotionSpeed; // The speed that everyone moves in relation to the player
 	float respectiveSpeed; //The speed an object moves whether or not the player is moving or not. Max Speed.
 
+	int tickFrame;
+
 
 	virtual void update();
 

@@ -45,6 +45,8 @@
 		bool loadcheck; //Checks If already Initialized.
 		int StateNum;   //State Number for transitioning.
 		int anynumber;  //Various purpose number.
+		int scoreStore;	// Stores the score
+		int healthStore; // Stores the health
 
 //-------------------------------------------------------------------------------------------
 
@@ -56,6 +58,10 @@
 
 //-------------------------------------------------------------------------------------------
 	void addToObjectsList(Objects *o);
+
+	// Score UI
+	Sprite *UIScore[7];
+	void ScoreUpdate(int inScore);
 
 			/* Object list for movement */
 	std::vector<Objects*> objectsList;
@@ -128,7 +134,7 @@
 		 bool tutorialDone;
 
 		 
-		 void ScoreUpdate(int inScore);
+//		 void ScoreUpdate(int inScore);
 
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
@@ -139,7 +145,7 @@
 		
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
-		Sprite *UIScore[7];
+		//Sprite *UIScore[7];
 		Health *UIHealth;
 		Ghost *Ghosty1;
 		Ghost *Ghosty2;
@@ -155,9 +161,7 @@
 	class LevelOne:public GameState
 	{
 	  public:
-		int Health;		// PlayerHealth;
-		int Score;		// PlayerScore;
-		int tempscore;  // Variable for ScoreUpdate;
+
 		 void Init(Game* Local);
 		 void ResetMap();
 		 void Update();
@@ -167,6 +171,8 @@
 
 		 void allowMovement();
 
+		 //void ScoreUpdate(int inScore);
+
 			 //SPRITE DECLARATIONS
 			 Objects *Map2_Base;
 			 Objects *Map2_Objects;
@@ -174,8 +180,10 @@
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsOne;
-			 Sprite *UIScore[7];
-			 Sprite *UIHealth;
+			 //Sprite *UIScore[7];
+			 Health *UIHealth;
+			 
+			 
 
 
 	};
@@ -187,9 +195,7 @@
 	class LevelTwo:public GameState
 	{
 	  public:
-		int Health;		// PlayerHealth;
-		int Score;		// PlayerScore;
-		int tempscore;  // Variable for ScoreUpdate;
+
 		 void Init(Game* Local);
 		 void ResetMap();
 		 void Update();
@@ -206,8 +212,8 @@
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsTwo;
-			 Sprite *UIScore[7];
-			 Sprite *UIHealth;
+			// Sprite *UIScore[7];
+			 Health *UIHealth;
 
 	};
 
@@ -218,9 +224,6 @@
 	class LevelThree:public GameState
 	{
 	  public:
-		int Health;		// PlayerHealth;
-		int Score;		// PlayerScore;
-		int tempscore;  // Variable for ScoreUpdate;
 
 		 void Init(Game* Local);
 		 void ResetMap();
@@ -238,8 +241,8 @@
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsThree;
-			 Sprite *UIScore[7];
-			 Sprite *UIHealth;
+			 //Sprite *UIScore[7];
+			 Health *UIHealth;
 
 
 

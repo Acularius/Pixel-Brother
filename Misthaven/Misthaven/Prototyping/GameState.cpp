@@ -154,7 +154,21 @@ void GameState::combatSystem() //
 	};
 
 
+
+
 }
+
+//Sprite - UI Score.
+	void GameState::ScoreUpdate(int inScore)
+	{
+		int tempScore;
+		tempScore=inScore;
+		for(int i=6 ; i>0; i--)
+		{	
+			UIScore[i]->setCurrentAnimation(tempScore%10);
+			tempScore=tempScore/10;
+		}
+	}
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -370,6 +384,8 @@ void GameState::combatSystem() //
 		tutorialDone = false;
 		tickstime = 0;
 		ticksX = 0;
+		healthStore = 10;
+		scoreStore = 0;
 
 
 		    //Sprite - Water Background.
@@ -465,7 +481,6 @@ void GameState::combatSystem() //
 
 					// UI Health
 			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
-			//this->addToObjectsList(UIHealth);
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit" << std::endl;
@@ -501,7 +516,7 @@ void GameState::combatSystem() //
 	void LevelHome::Update()
 	{
 		tickstime++;
-		UIHealth->inputHealth(Player->hP);
+		
 
 		tutorialLoad1();
 		tutorialLoad2();
@@ -526,8 +541,9 @@ void GameState::combatSystem() //
 		ghostPlayCollide();
 		combatSystem();
 
-		//Score
+		//UI Update
 		ScoreUpdate(Player->scoreStorage);
+		UIHealth->inputHealth(Player->hP);
 
 	}
 
@@ -652,6 +668,7 @@ void GameState::combatSystem() //
 			std::cout << "BING!" << std::endl;
 			this->LocalGame->SwitchStateTo(this, 3); // To Level 3~!
 			this->LocalGame->MessageControl(this->LocalGame->Msg, 2,7);
+			//Transfer points
 
 		}
 		else
@@ -723,7 +740,7 @@ void GameState::combatSystem() //
 
 	}
 
-	void LevelHome::tutorialLoad1()
+void LevelHome::tutorialLoad1()
 	{
 
 		if (tutorialDone ==false && tickstime < 30 && ticksX < 1){ 
@@ -734,7 +751,7 @@ void GameState::combatSystem() //
 
 		}
 	}
-		void LevelHome::tutorialLoad2()
+void LevelHome::tutorialLoad2()
 	{
 
 		if (tutorialDone ==false && tickstime < 60 && ticksX  < 2){
@@ -745,7 +762,7 @@ void GameState::combatSystem() //
 		
 		}
 	}
-			void LevelHome::tutorialLoad3()
+void LevelHome::tutorialLoad3()
 	{
 
 		if (tutorialDone ==false && tickstime < 90 && ticksX < 3){
@@ -778,16 +795,16 @@ void LevelHome::tutorialLoad5()
 		}
 	}
 
-	void LevelHome::ScoreUpdate(int inScore)
-	{
-		int tempScore;
-		tempScore=inScore;
-		for(int i=6 ; i>0; i--)
-		{	
-			UIScore[i]->setCurrentAnimation(tempScore%10);
-			tempScore=tempScore/10;
-		}
-	}
+	//void LevelHome::ScoreUpdate(int inScore)
+	//{
+	//	int tempScore;
+	//	tempScore=inScore;
+	//	for(int i=6 ; i>0; i--)
+	//	{	
+	//		UIScore[i]->setCurrentAnimation(tempScore%10);
+	//		tempScore=tempScore/10;
+	//	}
+	//}
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
@@ -805,8 +822,6 @@ void LevelHome::tutorialLoad5()
 		active=false;
 		loadcheck=false;
 
-		Health=10; //Player at full health.
-		Score=0;   //Player at zero score.
 
 		    //Sprite - Water Background.
 			WaterBackgroundOne = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
@@ -831,7 +846,7 @@ void LevelHome::tutorialLoad5()
 			this->addToObjectsList(Map2_Base);
 
 			
-			//Sprite - Map 1 Objects.
+			//Sprite - Map 2 Objects.
 			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 2500, 2000);
 			Map2_Objects -> setNumberOfAnimations(1);
 			Map2_Objects -> setPosition(-475,-1410);
@@ -870,17 +885,7 @@ void LevelHome::tutorialLoad5()
 			}
 
 					//Sprite - UI Health
-			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
-			UIHealth->setSpriteFrameSize(184, 24);
-			UIHealth->setNumberOfAnimations(11);
-			UIHealth->setCenter(0,0);
-				for(int i=0 ; i<11 ; i++)
-				{
-					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
-				}
-			UIHealth->setPosition(8,227);
-			UIHealth->setCurrentAnimation(Health);
-			UIHealth->setLayerID(12);
+			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit One" << std::endl;
@@ -907,9 +912,16 @@ void LevelHome::tutorialLoad5()
 
 	void LevelOne::Update()
 	{
+
 		updateObjects();
 		allowMovement();
 		movement();
+
+		//UI Update
+		ScoreUpdate(Player->scoreStorage);
+		UIHealth->inputHealth(Player->hP);
+
+
 	}
 
 
@@ -994,9 +1006,9 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
+		healthStore = 10;
+		scoreStore = 0;
 
-		Health=10; //Player at full health.
-		Score=0;   //Player at zero score.
 
 		    //Sprite - Water Background.
 			WaterBackgroundTwo = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
@@ -1062,17 +1074,7 @@ void LevelHome::tutorialLoad5()
 			}
 
 					//Sprite - UI Health
-			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
-			UIHealth->setSpriteFrameSize(184, 24);
-			UIHealth->setNumberOfAnimations(11);
-			UIHealth->setCenter(0,0);
-				for(int i=0 ; i<11 ; i++)
-				{
-					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
-				}
-			UIHealth->setPosition(8,227);
-			UIHealth->setCurrentAnimation(Health);
-			UIHealth->setLayerID(12);
+			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit Two" << std::endl;
@@ -1098,9 +1100,15 @@ void LevelHome::tutorialLoad5()
 
 	void LevelTwo::Update()
 	{
+		
+
 		updateObjects();
 		allowMovement();
 		movement();	
+
+		//UI Update
+		ScoreUpdate(Player->scoreStorage);
+		UIHealth->inputHealth(Player->hP);
 	}
 
 
@@ -1184,9 +1192,8 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-
-		Health=10; //Player at full health.
-		Score=0;   //Player at zero score.
+		healthStore = 10;
+		scoreStore = 0;
 
 		    //Sprite - Water Background.
 			WaterBackgroundThree = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
@@ -1252,17 +1259,7 @@ void LevelHome::tutorialLoad5()
 			}
 
 					//Sprite - UI Health
-			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
-			UIHealth->setSpriteFrameSize(184, 24);
-			UIHealth->setNumberOfAnimations(11);
-			UIHealth->setCenter(0,0);
-				for(int i=0 ; i<11 ; i++)
-				{
-					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
-				}
-			UIHealth->setPosition(8,227);
-			UIHealth->setCurrentAnimation(Health);
-			UIHealth->setLayerID(12);
+			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit Three" << std::endl;
@@ -1294,6 +1291,10 @@ void LevelHome::tutorialLoad5()
 		updateObjects();
 		allowMovement();
 		movement();	
+
+		//UI Update
+		ScoreUpdate(Player->scoreStorage);
+		UIHealth->inputHealth(Player->hP);
 	}
 
 
@@ -1379,6 +1380,8 @@ void LevelHome::tutorialLoad5()
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
+		healthStore = 10;
+		scoreStore = 0;
 
 		Health=10; //Player at full health.
 		Score=0;   //Player at zero score.
@@ -1528,6 +1531,8 @@ void LevelHome::tutorialLoad5()
 		ticked=false;
 		ticks= 0;
 		loadcheck=false;
+		healthStore = 10;
+		scoreStore = 0;
 		anynumber=4;
 
 		transitionTimer = new Timer("TRANSITION");

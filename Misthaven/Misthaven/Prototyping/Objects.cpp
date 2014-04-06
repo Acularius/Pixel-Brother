@@ -18,6 +18,10 @@ Objects::Objects(std::string filename, int width, int height)
 
 	this-> setPosition(0,0);
 
+	//Tick to slow down frame.
+
+	this->tickFrame = 0;
+
 	//Combat
 	immortal = true;
 	hP = 0;
@@ -51,8 +55,20 @@ Objects::~Objects()
 }
 void Objects::update() 
 {
+	tickFrame++;
+if(player == true && inMotion == true)
+{
+	this-> nextFrame();
+}
+else if(tickFrame >= 2)
+{
+	this->nextFrame();
+	tickFrame = 0;
+}
+else
+{
+}
 
-this-> nextFrame();
 this-> ObjectHitbox->updateHitbox(positionX,positionY, player);
 this-> ObjectActBox->InteractBoxActive(interboxactive, talk, interboxactive, direction, (ObjectHitbox->leftCornerX), (ObjectHitbox->bottomCornerY));
 
@@ -84,6 +100,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				{
 					this->setCurrentAnimation(2);
 					this->direction = 2;
+					this->inMotion = true;
 				};
 				break;
 			};
@@ -96,6 +113,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				{
 					this-> setCurrentAnimation(1);
 					this-> direction = 1;
+					this->inMotion = true;
 				};
 				break;
 			};
@@ -108,6 +126,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				{
 					this->setCurrentAnimation(4);
 					this-> direction=4;
+					this->inMotion = true;
 				};
 				break;
 			};
@@ -121,6 +140,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 				{
 					this-> setCurrentAnimation(3);
 					this-> direction=3;
+					this->inMotion = true;
 				};
 				break;
 			};
@@ -128,6 +148,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 			{
 				if(player == true){
 				this-> setCurrentAnimation(direction+4);
+				this->inMotion = true;
 				};
 			};
 			break;
@@ -149,6 +170,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			{
 				this-> setCurrentAnimation(2);
 				this-> direction = 2;
+				this->inMotion = false;
 			};
 			break;
 		};
@@ -161,6 +183,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			{
 				this-> setCurrentAnimation(1);
 				this-> direction = 1;
+				this->inMotion = false;
 			};
 			break;
 		};
@@ -173,6 +196,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			{
 				this-> setCurrentAnimation(4);
 				this-> direction = 4;
+				this-> inMotion = false;
 			};
 		break;
 			 };
@@ -185,6 +209,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			{
 				this-> setCurrentAnimation(3);
 				this-> direction=3;
+				this->inMotion = false;
 			}
 			break;
 		};
@@ -193,6 +218,7 @@ void Objects::movementStop(unsigned char key) //Keyboard Up
 			{
 				if(player==true){
 			this-> setCurrentAnimation(direction);
+			this->inMotion = false;
 				};
 			break;
 			};
