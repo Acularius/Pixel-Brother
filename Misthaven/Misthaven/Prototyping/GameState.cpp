@@ -102,9 +102,52 @@ void GameState::movement()
 		o-> positionY = newPositionY;
 	};
 
-
 }
 
+// Stage 1: check for combat initiation
+// Stage 2: check for all non-immortal objects for intercept
+// Stage 3: If intercept, proceed to combat
+void GameState::combatSystem() // 
+{
+	std::vector<Objects*>::iterator initCombatant; // Initiator combatant
+	for(initCombatant= objectsList.begin() ; initCombatant !=objectsList.end() ; initCombatant++)
+	{
+		Objects *oInitiator = (*initCombatant);
+		if ((oInitiator->ObjectActBox->active == true) && (oInitiator->ObjectActBox->attack == true) )
+		{
+			std::cout << "Stage 1 - Combat initiated" << std::endl;
+			std::vector<Objects*>::iterator oppoCombatant; // Opponents
+			for(oppoCombatant= objectsList.begin(); oppoCombatant !=objectsList.end() ; oppoCombatant++)
+			{
+				Objects *oOpponent = (*oppoCombatant);
+				if (oOpponent->immortal == false)
+				{
+					//if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
+				//		( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
+					if( ( ( (oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
+						( ( (oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
+					{
+						std::cout<< "You wound me~!" << std::endl;
+						//Damage Resolution
+						(oOpponent->hP) -= (oInitiator->dam); 
+					}
+				}
+				else
+				{
+				// Its immortal, No Combat.
+				};
+			}
+
+		}
+		else
+		{
+			//No combat
+		}
+	
+	};
+
+
+}
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -467,16 +510,21 @@ void GameState::movement()
 		tutorialLoad4();
 		tutorialLoad5();
 		Ghosty1->movementGhost(Player->positionX, Player->positionY);
+		Ghosty1->ghostRespawn();
 		Ghosty2->movementGhost(Player->positionX, Player->positionY);
+		Ghosty2->ghostRespawn();
 		Ghosty3->movementGhost(Player->positionX, Player->positionY);
+		Ghosty3->ghostRespawn();
 		Ghosty4->movementGhost(Player->positionX, Player->positionY);
+		Ghosty4->ghostRespawn();
 
 		updateObjects();
 		allowMovement();
 		movement();
 		transitionCheck();
 
-		ghostPlayCollide();
+		//ghostPlayCollide();
+		combatSystem();
 		
 
 	}
@@ -1375,9 +1423,7 @@ void LevelHome::tutorialLoad5()
 
 	void UIState::ResetMap()
 	{ 
-				Player->setPosition(210,110);
-				Player-> setCurrentAnimation(1);
-				Player-> direction = 1;
+
 	}
 
 

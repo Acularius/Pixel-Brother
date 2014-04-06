@@ -10,7 +10,6 @@ Objects::Objects(std::string filename, int width, int height)
 	this-> player = false;
 	this-> collidable = false;
 	this-> ghost = false;
-	this-> direction = 0;
 
 	//Movement speeds
 	this-> inMotion = false;
@@ -19,6 +18,13 @@ Objects::Objects(std::string filename, int width, int height)
 
 	this-> setPosition(0,0);
 
+	//Combat
+	immortal = true;
+	hP = 0;
+	dam= 0;
+	
+
+	direction = 0;
 	// Interactbox
 	attack= false;
 	talk = false;

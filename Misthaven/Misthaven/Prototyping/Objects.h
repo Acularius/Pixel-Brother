@@ -17,10 +17,16 @@ public:
 	bool inMotion; // In motion in relation to the player
 	float inMotionSpeed; // The speed that everyone moves in relation to the player
 	float respectiveSpeed; //The speed an object moves whether or not the player is moving or not. Max Speed.
-	int direction;
+
 
 	virtual void update();
 
+	//Combat
+	bool immortal; // Does it take damage?
+	int hP; //Hit Points
+	int dam; //Damage
+
+	int direction;
 	//Interact Box
 	bool attack;
 	bool talk;
@@ -59,8 +65,6 @@ public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
 
-	int Health;		// PlayerHealth;
-	int Score;		// PlayerScore;
 
 	Hitbox *ObjectHitbox;
 
@@ -85,6 +89,7 @@ public:
 
 
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
+	void ghostRespawn();
 };
 
 

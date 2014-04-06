@@ -8,10 +8,15 @@ Ghost::Ghost (std::string filename, int width, int height)
 	this-> setCurrentAnimation(0);
 	this-> direction=0;
 	this-> ghost=true;
+	this-> immortal = false;
 
 	this-> respectiveSpeed = 3;
 
 	this-> setLayerID(6);
+
+	//Combat info
+	hP = 5;
+	dam = 1;
 
 }
 
@@ -56,4 +61,36 @@ void Ghost::movementGhost(float inPlayerPosX, float inPlayerPosY)
 	{
 		(this->respectiveSpeedY) = stop;
 	};
+}
+
+void Ghost::ghostRespawn()
+{
+	if (hP <= 0)
+	{
+		hP = 5;
+			std::cout << "Alas I am dead.!" << std::endl;
+			int randspot = rand() % 3;
+			switch(randspot)
+			{
+				case 0: { 
+					setPosition(0,2000);
+					break;
+				  }
+					case 1: { 
+					setPosition(0,-2000);
+					break;
+				  }
+					case 2: { 
+					setPosition(2500,0);
+					break;
+				  }
+					case 3: { 
+					setPosition(-2500,2000);
+					break;
+				  }
+			}
+	}
+	else
+	{
+	}
 }

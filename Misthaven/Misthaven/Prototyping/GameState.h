@@ -67,7 +67,8 @@
 	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
 	void movement(); // Basically adds respectiveMoveSpeeds in order to have overall movement on the map.
 
-//	void allowMovement(); //checks constraints to allow for player movement
+			// Combat
+	void combatSystem();
 
 };
 
@@ -260,8 +261,6 @@
 		 void ScoreUpdate();
 		 ~UIState(void);
 
-			// Player
-		 MainCharacter *Player;
 			 //SPRITE DECLARATIONS
 		 	 Sprite *UISample;
 			 Sprite *UIHealth;
