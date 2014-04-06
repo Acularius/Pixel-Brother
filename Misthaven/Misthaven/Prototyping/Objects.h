@@ -32,6 +32,9 @@ public:
 	bool talk;
 	bool interboxactive;
 
+	//Score
+	int scoreStorage;
+
 	//Movement
 	float inMotionSpeedX; // Object's move speed in pixels. X (left or right) - When the player moves - X Plane
 	float inMotionSpeedY; // Object's move speed in pixels. Y (up or down) - When the player moves - Y plane
@@ -94,16 +97,15 @@ public:
 
 
 
-	class Transition : public Objects 
-	{
+class Transition : public Objects 
+{
 public:
-		~Transition(void);
-		Transition(std::string filename, int width, int height);
+	~Transition(void);
+	Transition(std::string filename, int width, int height);
 
+	bool transition;
+	int toLevel;
 
-		bool transition;
-		int toLevel;
-
-	};
+};
 
 

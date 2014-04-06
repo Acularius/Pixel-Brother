@@ -108,9 +108,6 @@
 	class LevelHome:public GameState
 	{
 	  public:
-		int Health;		// PlayerHealth;
-		int Score;		// PlayerScore;
-		int tempscore;  // Variable for ScoreUpdate;
 		int tickstime, ticksX;
 
 		 void Init(Game* Local);
@@ -130,6 +127,9 @@
 		 void tutorialLoad5();
 		 bool tutorialDone;
 
+		 
+		 void ScoreUpdate(int inScore);
+
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
 			 Objects *Map1_Objects;
@@ -140,7 +140,7 @@
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
 		Sprite *UIScore[7];
-		Sprite *UIHealth;
+		Health *UIHealth;
 		Ghost *Ghosty1;
 		Ghost *Ghosty2;
 		Ghost *Ghosty3;

@@ -16,7 +16,9 @@
 #include <algorithm>
 #include <cmath>
 
+#include "UserInterface.h"
 #include "Constraints.h"
+
 
 	//SOUND HEADER FILES:
 #include <fmod.h>

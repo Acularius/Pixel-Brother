@@ -33,8 +33,10 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	hP= 10;
 	dam = 1;
 
+	//Score
+	scoreStorage = 0;
 
-		// Hitbox for objects
+	// Hitbox for objects
 	ObjectHitbox = new Hitbox(20,25, positionX+20,positionY+10); 
 	
 

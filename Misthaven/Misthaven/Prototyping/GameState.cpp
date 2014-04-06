@@ -130,6 +130,13 @@ void GameState::combatSystem() //
 						std::cout<< "You wound me~!" << std::endl;
 						//Damage Resolution
 						(oOpponent->hP) -= (oInitiator->dam); 
+						if(oInitiator->player==true) // Update Player's score
+						{
+							oInitiator->scoreStorage += oInitiator->dam;
+						}
+						else
+						{
+						}
 					}
 				}
 				else
@@ -365,9 +372,6 @@ void GameState::combatSystem() //
 		ticksX = 0;
 
 
-		Health=10; //Player at full health.
-		Score=0;   //Player at zero score.
-
 		    //Sprite - Water Background.
 			WaterBackgroundHome = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
 			WaterBackgroundHome -> setNumberOfAnimations(1);
@@ -438,8 +442,8 @@ void GameState::combatSystem() //
 			this->addSpriteToDrawList(Ghosty4);
 			this->addToObjectsList(Ghosty4);
 
-			//Sprite - UI Score.
-			for(int i=0 ; i<7; i++)
+				//Sprite - UI Score.
+						for(int i=0 ; i<7; i++)
 			{ 	
 			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
 			UIScore[i]->setSpriteFrameSize(16,16);
@@ -456,18 +460,12 @@ void GameState::combatSystem() //
 			this->addSpriteToDrawList(UIScore[i]); 
 			}
 
-					//Sprite - UI Health
-			UIHealth = new Sprite("images/Player&HUD/UIHealth.png"); //Layer 12- Health
-			UIHealth->setSpriteFrameSize(184, 24);
-			UIHealth->setNumberOfAnimations(11);
-			UIHealth->setCenter(0,0);
-				for(int i=0 ; i<11 ; i++)
-				{
-					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
-				}
-			UIHealth->setPosition(8,227);
-			UIHealth->setCurrentAnimation(Health);
-			UIHealth->setLayerID(12);
+
+
+
+					// UI Health
+			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
+			//this->addToObjectsList(UIHealth);
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit" << std::endl;
@@ -503,6 +501,7 @@ void GameState::combatSystem() //
 	void LevelHome::Update()
 	{
 		tickstime++;
+		UIHealth->inputHealth(Player->hP);
 
 		tutorialLoad1();
 		tutorialLoad2();
@@ -518,14 +517,17 @@ void GameState::combatSystem() //
 		Ghosty4->movementGhost(Player->positionX, Player->positionY);
 		Ghosty4->ghostRespawn();
 
+		//Movement
 		updateObjects();
 		allowMovement();
 		movement();
 		transitionCheck();
 
-		//ghostPlayCollide();
+		ghostPlayCollide();
 		combatSystem();
-		
+
+		//Score
+		ScoreUpdate(Player->scoreStorage);
 
 	}
 
@@ -679,6 +681,14 @@ void GameState::combatSystem() //
 		{
 			std::cout << "bing!" << std::endl;
 			int randspot = rand() % 3;
+			if((Player->hP) <= 0 )
+			{
+				Player->hP = 10;
+			}
+			else
+			{
+				Player->hP -= o->dam;
+			}
 			switch(randspot)
 			{
 				case 0: { 
@@ -698,6 +708,7 @@ void GameState::combatSystem() //
 					break;
 				  }
 			}
+			
 
 		}
 		else
@@ -766,6 +777,19 @@ void LevelHome::tutorialLoad5()
 		{
 		}
 	}
+
+	void LevelHome::ScoreUpdate(int inScore)
+	{
+		int tempScore;
+		tempScore=inScore;
+		for(int i=6 ; i>0; i--)
+		{	
+			UIScore[i]->setCurrentAnimation(tempScore%10);
+			tempScore=tempScore/10;
+		}
+	}
+
+
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL ONE ----- STATE 3								   ||
