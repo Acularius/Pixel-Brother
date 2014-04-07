@@ -151,7 +151,7 @@
 			 Sprite *UISample;
 			 Sprite *TutorialSprite;
 
-		int tutorialnum;//tutorial check() function
+		int anynumber2;
 	    void PrintTutorial();
 
 		MainCharacter *Player;

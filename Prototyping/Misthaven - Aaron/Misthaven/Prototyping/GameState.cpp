@@ -435,14 +435,14 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				if( ( (playBotY >= tranBotY)   && (playBotY <= tranTopY)    || (playTopY >= tranBotY)    && (playTopY <= tranTopY) ) && 
 				    ( (playLeftX >= tranLeftX) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX) && (playRightX <= tranRightX) ) )
 					{  TutorialSprite->setCurrentAnimation(i); //Displays the i'th sprite based on array's index i
-					   if(anynumber!=i)
+					   if(anynumber2!=i)
 					   AudioLibPlaySound("Sounds/Tick.mp3",false);
-					   anynumber=i;
+					   anynumber2=i;
 					   found2=true;} 
 			}	
 			
 			if(found2==false) //If nothing triggered in loop -> display transparent layer.
-			 {	 anynumber=0;
+			 {	 anynumber2=0;
 				 TutorialSprite->setCurrentAnimation(0);}
 		} 
 
@@ -458,7 +458,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		tutorialDone = false;
 		
 		anynumber=0;
-		tutorialnum=0;
+		anynumber2=0;
 
 		    //Sprite - Water Background.
 			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
@@ -657,6 +657,11 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			NPC[13]->setPosition(1707-1422, 1103-1033);  // Vill 5
 			NPC[14]->setPosition(2014-1422, 1119-1033);  // Witch
 			NPC[15]->setPosition(2024-1422, 699-1033);   // Miku
+			Tutorial[0]->setPosition( 0,    0);
+			Tutorial[2]->setPosition(1730-1422, 800-1033);
+			Tutorial[3]->setPosition(1730-1422, 880-1033);
+			Tutorial[4]->setPosition(1730-1422, 960-1033);
+			Tutorial[1]->setPosition(1730-1422, 1040-1033);
 
 				AudioLibShutdown();
 				AudioLibInit();
