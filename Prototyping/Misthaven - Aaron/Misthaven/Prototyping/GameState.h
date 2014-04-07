@@ -304,7 +304,6 @@
 
 			 //SPRITE DECLARATIONS
 		 	 Sprite *Transition;
-			 Sprite *Tutorials;
 
 		bool test;      // To test movement control;
 		int MsgType;

@@ -262,7 +262,7 @@ void GameState::ScrollingBackgroundUpdate()
 		}
 
 		if (WaterBackground-> positionY < -1000)
-		{ WaterBackground -> setPosition(-1422,-250); } //RESETTING SCROLLING BACKGROUND. 
+		{ WaterBackground -> setPosition(-1422,-1033); } //RESETTING SCROLLING BACKGROUND. 
 }
 
 
@@ -493,7 +493,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				    //Sprite - Water Background.
 			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 5000, 4000);
 			WaterBackground -> setNumberOfAnimations(1);
-			WaterBackground -> setPosition(-1422,-750);
+			WaterBackground -> setPosition(-1422,-1033);
 			WaterBackground -> setCenter(0,0);
 			WaterBackground -> setLayerID (1);
 			WaterBackground ->addSpriteAnimRow(0,0,0,5000,4000,1);

@@ -461,12 +461,12 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		anynumber2=0;
 
 		    //Sprite - Water Background.
-			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 5000, 4000);
 			WaterBackground -> setNumberOfAnimations(1);
 			WaterBackground -> setPosition(-1422,-750);
 			WaterBackground -> setCenter(0,0);
 			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			WaterBackground -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(WaterBackground);
 			this->addToObjectsList(WaterBackground);
@@ -1669,22 +1669,6 @@ void LevelHome::tutorialLoad5()
 			Transition->setCurrentAnimation(6);
 			Transition->setLayerID(16);
 			this->addSpriteToDrawList(Transition);
-
-			//Sprite - Tutorials.
-			Tutorials = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
-			Tutorials->setSpriteFrameSize(480,261);
-			Tutorials->setNumberOfAnimations(5);
-			Tutorials->setCenter(0,0);
-			Tutorials->addSpriteAnimRow(4,0,0,480,0,1);
-			Tutorials->addSpriteAnimRow(3,0,261,480,0,1);
-			Tutorials->addSpriteAnimRow(2,0,522,480,0,1);
-			Tutorials->addSpriteAnimRow(1,0,783,480,0,1);
-			Tutorials->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
-			Tutorials->setPosition(0,0);
-			Tutorials->setCurrentAnimation(0);
-			Tutorials->setLayerID(16);
-			this->addSpriteToDrawList(Tutorials);
-
 
 	}
 
