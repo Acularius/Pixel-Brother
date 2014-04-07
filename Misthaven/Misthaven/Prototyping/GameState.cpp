@@ -182,6 +182,48 @@ void GameState::combatSystem() //
 		}
 	}
 
+	void GameState::ScrollingBackgroundKeyDown(unsigned char key)
+{
+		switch(key)
+		{
+
+		case 'w': { Vertical=true;
+					WaterSpeed = 1;
+					break; }
+		case 's': { Vertical=true;
+					WaterSpeed = -1;
+					break; }
+		case 'd': {	Vertical=false;
+					WaterSpeed = -1;
+					break; }
+		case 'a': {	Vertical=false;
+					WaterSpeed = 1;
+					break; }
+		}
+}
+
+void GameState::ScrollingBackgroundUpdate()
+{
+		if (Vertical==false) //horozontal
+		{
+			WaterBackground -> positionY-=1;
+			WaterBackground -> positionX+=WaterSpeed;
+		}
+		else //vertical
+		{
+			WaterBackground -> positionY+=(WaterSpeed-1);
+		}
+
+		if (WaterBackground-> positionY < -1000)
+		{ WaterBackground -> setPosition(-1422,-250); } //RESETTING SCROLLING BACKGROUND. 
+}
+
+
+void GameState::ScrollingBackgroundKeyUp(unsigned char key)
+{
+	if (key=='a'||'s'||'d')
+	WaterSpeed=0;
+}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 MAIN MENU ----- STATE 1								   ||
@@ -196,7 +238,8 @@ void GameState::combatSystem() //
 			menuSpeed=0;
 			active=true;
 
-		//	LocalGame -> playSound(); //PLAY'S FMOD LOOP BACKGROUND SOUND.
+		AudioLibInit();
+		AudioLibPlaySound("Sounds/Journey.mp3",true);
 
 				//Sprite - Menu Background.
 				MenuBG = new Sprite("images/Menu Background.png");
@@ -253,6 +296,10 @@ void GameState::combatSystem() //
 
 	void MainMenu::ResetMap()
 	{ 
+			AudioLibShutdown();
+			AudioLibInit();
+			AudioLibPlaySound("Sounds/Journey.mp3",true);
+
 			MenuBG -> setPosition(0,0);
 			MenuStrip -> setPosition(0,80);
 			Player->setPosition(210,85);
@@ -354,23 +401,20 @@ void GameState::combatSystem() //
 		switch(opt)
 	   { 
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
-					//LocalGame->playEnvironment();
 					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-					std::cout<<"OPTION 1 \a"<<std::endl;
+					std::cout<<"OPTION 1 "<<std::endl;
 					break;
 				  }
 		  case 2: { 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					//LocalGame->playEnvironment();
 					LocalGame->MessageControl(LocalGame->Msg, 1, 7);
-					std::cout<<"OPTION 2 \a"<<std::endl;
+					std::cout<<"OPTION 2 "<<std::endl;
 					break;
 				  }
-		  case 3: { std::cout<<"OPTION 3 \a"<<std::endl;
-					//CALL THE KEYBINDING STATE HERE JUST LIKE ABOVE; 
+		  case 3: { std::cout<<"OPTION 3 "<<std::endl;
 					break;
 				  }
-		  case 4: { std::cout<<"OPTION 4 \a"<<std::endl;
+		  case 4: { std::cout<<"OPTION 4 "<<std::endl;
 					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
 					break;
 				  }
@@ -393,21 +437,21 @@ void GameState::combatSystem() //
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		tutorialDone = false;
-		tickstime = 0;
-		ticksX = 0;
 
+		anynumber=0;
+		anynumber2=0;
 
-		    //Sprite - Water Background.
-			WaterBackgroundHome = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
-			WaterBackgroundHome -> setNumberOfAnimations(1);
-			WaterBackgroundHome -> setPosition(-1700,-750);
-			WaterBackgroundHome -> setCenter(0,0);
-			WaterBackgroundHome -> setLayerID (1);
-			WaterBackgroundHome ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackgroundHome -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackgroundHome);
-			this->addToObjectsList(WaterBackgroundHome);
+				    //Sprite - Water Background.
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
+			WaterBackground -> setNumberOfAnimations(1);
+			WaterBackground -> setPosition(-1422,-750);
+			WaterBackground -> setCenter(0,0);
+			WaterBackground -> setLayerID (1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackground);
+			this->addToObjectsList(WaterBackground);
+
 
 			//Sprite - Map 1 Base.
 			Map1_Base = new Objects ("images/Levels/Map 1 Base.png", 2500, 2000);
@@ -428,6 +472,30 @@ void GameState::combatSystem() //
 			Player->setLayerID(4);
 			this->addSpriteToDrawList(Player);
 			this->addToObjectsList(Player);
+
+			//NPC - Sprites:
+			AddNpcTile(0 ,  0 ,   0 );   // Transparent Layer - 0;
+			AddNpcTile(1 , 491, 1584);   // Sonic
+			AddNpcTile(2 , 760, 1385);   // Pikachu
+			AddNpcTile(3 , 564, 1153);   // Link
+			AddNpcTile(4 , 847, 1145);   // Vill 1
+			AddNpcTile(5 , 595, 984);    // Vill 2
+			AddNpcTile(6 , 378, 645);    // Spyro
+			AddNpcTile(7 , 826, 829);    // Portal Keep 1
+			AddNpcTile(8 , 920, 829);    // Portal Keep 2
+			AddNpcTile(9 , 1168, 949);   // Naruto
+			AddNpcTile(10, 1129, 709);   // Vill 3
+			AddNpcTile(11, 1335, 870);   // Vill 4
+			AddNpcTile(12, 1606, 779);   // Ratchet
+			AddNpcTile(13, 1707, 1103);  // Vill 5
+			AddNpcTile(14, 2014, 1119);  // Witch
+			AddNpcTile(15, 2024, 699);   // Miku
+
+			AddTutorialTile(0,   0,    0);
+			AddTutorialTile(2, 1730, 800);
+			AddTutorialTile(3, 1730, 880);
+			AddTutorialTile(4, 1730, 960);
+			AddTutorialTile(1, 1730, 1040);
 			
 			
 			//Sprite - Map 1 Objects.
@@ -440,6 +508,45 @@ void GameState::combatSystem() //
 			Map1_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map1_Objects);
 			this->addToObjectsList(Map1_Objects);
+
+			//Sprite - NPCS
+			NPC_Objects = new Objects ("images/Player&HUD/NPC Objects.png", 2500, 2000);
+			NPC_Objects -> setNumberOfAnimations(1);
+			NPC_Objects -> setPosition(-1422,-1033);  //-1422, -1033
+			NPC_Objects -> setCenter(0,0);
+			NPC_Objects -> setLayerID (8);
+			NPC_Objects -> addSpriteAnimRow(0,0,0,2500,2000,4);
+			NPC_Objects -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(NPC_Objects);
+			this->addToObjectsList(NPC_Objects);
+
+			//Sprite - NPC Dialogues
+			NPCDialogue = new Objects ("images/Player&HUD/NPC Dialogues.png",480,975); //Layer 12- Health
+			NPCDialogue->setSpriteFrameSize(480, 65);
+			NPCDialogue->setNumberOfAnimations(16);
+			NPCDialogue->setCenter(0,0);
+			for(int i=0 ; i<16 ; i++)
+			{
+				NPCDialogue->addSpriteAnimRow(i,0,i*65,480,0,1);
+			}
+			NPCDialogue->setPosition(0,10);
+			NPCDialogue->setCurrentAnimation(anynumber); //setting to any number? 
+			NPCDialogue->setLayerID(21);
+			this->addSpriteToDrawList(NPCDialogue);
+
+			
+			TutorialSprite = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
+			TutorialSprite->setSpriteFrameSize(480,260);
+			TutorialSprite->setNumberOfAnimations(6);
+			TutorialSprite->setCenter(0,0);
+			for(int i=0;i<=4;i++)
+			{
+				TutorialSprite->addSpriteAnimRow(i,0,i*260,480,0,1);
+			}
+			TutorialSprite->setPosition(0,0);
+			TutorialSprite->setCurrentAnimation(0);
+			TutorialSprite->setLayerID(16);
+			this->addSpriteToDrawList(TutorialSprite);
 
 
 			TransitionHomeOne = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
@@ -511,14 +618,45 @@ void GameState::combatSystem() //
 				LocalGame->stateInfo.storePlayerScore = 0; 
 				
 
-				WaterBackgroundHome -> setPosition(-1700,-750);
+				WaterBackground -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
+				NPC_Objects-> setPosition(-1422,-1033);
+				Player->setPosition(160,95);
+				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
 				TransitionHomeOne->setPosition(-595,-54);
 				Ghosty1 ->setPosition(0,2000);
 				Ghosty2 ->setPosition(2500,0);
 				Ghosty3 ->setPosition(0,-2000);
 				Ghosty4 ->setPosition(-2500,0);
+
+			NPC[0]->setPosition(0 ,   0 );    // Transparent Layer - 0;
+			NPC[1] ->setPosition( 491-1422, 1584-1033);   // Sonic
+			NPC[2] ->setPosition( 760-1422, 1385-1033);   // Pikachu
+			NPC[3] ->setPosition( 564-1422, 1153-1033);   // Link
+			NPC[4] ->setPosition( 847-1422, 1145-1033);   // Vill 1
+			NPC[5] ->setPosition( 595-1422, 984-1033);    // Vill 2
+			NPC[6] ->setPosition( 378-1422, 645-1033);    // Spyro
+			NPC[7] ->setPosition( 826-1422, 829-1033);    // Portal Keep 1
+			NPC[8] ->setPosition( 920-1422, 829-1033);    // Portal Keep 2
+			NPC[9] ->setPosition(1168-1422, 949-1033);   // Naruto
+			NPC[10]->setPosition(1129-1422, 709-1033);   // Vill 3
+			NPC[11]->setPosition(1335-1422, 870-1033);   // Vill 4
+			NPC[12]->setPosition(1606-1422, 779-1033);   // Ratchet
+			NPC[13]->setPosition(1707-1422, 1103-1033);  // Vill 5
+			NPC[14]->setPosition(2014-1422, 1119-1033);  // Witch
+			NPC[15]->setPosition(2024-1422, 699-1033);   // Miku
+			Tutorial[0]->setPosition( 0,    0);
+			Tutorial[2]->setPosition(1730-1422, 800-1033);
+			Tutorial[3]->setPosition(1730-1422, 880-1033);
+			Tutorial[4]->setPosition(1730-1422, 960-1033);
+			Tutorial[1]->setPosition(1730-1422, 1040-1033);
+
+				AudioLibShutdown();
+				AudioLibInit();
+				AudioLibPlaySound("Sounds/Futuristic Fly.mp3", false);
+				AudioLibPlaySound("Sounds/Ocean.WAV", true);
+				AudioLibPlaySound("Sounds/Soundtrack Melody.mp3", true);
 
 				Player->hP = LocalGame->stateInfo.storePlayerHp;
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
@@ -536,13 +674,8 @@ void GameState::combatSystem() //
 	
 	void LevelHome::Update()
 	{
-		tickstime++;
 
-		tutorialLoad1();
-		tutorialLoad2();
-		tutorialLoad3();
-		tutorialLoad4();
-		tutorialLoad5();
+
 		Ghosty1->getPlayerPos(Player->positionX, Player->positionY);
 		Ghosty1->ghUpdate();
 		Ghosty2->getPlayerPos(Player->positionX, Player->positionY);
@@ -552,13 +685,19 @@ void GameState::combatSystem() //
 		Ghosty4->getPlayerPos(Player->positionX, Player->positionY);
 		Ghosty4->ghUpdate();
 
+		Player->playerUpdate();
+
 		//Movement
 		updateObjects();
 		allowMovement();
 		movement();
 		transitionCheck();
+		NpcCheck();
+		TutorialCheck();
 		
 		combatSystem();
+
+		ScrollingBackgroundUpdate();
 
 		
 
@@ -572,7 +711,9 @@ void GameState::combatSystem() //
 	void LevelHome::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
+		ScrollingBackgroundKeyDown(key); //Scrolling Background
 
+		//down
 		switch(key)
 		{
 		case 'e':
@@ -596,6 +737,8 @@ void GameState::combatSystem() //
 	void LevelHome::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
+		ScrollingBackgroundKeyUp(key); //Scrolling Background
+		//up
 		switch(key)
 		{
 		case 'e':
@@ -700,62 +843,88 @@ void GameState::combatSystem() //
 		};
 	}
 
-
-
-void LevelHome::tutorialLoad1()
-	{
-
-		if (tutorialDone ==false && tickstime < 30 && ticksX < 1){ 
-		LocalGame->MessageControl(LocalGame->Msg, 4, 7);
-		}
-		else
-		{
-
-		}
-	}
-void LevelHome::tutorialLoad2()
-	{
-
-		if (tutorialDone ==false && tickstime < 60 && ticksX  < 2){
-			LocalGame->MessageControl(LocalGame->Msg, 5, 7);
-		}
-		else
-		{
+			void LevelHome::AddNpcTile(int i, int PosX, int PosY) 
+			{	
+				  NPC[i] = new Objects("images/Backgrounds/Water Sprite.png",80,80);
+				  NPC[i] -> setNumberOfAnimations(1);
+				  NPC[i] -> setPosition(PosX-1422,PosY-1033);
+				  NPC[i] -> setCenter(0,0);
+				  NPC[i] -> setLayerID(22);
+				  NPC[i] -> addSpriteAnimRow(0,0,0,80,80,1);
+				  this->addToObjectsList(NPC[i]);
 		
-		}
-	}
-void LevelHome::tutorialLoad3()
-	{
+			}
 
-		if (tutorialDone ==false && tickstime < 90 && ticksX < 3){
+			void LevelHome:: AddTutorialTile(int i, int PosX, int PosY)
+			{	
+				  Tutorial[i] = new Objects("images/Backgrounds/Water Sprite.png",80,40);
+				  Tutorial[i] -> setNumberOfAnimations(1);
+				  Tutorial[i] -> setPosition(PosX-1422,PosY-1033);
+				  Tutorial[i] -> setCenter(0,0);
+				  Tutorial[i] -> setLayerID(22);
+				  Tutorial[i] -> addSpriteAnimRow(0,0,0,80,40,1);
+				  this->addToObjectsList(Tutorial[i]);
+		
+			}
+
+
+		void LevelHome::NpcCheck()
+		{
+			float tranBotY,tranTopY,tranLeftX,tranRightX;
+			float playBotY,playTopY,playLeftX,playRightX;
+			bool found=false;
+
+			for(int i=1;i<16;i++)
+			{ 
+				tranBotY  = NPC[i]->ObjectHitbox->bottomCornerY; tranTopY = NPC[i]->ObjectHitbox->topCornerY;
+				tranLeftX = NPC[i]->ObjectHitbox->leftCornerX; tranRightX = NPC[i]->ObjectHitbox->rightCornerX;
+
+				playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+				playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+
+				if( ( (playBotY >= tranBotY)   && (playBotY <= tranTopY)    || (playTopY >= tranBotY)    && (playTopY <= tranTopY) ) && 
+				    ( (playLeftX >= tranLeftX) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX) && (playRightX <= tranRightX) ) )
+					{  NPCDialogue->setCurrentAnimation(i); //Displays the i'th sprite based on array's index i
+					   if(anynumber!=i)
+					   AudioLibPlaySound("Sounds/Tick.mp3",false);
+					   anynumber=i;
+					   found=true;} 
+			}	
 			
-			LocalGame->MessageControl(LocalGame->Msg, 6, 7);
-		}
-		else
-		{
-		}
-	}
-void LevelHome::tutorialLoad4()
-	{
+			if(found==false) //If nothing triggered in loop -> display transparent layer.
+			 {	 anynumber=0;
+				 NPCDialogue->setCurrentAnimation(0);}
+		} 
 
-		if (tutorialDone ==false && tickstime < 120 && ticksX < 4){
-			LocalGame->MessageControl(LocalGame->Msg, 7, 7);
-		}
-		else
-		{
-		}
-	}
-void LevelHome::tutorialLoad5()
-	{
 
-		if (tutorialDone ==false && tickstime < 150 && ticksX < 5){
-			LocalGame->MessageControl(LocalGame->Msg, 8, 7);
-			tutorialDone= true;
-		}
-		else
+		void LevelHome::TutorialCheck()
 		{
-		}
-	}
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+			float playBotY,playTopY,playLeftX,playRightX;
+			bool found2=false;
+
+			for(int i=1;i<5;i++)
+			{ 
+				tranBotY  = Tutorial[i]->ObjectHitbox->bottomCornerY; tranTopY = Tutorial[i]->ObjectHitbox->topCornerY;
+				tranLeftX = Tutorial[i]->ObjectHitbox->leftCornerX; tranRightX = Tutorial[i]->ObjectHitbox->rightCornerX;
+
+				playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+				playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+
+				if( ( (playBotY >= tranBotY)   && (playBotY <= tranTopY)    || (playTopY >= tranBotY)    && (playTopY <= tranTopY) ) && 
+				    ( (playLeftX >= tranLeftX) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX) && (playRightX <= tranRightX) ) )
+					{  TutorialSprite->setCurrentAnimation(i); //Displays the i'th sprite based on array's index i
+					   if(anynumber2!=i)
+					   AudioLibPlaySound("Sounds/Tick.mp3",false);
+					   anynumber2=i;
+					   found2=true;} 
+			}	
+			
+			if(found2==false) //If nothing triggered in loop -> display transparent layer.
+			 {	 anynumber2=0;
+				 TutorialSprite->setCurrentAnimation(0);}
+		} 
+
 
 
 
@@ -777,15 +946,15 @@ void LevelHome::tutorialLoad5()
 
 
 		    //Sprite - Water Background.
-			WaterBackgroundOne = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
-			WaterBackgroundOne -> setNumberOfAnimations(1);
-			WaterBackgroundOne -> setPosition(-1700,-750);
-			WaterBackgroundOne -> setCenter(0,0);
-			WaterBackgroundOne -> setLayerID (1);
-			WaterBackgroundOne -> addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackgroundOne -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackgroundOne);
-			this->addToObjectsList(WaterBackgroundOne);
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
+			WaterBackground -> setNumberOfAnimations(1);
+			WaterBackground -> setPosition(-1700,-750);
+			WaterBackground -> setCenter(0,0);
+			WaterBackground -> setLayerID (1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackground);
+			this->addToObjectsList(WaterBackground);
 
 			//Sprite - Map 2 Base.
 			Map2_Base = new Objects ("images/Levels/Map 2 Base.png", 2500,2000);
@@ -851,12 +1020,19 @@ void LevelHome::tutorialLoad5()
 
 	void LevelOne::ResetMap()
 	{ 
-				WaterBackgroundOne -> setPosition(-1700,-750);
+				WaterBackground -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
+				Player-> setPosition(160,95);
+				Player-> setCurrentAnimation(1);
 				Map2_Objects -> setPosition(-475,-1410);
 
 				
-				
+				AudioLibShutdown();
+				AudioLibInit();
+				AudioLibPlaySound("Sounds/Futuristic Fly.mp3", false);
+				AudioLibPlaySound("Sounds/Cricket.mp3", true);
+				AudioLibPlaySound("Sounds/Thirst_For_Water.mp3", true);
+
 				Player->hP = LocalGame->stateInfo.storePlayerHp;
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
@@ -870,10 +1046,15 @@ void LevelHome::tutorialLoad5()
 
 	void LevelOne::Update()
 	{
+		Player->playerUpdate();
 
 		updateObjects();
 		allowMovement();
 		movement();
+
+		combatSystem();
+		
+		ScrollingBackgroundUpdate();
 
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
@@ -886,12 +1067,52 @@ void LevelHome::tutorialLoad5()
 	void LevelOne::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
+		ScrollingBackgroundKeyDown(key); //Scrolling Background
+
+		//down
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = true;
+				Player-> talk = true;
+				std::cout<< "I am talking" << std::endl;
+				break;
+			};
+		case 32:
+			{
+				Player-> interboxactive = true;
+				Player->attackBreakDown();
+				std::cout<< "I am attacking" << std::endl;	
+			};
+			break;
+		};
 	}
 
 
 	void LevelOne::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
+		ScrollingBackgroundKeyUp(key); //Scrolling Background
+
+		//up
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = false;
+				Player-> talk = false;
+				std::cout<< "Done talking" << std::endl;
+			};
+			break;
+		case 32:
+			{
+				Player-> interboxactive = false;
+				Player-> attackBreakUp();
+				std::cout<< "Done attacking" << std::endl;
+			};
+			break;
+		};
 	}
 
 	void LevelOne::allowMovement()
@@ -966,16 +1187,16 @@ void LevelHome::tutorialLoad5()
 		loadcheck=false;
 
 
-		    //Sprite - Water Background.
-			WaterBackgroundTwo = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
-			WaterBackgroundTwo -> setNumberOfAnimations(1);
-			WaterBackgroundTwo -> setPosition(-1700,-750);
-			WaterBackgroundTwo -> setCenter(0,0);
-			WaterBackgroundTwo -> setLayerID (1);
-			WaterBackgroundTwo ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackgroundTwo -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackgroundTwo);
-			this->addToObjectsList(WaterBackgroundTwo);
+		     //Sprite - Water Background.
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
+			WaterBackground -> setNumberOfAnimations(1);
+			WaterBackground -> setPosition(-1700,-750);
+			WaterBackground -> setCenter(0,0);
+			WaterBackground -> setLayerID (1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackground);
+			this->addToObjectsList(WaterBackground);;
 
 			//Sprite - Map 2 Base.
 			Map3_Base = new Objects ("images/Levels/Map 3 Base.png",2500,2000);
@@ -1042,8 +1263,10 @@ void LevelHome::tutorialLoad5()
 
 	void LevelTwo::ResetMap()
 	{ 
-				WaterBackgroundTwo -> setPosition(-1700,-750);
+				WaterBackground -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
+				Player-> setPosition(160,95);
+				Player-> setCurrentAnimation(1);
 				Map3_Objects -> setPosition(-1552,-1402);
 
 				Player->hP = LocalGame->stateInfo.storePlayerHp;
@@ -1059,11 +1282,16 @@ void LevelHome::tutorialLoad5()
 
 	void LevelTwo::Update()
 	{
+		Player->playerUpdate();
 		
 
 		updateObjects();
 		allowMovement();
 		movement();	
+
+		combatSystem();
+		
+		ScrollingBackgroundUpdate();
 
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
@@ -1074,12 +1302,48 @@ void LevelHome::tutorialLoad5()
 	void LevelTwo::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
+		//down
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = true;
+				Player-> talk = true;
+				std::cout<< "I am talking" << std::endl;
+				break;
+			};
+		case 32:
+			{
+				Player-> interboxactive = true;
+				Player->attackBreakDown();
+				std::cout<< "I am attacking" << std::endl;	
+			};
+			break;
+		};
 	}
 
 
 	void LevelTwo::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
+		//up
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = false;
+				Player-> talk = false;
+				std::cout<< "Done talking" << std::endl;
+			};
+			break;
+		case 32:
+			{
+				Player-> interboxactive = false;
+				Player-> attackBreakUp();
+				std::cout<< "Done attacking" << std::endl;
+			};
+			break;
+		};
 	}
 
 	void LevelTwo::allowMovement()
@@ -1152,16 +1416,16 @@ void LevelHome::tutorialLoad5()
 		active=false;
 		loadcheck=false;
 
-		    //Sprite - Water Background.
-			WaterBackgroundThree = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
-			WaterBackgroundThree -> setNumberOfAnimations(1);
-			WaterBackgroundThree -> setPosition(-1700,-750);
-			WaterBackgroundThree -> setCenter(0,0);
-			WaterBackgroundThree -> setLayerID (1);
-			WaterBackgroundThree ->addSpriteAnimRow(0,0,0,2500,2000,1);
-			WaterBackgroundThree -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(WaterBackgroundThree);
-			this->addToObjectsList(WaterBackgroundThree);
+		     //Sprite - Water Background.
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
+			WaterBackground -> setNumberOfAnimations(1);
+			WaterBackground -> setPosition(-1700,-750);
+			WaterBackground -> setCenter(0,0);
+			WaterBackground -> setLayerID (1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground -> setCurrentAnimation(1);
+			this->addSpriteToDrawList(WaterBackground);
+			this->addToObjectsList(WaterBackground);
 
 			//Sprite - Map 2 Base.
 			Map4_Base = new Objects ("images/Levels/Map 4 Base.png",2500,2000);
@@ -1228,11 +1492,10 @@ void LevelHome::tutorialLoad5()
 
 	void LevelThree::ResetMap()
 	{ 
-				WaterBackgroundThree -> setPosition(-1700,-750);
+				WaterBackground -> setPosition(-1700,-750);
 				Map4_Base -> setPosition(-1404,-1384);
 				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
-				Player->direction=1;
 				Map4_Objects -> setPosition(-1404,-1384);
 				
 				Player->hP = LocalGame->stateInfo.storePlayerHp;
@@ -1248,9 +1511,15 @@ void LevelHome::tutorialLoad5()
 
 	void LevelThree::Update()
 	{
+		Player->playerUpdate();
+
 		updateObjects();
 		allowMovement();
 		movement();	
+
+		combatSystem();
+		
+		ScrollingBackgroundUpdate();
 
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
@@ -1261,12 +1530,52 @@ void LevelHome::tutorialLoad5()
 	void LevelThree::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
+		ScrollingBackgroundKeyDown(key); //Scrolling Background
+
+		//down
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = true;
+				Player-> talk = true;
+				std::cout<< "I am talking" << std::endl;
+				break;
+			};
+		case 32:
+			{
+				Player-> interboxactive = true;
+				Player->attackBreakDown();
+				std::cout<< "I am attacking" << std::endl;	
+			};
+			break;
+		};
 	}
 
 
 	void LevelThree::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
+		ScrollingBackgroundKeyUp(key); //Scrolling Background
+
+		//up
+		switch(key)
+		{
+		case 'e':
+			{
+				Player-> interboxactive = false;
+				Player-> talk = false;
+				std::cout<< "Done talking" << std::endl;
+			};
+			break;
+		case 32:
+			{
+				Player-> interboxactive = false;
+				Player-> attackBreakUp();
+				std::cout<< "Done attacking" << std::endl;
+			};
+			break;
+		};
 	}
 
 		void LevelThree::allowMovement()
@@ -1326,153 +1635,7 @@ void LevelHome::tutorialLoad5()
 	//std::cout << "Yay! Success!" << std::endl;
 	interception = 0;
 }
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
-//																						   ||
-//								 UI STATE ------- STATE 6								   ||
-//			Eventually work into its own class											   ||
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 
-
-	void UIState::Init(Game* Local)
-	{
-		//INITIALIZATION:
-		StateNum=6;
-		LocalGame=Local;
-		active=false;
-		loadcheck=false;
-
-		Health=10; //Player at full health.
-		Score=0;   //Player at zero score.
-
-
-
-
-			//Sprite - UI Health
-			UIHealth = new Sprite("images/UIHealth.png"); //Layer 12- Health
-			UIHealth->setSpriteFrameSize(184, 24);
-			UIHealth->setNumberOfAnimations(11);
-			UIHealth->setCenter(0,0);
-				for(int i=0 ; i<11 ; i++)
-				{
-					UIHealth->addSpriteAnimRow(i,0,i*24,184,0,1);
-				}
-			UIHealth->setPosition(8,227);
-			UIHealth->setCurrentAnimation(Health);
-			UIHealth->setLayerID(12);
-			this->addSpriteToDrawList(UIHealth);
-
-			//Sprite - UI Score.
-			for(int i=0 ; i<7; i++)
-			{ 	
-			UIScore[i] = new Sprite("images/UIScore.png"); //Layer 13- Score
-			UIScore[i]->setSpriteFrameSize(16,16);
-			UIScore[i]->setNumberOfAnimations(10); //0-9
-			UIScore[i]->setCenter(0,0);
-			UIScore[i]->addSpriteAnimFrame(1,16,16);
-				for(int j=0 ; j<10 ; j++)
-				{
-					UIScore[i]->addSpriteAnimRow(j,0,j*16,16,0,1);
-				}
-			UIScore[i]->setLayerID(13);
-			UIScore[i]->setCurrentAnimation(i);
-			UIScore[i]->setPosition((380+(i*12)),233);
-			this->addSpriteToDrawList(UIScore[i]); 
-			}
-
-			ScoreUpdate();
-
-			//Sprite - UI Actionbar.
-			UISample = new Sprite ("images/UIActionbar.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(200,50);
-			UISample -> setPosition(140,10);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (14);
-			UISample ->addSpriteAnimRow(0,0,0,200,50,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
-			
-			//Sprite - UI Sample.
-			UISample = new Sprite ("images/Test UI.png");
-			UISample -> setNumberOfAnimations(1);
-			UISample -> setSpriteFrameSize(480,261);
-			UISample -> setPosition(0,0);
-			UISample -> setCenter(0,0);
-			UISample -> setLayerID (7);
-			UISample ->addSpriteAnimRow(0,0,0,480,261,1);
-			UISample -> setCurrentAnimation(1);
-			this->addSpriteToDrawList(UISample);
-
-	}
-
-
-	void UIState::ResetMap()
-	{ 
-
-	}
-
-
-	UIState::~UIState(void) 
-	{ 
-		/*Default deconstructor */
-	}
-
-	void UIState::ScoreUpdate()
-	{
-		tempscore=Score;
-		for(int i=6 ; i>0; i--)
-		{	
-			UIScore[i]->setCurrentAnimation(tempscore%10);
-			tempscore=tempscore/10;
-		}
-	}
-
-	void UIState::Update()
-	{
-
-
-	}
-
-
-	void UIState::KeyDown(unsigned char key)
-	{
-
-			switch(key)
-			{
-				case 32: // the space bar
-					     break;
-				case 27: // the escape key
-					     break;
-				case 45: if(0<Health)
-						 Health--;
-						 UIHealth->setCurrentAnimation(Health);
-						 break;
-				case 61: if(Health<10)
-						 Health++;
-						 UIHealth->setCurrentAnimation(Health);
-						 break;
-				case 'o': Score--;
-						  UIScore[6]->setCurrentAnimation(Score);
-						  ScoreUpdate();
-						  break;
-				case 'p': Score++;
-						  UIScore[6]->setCurrentAnimation(Score);
-						  ScoreUpdate();
-						  break;
-			}
-	}
-
-
-	void UIState::KeyUp(unsigned char key)
-	{
-			switch(key)
-			{
-				case 32: // the space bar
-						 break;
-				case 27: // the escape key
-						 break;
-			}
-	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 UI STATE ------- STATE 6								   ||

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioLib.h" />
     <ClInclude Include="CImg.h" />
     <ClInclude Include="Constraints.h" />
     <ClInclude Include="Debug\AudioLib.h" />

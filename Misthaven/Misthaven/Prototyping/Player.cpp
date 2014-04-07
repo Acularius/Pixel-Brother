@@ -48,5 +48,28 @@ MainCharacter::~MainCharacter(void)
 	/* Deconstructor */
 }
 
+void MainCharacter::playerUpdate()
+{
+	healthRegen();
+}
 
-
+void MainCharacter::healthRegen()
+{
+	if(hP < 10)
+	{
+		if(tickHPRegen < 200)
+		{
+			tickHPRegen++;
+		}else if(tickHPRegen >= 200 )
+		{
+			hP++;
+			tickHPRegen = 0;
+		}else
+		{
+			//nothing
+		}
+	}
+	else{
+		//No regen
+	}
+}

@@ -45,6 +45,9 @@
     <ClInclude Include="Debug\AudioLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AudioLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Timer.cpp">

@@ -4,8 +4,9 @@
 Ghost::Ghost (std::string filename, int width, int height)
 		:Characters(filename, width, height)
 {
-	this-> setNumberOfAnimations(1);
-	this-> addSpriteAnimRow(0, 0,0, 40,0,2);
+	this-> setNumberOfAnimations(2);
+	this-> addSpriteAnimRow(0, 0,	   0,width,0,8);
+	this-> addSpriteAnimRow(1, 0, height,width,0,8);
 	this-> setCurrentAnimation(0);
 	this-> direction=0;
 	this-> ghost=true;
@@ -197,9 +198,11 @@ void Ghost::aboutFace()
 	} else if (positionX < playPosX && ( positionY-10 < playPosY && positionY+30 > playPosY ) ) //right
 	{
 		direction = 3;
+		this->setCurrentAnimation(0);
 	}else if(positionX > playPosX && ( positionY-10 < playPosY && positionY+30 > playPosY )) //left
 	{
 		direction = 4;
+		this->setCurrentAnimation(1);
 	}
 	else
 	{

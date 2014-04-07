@@ -78,16 +78,19 @@ public:
 
 };
 
+
 class MainCharacter : public Characters
 {
 public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
+	int tickHPRegen;
 
 
 	Hitbox *ObjectHitbox;
-
 	
+	void playerUpdate();
+	void healthRegen();
 
 };
 

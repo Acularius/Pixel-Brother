@@ -7,6 +7,7 @@
 			#include "Sprite.h"
 			#include "Game.h"
 			#include <vector>
+			#include "AudioLib.h"
 
 //-------------------------------------------------------------------------------------------
 //   Game State is an abstract class from which other states can be derived. Such as menus,
@@ -45,6 +46,14 @@
 		bool loadcheck; //Checks If already Initialized.
 		int StateNum;   //State Number for transitioning.
 		int anynumber;  //Various purpose number.
+
+		//Scrolling Background Variables:
+		bool Vertical;
+		int WaterSpeed;
+		Objects *WaterBackground;
+		void ScrollingBackgroundUpdate();
+		void ScrollingBackgroundKeyDown(unsigned char key);
+		void ScrollingBackgroundKeyUp(unsigned char key);
 
 
 //-------------------------------------------------------------------------------------------
@@ -113,7 +122,6 @@
 	class LevelHome:public GameState
 	{
 	  public:
-		int tickstime, ticksX;
 
 		 void Init(Game* Local);
 		 void ResetMap();
@@ -125,12 +133,12 @@
 		 void allowMovement();
 		 void transitionCheck();
 
-		 void tutorialLoad1();
-		 void tutorialLoad2();
-		 void tutorialLoad3();
-		 void tutorialLoad4();
-		 void tutorialLoad5();
-		 bool tutorialDone;
+		 void AddNpcTile(int i, int PosX, int PosY);
+		 void AddTutorialTile(int i, int PosX, int PosY);
+		 void NpcCheck();
+		 void TutorialCheck();
+
+		 int anynumber2; // tick sound - no repeat
 
 		 
 //		 void ScoreUpdate(int inScore);
@@ -138,13 +146,17 @@
 			 //SPRITE DECLARATIONS
 			 Objects *Map1_Base;
 			 Objects *Map1_Objects;
-		     Objects *WaterBackgroundHome;
 			 Transition *TransitionHomeOne;
+
+			 Objects *NPCDialogue;
+			 Objects *NPC_Objects;
+			 Objects *NPC[16];
+			 Objects *Tutorial[5];
+			 Sprite *TutorialSprite;
 		
 		
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
-		//Sprite *UIScore[7];
 		Health *UIHealth;
 		Ghost *Ghosty1;
 		Ghost *Ghosty2;
@@ -175,11 +187,9 @@
 			 //SPRITE DECLARATIONS
 			 Objects *Map2_Base;
 			 Objects *Map2_Objects;
-		     Objects *WaterBackgroundOne;
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsOne;
-			 //Sprite *UIScore[7];
 			 Health *UIHealth;
 			 
 			 
@@ -207,11 +217,9 @@
 			 //SPRITE DECLARATIONS
 			 Objects *Map3_Base;
 			 Objects *Map3_Objects;
-		     Objects *WaterBackgroundTwo;
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsTwo;
-			// Sprite *UIScore[7];
 			 Health *UIHealth;
 
 	};
@@ -240,43 +248,13 @@
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsThree;
-			 //Sprite *UIScore[7];
 			 Health *UIHealth;
 
 
 
 	};
 
-//===========================================================================================
-//								 UI STATE -------- STATE 6
-//===========================================================================================
 
-	class UIState:public GameState
-	{
-	  public:
-
-		 void Init(Game* Local);
-		 void ResetMap();
-		 void Update();
-		 void KeyUp(unsigned char key);
-		 void KeyDown(unsigned char key);
-		 void ScoreUpdate();
-		 ~UIState(void);
-
-			 //SPRITE DECLARATIONS
-		 	 Sprite *UISample;
-			 Sprite *UIHealth;
-			 Sprite *UIActionbar;
-			 Sprite *UIScore[7];
-
-			 
-
-		int Health;		// PlayerHealth;
-		int Score;		// PlayerScore;
-		int tempscore;  // Variable for ScoreUpdate;
-		bool test;      // To test movement control;
-
-	};
 
 
 //===========================================================================================
