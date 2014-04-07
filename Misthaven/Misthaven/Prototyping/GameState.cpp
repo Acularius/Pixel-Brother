@@ -556,7 +556,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			TransitionHomeOne-> setLayerID(7);
 			TransitionHomeOne-> setPosition(-595,-54);
 			TransitionHomeOne-> toLevel = 2;
-			this->addSpriteToDrawList(TransitionHomeOne);
+			//this->addSpriteToDrawList(TransitionHomeOne);
 			this->addToObjectsList(TransitionHomeOne);
 
 			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
