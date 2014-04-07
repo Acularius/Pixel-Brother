@@ -185,7 +185,6 @@ void GameState::combatSystem() //
 							if (oOpponent->player==true && oOpponent->hP <= 0)
 							{
 								std::cout<< "You dead sucka!" << std::endl;
-								oOpponent->hP = 10;
 							}
 							if(oInitiator->player==true && oOpponent->award==true) // Update Player's score
 							{

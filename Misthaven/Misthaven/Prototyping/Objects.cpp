@@ -98,11 +98,11 @@ this-> ObjectHitbox->updateHitbox(positionX,positionY, player);
 //Combat function
 void Objects::coolDownfunc()
 {
-	if (coolDown == true && coolDTicking < 5)
+	if (coolDown == true && coolDTicking < 2)
 	{
 		coolDTicking++;
 	}
-	else if (coolDown == true && coolDTicking >=5)
+	else if (coolDown == true && coolDTicking >=2)
 	{
 		coolDown=false;
 		coolDTicking = 0;

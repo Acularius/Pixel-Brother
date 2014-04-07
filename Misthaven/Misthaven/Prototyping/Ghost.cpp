@@ -14,7 +14,7 @@ Ghost::Ghost (std::string filename, int width, int height)
 	this-> immortal = false;
 	playPosX = playPosY = 0;
 
-	this-> respectiveSpeed = 7;
+	this-> respectiveSpeed = 5;
 
 	this-> setLayerID(6);
 
@@ -238,7 +238,7 @@ Seagull::Seagull (std::string filename, int width, int height)
 	this-> immortal = false;
 	playPosX = playPosY = 0;
 
-	this-> respectiveSpeed = 7;
+	this-> respectiveSpeed = 5;
 
 	this-> setLayerID(6);
 
