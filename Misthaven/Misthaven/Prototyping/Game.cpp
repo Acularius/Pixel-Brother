@@ -273,8 +273,8 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 	case 32: // the space bar
 		break;
 	//case 27: // the escape key
-	case 'q': // the 'q' key
-		exit(1);
+	//case 'q': // the 'q' key
+	//	exit(1);
 		break;
 	}
 //===========================================================================================
@@ -338,8 +338,8 @@ void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	case 32: // the space bar
 		break;
 	//case 27: // the escape key
-	case 'q': // the 'q' key
-		exit(1);
+	//case 'q': // the 'q' key
+	//	exit(1);
 		break;
 	}
 
