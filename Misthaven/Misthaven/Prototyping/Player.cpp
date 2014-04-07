@@ -34,6 +34,8 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	dam = 1;
 	this->immortal=false;
 
+	tickHPRegen = 0;
+
 	//Score
 	scoreStorage = 0;
 
