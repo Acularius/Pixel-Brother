@@ -27,10 +27,23 @@ public:
 	bool immortal; // Does it take damage?
 	int hP; //Hit Points
 	int dam; //Damage
+	bool coolDown;
+	int coolDTicking;
+	int attackTicking;
+
+	bool bOpponent;
+	bool bInitiator;
+
+	void coolDownfunc(); // No attack spam
+	void attackBreakUp(); // So one can't hold down the attack key - Up
+	void attackBreakDown(); // So one can't hold down the attack key - Down
+	void attackUpdate();
+
 
 	int direction;
 	//Interact Box
 	bool attack;
+	bool attackanim;
 	bool talk;
 	bool interboxactive;
 
@@ -91,10 +104,20 @@ class Ghost : public Characters
 public:
 	Ghost::Ghost (std::string filename, int width, int height);
 	~Ghost(void);
+	bool engage;
+	float playPosX, playPosY;
 
 
+	void ghUpdate();
+
+	void getPlayerPos(float inPlayerPosX, float inPlayerPosY);
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
 	void ghostRespawn();
+
+	void closeToAttack();
+	void attackZePlayer();
+	void aboutFace();
+
 };
 
 

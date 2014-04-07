@@ -113,46 +113,57 @@ void GameState::combatSystem() //
 	std::vector<Objects*>::iterator initCombatant; // Initiator combatant
 	for(initCombatant= objectsList.begin() ; initCombatant !=objectsList.end() ; initCombatant++)
 	{
+		(*initCombatant)->bInitiator = true;
 		Objects *oInitiator = (*initCombatant);
 		if ((oInitiator->ObjectActBox->active == true) && (oInitiator->ObjectActBox->attack == true) )
 		{
-			std::cout << "Stage 1 - Combat initiated" << std::endl;
+			std::cout << "Stage 1 - Combat Search" << std::endl;
 			std::vector<Objects*>::iterator oppoCombatant; // Opponents
 			for(oppoCombatant= objectsList.begin(); oppoCombatant !=objectsList.end() ; oppoCombatant++)
 			{
+				(*oppoCombatant)->bOpponent = true;
 				Objects *oOpponent = (*oppoCombatant);
-				if (oOpponent->immortal == false)
+
+				if(oOpponent->bInitiator == false)
 				{
-					//if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
-				//		( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
-					if( ( ( (oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
-						( ( (oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
+					if ((oOpponent->immortal == false))
 					{
-						std::cout<< "You wound me~!" << std::endl;
-						//Damage Resolution
-						(oOpponent->hP) -= (oInitiator->dam); 
-						if(oInitiator->player==true) // Update Player's score
+						std::cout << "Combat Initiated" << std::endl;
+						if( (((oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
+							( ( (oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
 						{
-							oInitiator->scoreStorage += oInitiator->dam;
-						}
-						else
-						{
+							std::cout<< "You wound me~!" << std::endl;
+							//Damage Resolution
+							(oOpponent->hP) -= (oInitiator->dam); 
+							if (oOpponent->player==true && oOpponent->hP <= 0)
+							{
+								std::cout<< "You dead sucka!" << std::endl;
+								oOpponent->hP = 10;
+							}
+							if(oInitiator->player==true) // Update Player's score
+							{
+								oInitiator->scoreStorage += oInitiator->dam;
+							}
+						}else{
+							std::cout<< "Nothing was found" << std::endl;
 						}
 					}
+					else{
+					// Its immortal, No Combat.
+					};
+					(*oppoCombatant)->bOpponent = false;
 				}
-				else
-				{
-				// Its immortal, No Combat.
-				};
-			}
-
+				else{
+					(*oppoCombatant)->bOpponent = false;
+				}
+			} // end of for oOpponent statement
+			
 		}
-		else
-		{
+		else{
 			//No combat
 		}
-	
-	};
+		(*initCombatant)->bInitiator = false;
+	}; // End of oInitiator for statement 
 
 
 
@@ -526,20 +537,21 @@ void GameState::combatSystem() //
 	void LevelHome::Update()
 	{
 		tickstime++;
-		
+		combatSystem();
+
 		tutorialLoad1();
 		tutorialLoad2();
 		tutorialLoad3();
 		tutorialLoad4();
 		tutorialLoad5();
-		Ghosty1->movementGhost(Player->positionX, Player->positionY);
-		Ghosty1->ghostRespawn();
-		Ghosty2->movementGhost(Player->positionX, Player->positionY);
-		Ghosty2->ghostRespawn();
-		Ghosty3->movementGhost(Player->positionX, Player->positionY);
-		Ghosty3->ghostRespawn();
-		Ghosty4->movementGhost(Player->positionX, Player->positionY);
-		Ghosty4->ghostRespawn();
+		Ghosty1->getPlayerPos(Player->positionX, Player->positionY);
+		Ghosty1->ghUpdate();
+		Ghosty2->getPlayerPos(Player->positionX, Player->positionY);
+		Ghosty2->ghUpdate();
+		Ghosty3->getPlayerPos(Player->positionX, Player->positionY);
+		Ghosty3->ghUpdate();
+		Ghosty4->getPlayerPos(Player->positionX, Player->positionY);
+		Ghosty4->ghUpdate();
 
 		//Movement
 		updateObjects();
@@ -547,8 +559,7 @@ void GameState::combatSystem() //
 		movement();
 		transitionCheck();
 
-		ghostPlayCollide();
-		combatSystem();
+		
 
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
@@ -560,7 +571,7 @@ void GameState::combatSystem() //
 	void LevelHome::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
-		if (key == 'x'){ ticksX++;};
+
 		switch(key)
 		{
 		case 'e':
@@ -573,7 +584,7 @@ void GameState::combatSystem() //
 		case 32:
 			{
 				Player-> interboxactive = true;
-				Player-> attack = true;
+				Player->attackBreakDown();
 				std::cout<< "I am attacking" << std::endl;	
 			};
 			break;
@@ -596,7 +607,7 @@ void GameState::combatSystem() //
 		case 32:
 			{
 				Player-> interboxactive = false;
-				Player-> attack = false;
+				Player-> attackBreakUp();
 				std::cout<< "Done attacking" << std::endl;
 			};
 			break;
@@ -688,68 +699,7 @@ void GameState::combatSystem() //
 		};
 	}
 
-	void LevelHome::ghostPlayCollide()
-	{
-		float playBotY,playTopY,playLeftX,playRightX;
-		float ghostBotY,ghostTopY,ghostLeftX,ghostRightX;
 
-		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
-		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
-
-			std::vector<Objects*>::iterator Ghost;
-			for(Ghost= objectsList.begin(); Ghost !=objectsList.end() ; Ghost++)
-			{
-				Objects *o = (*Ghost);
-				if (o->ghost == true)
-				{
-		ghostBotY = o->ObjectHitbox->bottomCornerY; ghostTopY = o->ObjectHitbox->topCornerY;
-		ghostLeftX = o->ObjectHitbox->leftCornerX; ghostRightX = o->ObjectHitbox->rightCornerX;
-				if( ( (playBotY >= ghostBotY  ) && (playBotY <= ghostTopY) || ( playTopY >= ghostBotY ) && ( playTopY <= ghostTopY) ) && 
-			( (playLeftX >= ghostLeftX  ) && (playLeftX <= ghostRightX) || (playRightX >= ghostLeftX  ) && (playRightX <= ghostRightX) ) )
-		{
-			std::cout << "bing!" << std::endl;
-			int randspot = rand() % 3;
-			if((Player->hP) <= 0 )
-			{
-				Player->hP = 10;
-			}
-			else
-			{
-				Player->hP -= o->dam;
-			}
-			switch(randspot)
-			{
-				case 0: { 
-					o->setPosition(0,2000);
-					break;
-				  }
-					case 1: { 
-					o->setPosition(0,-2000);
-					break;
-				  }
-					case 2: { 
-					o->setPosition(2500,0);
-					break;
-				  }
-					case 3: { 
-					o->setPosition(-2500,2000);
-					break;
-				  }
-			}
-			
-
-		}
-		else
-		{
-			//NOTHING!
-		};
-				}
-		else{};
-
-
-			};
-
-	}
 
 void LevelHome::tutorialLoad1()
 	{
@@ -806,16 +756,7 @@ void LevelHome::tutorialLoad5()
 		}
 	}
 
-	//void LevelHome::ScoreUpdate(int inScore)
-	//{
-	//	int tempScore;
-	//	tempScore=inScore;
-	//	for(int i=6 ; i>0; i--)
-	//	{	
-	//		UIScore[i]->setCurrentAnimation(tempScore%10);
-	//		tempScore=tempScore/10;
-	//	}
-	//}
+
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||

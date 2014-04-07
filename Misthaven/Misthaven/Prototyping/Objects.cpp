@@ -26,11 +26,18 @@ Objects::Objects(std::string filename, int width, int height)
 	immortal = true;
 	hP = 0;
 	dam= 0;
+	coolDown = false;
+	coolDTicking = 0;
+	attackTicking = 0;
+
+	bool bOpponent = false;
+	bool bInitiator = false;
 	
 
 	direction = 0;
 	// Interactbox
 	attack= false;
+	attackanim = false;
 	talk = false;
 	interboxactive = false;
 
@@ -56,6 +63,9 @@ Objects::~Objects()
 void Objects::update() 
 {
 	tickFrame++;
+
+
+
 if(player == true && inMotion == true)
 {
 	this-> nextFrame();
@@ -70,8 +80,106 @@ else
 }
 
 this-> ObjectHitbox->updateHitbox(positionX,positionY, player);
+	//Combat system
+	attackUpdate();
+	coolDownfunc();
+	if(player ==true){
 this-> ObjectActBox->InteractBoxActive(interboxactive, talk, interboxactive, direction, (ObjectHitbox->leftCornerX), (ObjectHitbox->bottomCornerY));
+	}
 
+this-> ObjectActBox->InteractBoxActive(interboxactive, talk, interboxactive, direction, positionX, positionY);
+
+
+
+}
+
+//Combat function
+void Objects::coolDownfunc()
+{
+	if (coolDown == true && coolDTicking < 20)
+	{
+		coolDTicking++;
+	}
+	else if (coolDown == true && coolDTicking >=20)
+	{
+		coolDown=false;
+		coolDTicking = 0;
+	}
+	else
+	{
+	};
+}
+
+void Objects::attackBreakDown()
+{
+	std::cout<< "BOOM! " << std::endl;
+	if(coolDown ==true)
+	{
+		attackanim = false;
+		attack = false;
+		std::cout << "I'm tired" << std::endl;
+	}
+	else{
+		if(attackTicking == 0)
+		{
+			attackTicking++;
+			attack = true;
+			attackanim = true;
+			if (player == true)
+			{
+				this-> setCurrentAnimation(direction+4);
+			}
+		}
+		else
+		{
+		}
+	}
+}
+void Objects::attackBreakUp()
+{
+
+	std::cout<< "BOOOOOM! HEADSHOT! end" << std::endl;
+	attackTicking = 0;
+	attack = false;
+	attackanim = false;
+	coolDown = true;
+	if (player == true)
+	{
+		this-> setCurrentAnimation(direction);
+	}
+
+}
+
+void Objects::attackUpdate()
+{
+	if(coolDown == true)
+	{
+		attackanim = false;
+		attack = false;
+	//	std::cout << "I'm le tired" << std::endl;
+	}
+	else
+	{
+		if (attackTicking > 0 && attackTicking <= 5)
+		{
+			attackTicking++;
+			attack = false;
+			attackanim = true;
+		}else if(attackTicking > 5)
+		{
+			attackTicking = 0;
+			coolDown = true;
+			attackanim = false;
+			if (player == true)
+			{
+				this-> setCurrentAnimation(direction);
+			}
+		}
+		else
+		{
+			// Nothing to see here
+		}
+	}
 }
 
 /* Movement */
@@ -147,8 +255,7 @@ void Objects::movementGo(unsigned char key) //Keyboard down
 		case 32:
 			{
 				if(player == true){
-				this-> setCurrentAnimation(direction+4);
-				this->inMotion = true;
+				this-> inMotion = true;
 				};
 			};
 			break;

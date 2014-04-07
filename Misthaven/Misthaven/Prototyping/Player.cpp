@@ -26,12 +26,13 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 	this-> speedY = 0;
 	this-> player = true;
 	this-> stationary = false;
-
 	this-> collidable = true;
+
 
 	//Combat information
 	hP= 10;
 	dam = 1;
+	this->immortal=false;
 
 	//Score
 	scoreStorage = 0;
