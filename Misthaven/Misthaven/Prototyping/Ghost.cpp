@@ -20,6 +20,7 @@ Ghost::Ghost (std::string filename, int width, int height)
 	hP = 5;
 	dam = 1;
 	engage = false;
+	separComSys = true;
 
 
 }
@@ -120,7 +121,7 @@ void Ghost::movementGhost(float inPlayerPosX, float inPlayerPosY)
 
 void Ghost::ghostRespawn()
 {
-	if (hP <= 0)
+	if (hP <= 0 || coolDown == true)
 	{
 		hP = 5;
 			int randspot = rand() % 3;
@@ -164,11 +165,11 @@ void Ghost::closeToAttack()
 
 void Ghost::attackZePlayer()
 {
-	if (engage == true  && coolDown == false)
+	if (engage == true  && coolDown == false && attackTicking < 30)
 	{
 		attackTicking++;
 		interboxactive = true;
-		std::cout<<"Charging mah lazer (ghost)" << std::endl;
+		std::cout<< "+";
 	}
 	else if (engage == true  && coolDown == false && attackTicking >= 30)
 	{
@@ -202,7 +203,7 @@ void Ghost::aboutFace()
 	}
 	else
 	{
-		direction = rand()% 4+1; // 1-4
+		direction = 0;
 	}
 
 }
@@ -215,9 +216,5 @@ void Ghost::ghUpdate()
 	aboutFace();
 	movementGhost(playPosX, playPosY);
 
-
 	attackZePlayer();
-
-	
-	
 }

@@ -30,8 +30,9 @@ Objects::Objects(std::string filename, int width, int height)
 	coolDTicking = 0;
 	attackTicking = 0;
 
-	bool bOpponent = false;
-	bool bInitiator = false;
+	bOpponent = false;
+	bInitiator = false;
+	separComSys = false;
 	
 
 	direction = 0;
@@ -64,8 +65,6 @@ void Objects::update()
 {
 	tickFrame++;
 
-
-
 if(player == true && inMotion == true)
 {
 	this-> nextFrame();
@@ -77,18 +76,20 @@ else if(tickFrame >= 2)
 }
 else
 {
-}
+};
 
 this-> ObjectHitbox->updateHitbox(positionX,positionY, player);
 	//Combat system
 	attackUpdate();
 	coolDownfunc();
-	if(player ==true){
-this-> ObjectActBox->InteractBoxActive(interboxactive, talk, interboxactive, direction, (ObjectHitbox->leftCornerX), (ObjectHitbox->bottomCornerY));
+	
+	if(player ==true)
+	{
+	ObjectActBox->InteractBoxActive(interboxactive, talk, attack, direction, (ObjectHitbox->leftCornerX), (ObjectHitbox->bottomCornerY));
+	}else
+	{
+	ObjectActBox->InteractBoxActive(interboxactive, talk, attack, direction, positionX, positionY);
 	}
-
-this-> ObjectActBox->InteractBoxActive(interboxactive, talk, interboxactive, direction, positionX, positionY);
-
 
 
 }
@@ -117,18 +118,17 @@ void Objects::attackBreakDown()
 	{
 		attackanim = false;
 		attack = false;
+		interboxactive = true;
 		std::cout << "I'm tired" << std::endl;
 	}
 	else{
 		if(attackTicking == 0)
 		{
 			attackTicking++;
-			attack = true;
+			interboxactive = true;
 			attackanim = true;
-			if (player == true)
-			{
-				this-> setCurrentAnimation(direction+4);
-			}
+			this-> setCurrentAnimation(direction+4);
+
 		}
 		else
 		{
@@ -141,39 +141,45 @@ void Objects::attackBreakUp()
 	std::cout<< "BOOOOOM! HEADSHOT! end" << std::endl;
 	attackTicking = 0;
 	attack = false;
+	interboxactive = false;
 	attackanim = false;
 	coolDown = true;
-	if (player == true)
-	{
-		this-> setCurrentAnimation(direction);
-	}
+	this-> setCurrentAnimation(direction);
+
 
 }
 
 void Objects::attackUpdate()
 {
-	if(coolDown == true)
+	if(coolDown == true && separComSys == false)
 	{
 		attackanim = false;
+		interboxactive = false;
 		attack = false;
 	//	std::cout << "I'm le tired" << std::endl;
 	}
 	else
 	{
-		if (attackTicking > 0 && attackTicking <= 5)
+		if(attackTicking == 1 && separComSys ==false)
 		{
 			attackTicking++;
+			interboxactive = true;
+			attack = true;
+			attackanim = true;
+		}
+		else if (attackTicking > 1 && attackTicking <= 5 && separComSys==false)
+		{
+			attackTicking++;
+			interboxactive = false;
 			attack = false;
 			attackanim = true;
-		}else if(attackTicking > 5)
+		}else if(attackTicking > 5 && separComSys==false)
 		{
 			attackTicking = 0;
 			coolDown = true;
 			attackanim = false;
 			if (player == true)
-			{
-				this-> setCurrentAnimation(direction);
-			}
+			this-> setCurrentAnimation(direction);
 		}
 		else
 		{

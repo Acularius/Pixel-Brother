@@ -53,8 +53,8 @@ void Hitbox::updateHitbox(float inputPositionX, float inputPositionY, bool playe
 
 InteractBox::InteractBox()
 {
-	faceHeight = 33; faceWidth = 30; 
-	sideWidth = 33; sideHeight = 35;
+	faceHeight = 43; faceWidth = 40; 
+	sideWidth = 43; sideHeight = 45;
 
 	leftCornerX = rightCornerX = bottomCornerY= topCornerY = 0;
 	active, attack, talk = false;
@@ -72,9 +72,9 @@ void InteractBox::InteractBoxActive(bool inputactive, bool intalk, bool inattack
 	active = inputactive;
 	talk = intalk;
 	attack = inattack;
-	
-	if ( active == true)
+	if (active == true)
 	{
+
 		switch (indirection)
 		{
 		case 1: // Facing down, s key. (0,0) = top left of player's bottom left
@@ -99,11 +99,17 @@ void InteractBox::InteractBoxActive(bool inputactive, bool intalk, bool inattack
 				rightCornerX = leftCornerX + sideWidth; topCornerY = bottomCornerY + sideHeight;
 
 			};
-		case 0:{break;} //Nothing happens with the default 0 direction
+		case 0:{
+			leftCornerX = inPosX - 5; bottomCornerY = inPosY - 5;
+			rightCornerX= leftCornerX + 55; topCornerY = bottomCornerY + 55;
+			break;} //0 direction
 
 		}
-	} 
-	else
-	{};
 
+		std::cout << "LeftCornerX: " << leftCornerX << ", RightCornerX: " << rightCornerX <<
+			"BottomCornerY: " << bottomCornerY << ", TopCornerY: " << topCornerY << std::endl;
+	}
 }
+	
+
+

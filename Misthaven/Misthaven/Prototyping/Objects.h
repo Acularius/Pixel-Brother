@@ -33,6 +33,7 @@ public:
 
 	bool bOpponent;
 	bool bInitiator;
+	bool separComSys;
 
 	void coolDownfunc(); // No attack spam
 	void attackBreakUp(); // So one can't hold down the attack key - Up

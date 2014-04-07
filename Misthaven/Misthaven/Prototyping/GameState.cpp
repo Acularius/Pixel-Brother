@@ -115,7 +115,7 @@ void GameState::combatSystem() //
 	{
 		(*initCombatant)->bInitiator = true;
 		Objects *oInitiator = (*initCombatant);
-		if ((oInitiator->ObjectActBox->active == true) && (oInitiator->ObjectActBox->attack == true) )
+		if ((oInitiator->attack == true) && (oInitiator->interboxactive==true))
 		{
 			std::cout << "Stage 1 - Combat Search" << std::endl;
 			std::vector<Objects*>::iterator oppoCombatant; // Opponents
@@ -130,7 +130,7 @@ void GameState::combatSystem() //
 					{
 						std::cout << "Combat Initiated" << std::endl;
 						if( (((oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
-							( ( (oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
+							(((oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
 						{
 							std::cout<< "You wound me~!" << std::endl;
 							//Damage Resolution
@@ -537,7 +537,6 @@ void GameState::combatSystem() //
 	void LevelHome::Update()
 	{
 		tickstime++;
-		combatSystem();
 
 		tutorialLoad1();
 		tutorialLoad2();
@@ -558,6 +557,8 @@ void GameState::combatSystem() //
 		allowMovement();
 		movement();
 		transitionCheck();
+		
+		combatSystem();
 
 		
 

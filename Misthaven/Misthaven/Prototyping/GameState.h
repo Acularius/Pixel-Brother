@@ -124,7 +124,7 @@
 
 		 void allowMovement();
 		 void transitionCheck();
-		 void ghostPlayCollide();
+
 		 void tutorialLoad1();
 		 void tutorialLoad2();
 		 void tutorialLoad3();
