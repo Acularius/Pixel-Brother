@@ -551,7 +551,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Map1_Objects -> setNumberOfAnimations(1);
 			Map1_Objects -> setPosition(-1422,-1033);  //-1422, -1033
 			Map1_Objects -> setCenter(0,0);
-			Map1_Objects -> setLayerID (6);
+			Map1_Objects -> setLayerID (7);
 			Map1_Objects -> addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map1_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map1_Objects);
@@ -1017,7 +1017,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Map2_Objects -> setNumberOfAnimations(1);
 			Map2_Objects -> setPosition(-475,-1410);
 			Map2_Objects -> setCenter(0,0);
-			Map2_Objects -> setLayerID (6);
+			Map2_Objects -> setLayerID (7);
 			Map2_Objects ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			Map2_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map2_Objects);
@@ -1361,7 +1361,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Map3_Objects -> setNumberOfAnimations(1);
 			Map3_Objects -> setPosition(-1552,-1402);
 			Map3_Objects -> setCenter(0,0);
-			Map3_Objects -> setLayerID (6);
+			Map3_Objects -> setLayerID (7);
 			Map3_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map3_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map3_Objects);
@@ -1690,7 +1690,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Map4_Objects -> setSpriteFrameSize(2500,2000);
 			Map4_Objects -> setPosition(-1404,-1384);
 			Map4_Objects -> setCenter(0,0);
-			Map4_Objects -> setLayerID (6);
+			Map4_Objects -> setLayerID (7);
 			Map4_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
 			Map4_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map4_Objects);

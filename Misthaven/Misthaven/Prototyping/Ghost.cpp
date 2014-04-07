@@ -14,12 +14,12 @@ Ghost::Ghost (std::string filename, int width, int height)
 	this-> immortal = false;
 	playPosX = playPosY = 0;
 
-	this-> respectiveSpeed = 5;
+	this-> respectiveSpeed = 6;
 
 	this-> setLayerID(6);
 
 	//Combat info
-	hP = 2;
+	hP = 3;
 	dam = 1;
 	engage = false;
 	separComSys = true;
