@@ -4,8 +4,8 @@ Ghost::Ghost (std::string filename, int width, int height)
 		:Characters(filename, width, height)
 {
 	this-> setNumberOfAnimations(2);
-	this-> addSpriteAnimRow(0, 0,  0,40,0,8);
-	this-> addSpriteAnimRow(1, 0, 40,40,0,8);
+	this-> addSpriteAnimRow(0, 0,	   0,width,0,8);
+	this-> addSpriteAnimRow(1, 0, height,width,0,8);
 	this-> setCurrentAnimation(0);
 	this-> direction=0;
 	this-> ghost=true;

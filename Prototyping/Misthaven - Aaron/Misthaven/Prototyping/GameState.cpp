@@ -161,6 +161,8 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			LocalGame=Local;
 			menuSpeed=0;
 			active=true;
+			
+			
 							AudioLibInit();
 							AudioLibPlaySound("Sounds/Journey.mp3",true);
 
@@ -374,6 +376,19 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		
 			}
 
+			void LevelHome:: AddTutorialTile(int i, int PosX, int PosY)
+			{	
+				  Tutorial[i] = new Objects("images/Backgrounds/Water Sprite.png",80,40);
+				  Tutorial[i] -> setNumberOfAnimations(1);
+				  Tutorial[i] -> setPosition(PosX-1422,PosY-1033);
+				  Tutorial[i] -> setCenter(0,0);
+				  Tutorial[i] -> setLayerID(22);
+				  Tutorial[i] -> addSpriteAnimRow(0,0,0,80,40,1);
+				  this->addToObjectsList(Tutorial[i]);
+		
+			}
+
+
 		void LevelHome::NpcCheck()
 		{
 			float tranBotY,tranTopY,tranLeftX,tranRightX;
@@ -403,6 +418,36 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		} 
 
 
+		void LevelHome::TutorialCheck()
+		{
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+			float playBotY,playTopY,playLeftX,playRightX;
+			bool found2=false;
+
+			for(int i=1;i<5;i++)
+			{ 
+				tranBotY  = Tutorial[i]->ObjectHitbox->bottomCornerY; tranTopY = Tutorial[i]->ObjectHitbox->topCornerY;
+				tranLeftX = Tutorial[i]->ObjectHitbox->leftCornerX; tranRightX = Tutorial[i]->ObjectHitbox->rightCornerX;
+
+				playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+				playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+
+				if( ( (playBotY >= tranBotY)   && (playBotY <= tranTopY)    || (playTopY >= tranBotY)    && (playTopY <= tranTopY) ) && 
+				    ( (playLeftX >= tranLeftX) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX) && (playRightX <= tranRightX) ) )
+					{  TutorialSprite->setCurrentAnimation(i); //Displays the i'th sprite based on array's index i
+					   if(anynumber!=i)
+					   AudioLibPlaySound("Sounds/Tick.mp3",false);
+					   anynumber=i;
+					   found2=true;} 
+			}	
+			
+			if(found2==false) //If nothing triggered in loop -> display transparent layer.
+			 {	 anynumber=0;
+				 TutorialSprite->setCurrentAnimation(0);}
+		} 
+
+
+
 	void LevelHome::Init(Game* Local)
 	{
 		//INITIALIZATION:
@@ -411,7 +456,9 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		active=false;
 		loadcheck=false;
 		tutorialDone = false;
+		
 		anynumber=0;
+		tutorialnum=0;
 
 		    //Sprite - Water Background.
 			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
@@ -460,6 +507,13 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			AddNpcTile(14, 2014, 1119);  // Witch
 			AddNpcTile(15, 2024, 699);   // Miku
 
+			AddTutorialTile(0,   0,    0);
+			AddTutorialTile(2, 1730, 800);
+			AddTutorialTile(3, 1730, 880);
+			AddTutorialTile(4, 1730, 960);
+			AddTutorialTile(1, 1730, 1040);
+
+
 			//Sprite - Map 1 Objects.
 			Map1_Objects = new Objects ("images/Levels/Map 1 Objects.png", 2500, 2000);
 			Map1_Objects -> setNumberOfAnimations(1);
@@ -507,6 +561,19 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			NPCDialogue->setLayerID(21);
 			this->addSpriteToDrawList(NPCDialogue);
 
+			
+			TutorialSprite = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
+			TutorialSprite->setSpriteFrameSize(480,260);
+			TutorialSprite->setNumberOfAnimations(6);
+			TutorialSprite->setCenter(0,0);
+			for(int i=0;i<=4;i++)
+			{
+				TutorialSprite->addSpriteAnimRow(i,0,i*260,480,0,1);
+			}
+			TutorialSprite->setPosition(0,0);
+			TutorialSprite->setCurrentAnimation(0);
+			TutorialSprite->setLayerID(16);
+			this->addSpriteToDrawList(TutorialSprite);
 
 			TransitionHomeOne = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
 			TransitionHomeOne-> setNumberOfAnimations(1);
@@ -533,6 +600,23 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Ghosty4 = new Ghost("images/Seagull Sprite.png",40,40);
 			this->addSpriteToDrawList(Ghosty4);
 			this->addToObjectsList(Ghosty4);
+
+
+			/*Ghosty1 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty1);
+			this->addToObjectsList(Ghosty1);
+
+			Ghosty2 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty2);
+			this->addToObjectsList(Ghosty2);
+
+			Ghosty3 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty3);
+			this->addToObjectsList(Ghosty3);
+
+			Ghosty4 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty4);
+			this->addToObjectsList(Ghosty4);*/
 
 			std::cout << "Before Biscuit" << std::endl;
 			MapConstraintsHome = Constraints("images/Levels/Map 1 Constraints.bmp");
@@ -587,15 +671,25 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		/*Default deconstructor */
 	}
 
+	void LevelHome::PrintTutorial()
+	{
+	 /* if(9>=tutorialnum>=4)
+	  {
+		  this->LocalGame->MessageControl(this->LocalGame->Msg, tutorialnum,7);
+		  tutorialnum++;
+	  }*/
+
+	}
+	
 
 	void LevelHome::Update()
 	{
-
-		tutorialLoad1();
-		tutorialLoad2();
-		tutorialLoad3();
-		tutorialLoad4();
-		tutorialLoad5();
+		//PrintTutorial();
+		//tutorialLoad1();
+		//tutorialLoad2();
+		//tutorialLoad3();
+		//tutorialLoad4();
+		//tutorialLoad5();
 		Ghosty1->movementGhost(Player->positionX, Player->positionY);
 		Ghosty2->movementGhost(Player->positionX, Player->positionY);
 		Ghosty3->movementGhost(Player->positionX, Player->positionY);
@@ -606,6 +700,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		movement();
 		transitionCheck();
 		NpcCheck();
+		TutorialCheck();
 
 		ghostPlayCollide();
 		ScrollingBackgroundUpdate();
@@ -831,6 +926,7 @@ void LevelHome::tutorialLoad5()
 			tutorialDone= true;
 		}
 	}
+
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL ONE ----- STATE 3								   ||
@@ -1604,6 +1700,7 @@ void LevelHome::tutorialLoad5()
 
 	}
 
+
 	void MessageState::Update()
 	{
 		
@@ -1618,7 +1715,7 @@ void LevelHome::tutorialLoad5()
 		}
 		else if(active == true && ticked == true)
 		{
-			if (ticks >= 20)
+			if (ticks >= 40)
 			{
 				active = false;
 				ticked = false;
@@ -1631,7 +1728,6 @@ void LevelHome::tutorialLoad5()
 		}
 		else
 		{};
-
 
 	}
 

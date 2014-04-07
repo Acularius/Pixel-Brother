@@ -123,12 +123,15 @@
 		 void KeyUp(unsigned char key);
 		 void KeyDown(unsigned char key);
 		 void AddNpcTile(int i, int PosX, int PosY);
+		 void AddTutorialTile(int i, int PosX, int PosY);
 		 void NpcCheck();
+		 void TutorialCheck();
 		 ~LevelHome(void);
 
 		 void allowMovement();
 		 void transitionCheck();
 		 void ghostPlayCollide();
+
 		 void tutorialLoad1();
 		 void tutorialLoad2();
 		 void tutorialLoad3();
@@ -142,12 +145,15 @@
 			 Objects *Map1_Objects;
 			 Objects *NPC_Objects;
 			 Objects *NPC[16];
+			 Objects *Tutorial[5];
 			 Transition *TransitionHomeOne;
 			// Sprite *Player;
 			 Sprite *UISample;
+			 Sprite *TutorialSprite;
 
-		
-		
+		int tutorialnum;//tutorial check() function
+	    void PrintTutorial();
+
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
 		Ghost *Ghosty1;
