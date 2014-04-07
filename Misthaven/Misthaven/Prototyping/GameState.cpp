@@ -17,6 +17,12 @@
 //																						   ||
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 
+bool spriteSortingFunction2(Sprite *s1, Sprite *s2)
+{
+	// return true if s1's layerID is less than s2's layerID
+	return (s1->layerID < s2->layerID);
+}
+
 	void GameState::addSpriteToDrawList(Sprite *s)
 	{
 		if(s) /* Push the sprite to the back of the list */
@@ -36,6 +42,7 @@
 			Sprite *s = (*it);
 			s->draw();
 		}
+		
 	}
 
 	/*All things related to adding to the ObjectsList*/
@@ -48,6 +55,24 @@ void GameState::addToObjectsList(Objects *o)
 	}
 }
 
+void GameState::addToGhostList(Ghost *g)
+{
+	if(g)
+	{
+		/* push the Object to the back of the list */
+		this->ghostList.push_back(g);
+	}
+}
+
+void GameState::addToSeagullList(Seagull *sg)
+{
+	if(sg)
+	{
+		/* push the Object to the back of the list */
+		this->gullList.push_back(sg);
+	}
+}
+
 // To streamline the code, update all the Objects from object list at once.
 void GameState::updateObjects()
 {
@@ -56,6 +81,28 @@ void GameState::updateObjects()
 	{
 		Objects *o = (*itUpdate);
 		o-> update();
+	}
+}
+
+void GameState::updateGhost(float inPlayPosX, int inPlayPosY)
+{
+			std::vector<Ghost*>::iterator itUpdate; 
+		for(itUpdate= ghostList.begin() ; itUpdate !=ghostList.end() ; itUpdate++)
+	{
+		Ghost *g = (*itUpdate);
+		g->getPlayerPos(inPlayPosX, inPlayPosY);
+		g->ghUpdate();
+	}
+}
+
+void GameState::updateSeagull(float inPlayPosX, int inPlayPosY)
+{
+			std::vector<Seagull*>::iterator itUpdate; 
+		for(itUpdate= gullList.begin() ; itUpdate !=gullList.end() ; itUpdate++)
+	{
+		Seagull *sg = (*itUpdate);
+		sg->getPlayerPos(inPlayPosX, inPlayPosY);
+		sg->sgUpdate();
 	}
 }
 
@@ -140,7 +187,7 @@ void GameState::combatSystem() //
 								std::cout<< "You dead sucka!" << std::endl;
 								oOpponent->hP = 10;
 							}
-							if(oInitiator->player==true) // Update Player's score
+							if(oInitiator->player==true && oOpponent->award==true) // Update Player's score
 							{
 								oInitiator->scoreStorage += oInitiator->dam;
 							}
@@ -289,8 +336,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Player->addSpriteAnimRow(4,0,180,60,0,4);
 			Player->setPosition(210,86);
 			Player->setCurrentAnimation(1);
-			Player->setLayerID(4);
+			Player->setLayerID(6);
 			this->addSpriteToDrawList(Player);
+
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
 
@@ -442,12 +491,12 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		anynumber2=0;
 
 				    //Sprite - Water Background.
-			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 2500, 2000);
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 5000, 4000);
 			WaterBackground -> setNumberOfAnimations(1);
 			WaterBackground -> setPosition(-1422,-750);
 			WaterBackground -> setCenter(0,0);
 			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			WaterBackground -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(WaterBackground);
 			this->addToObjectsList(WaterBackground);
@@ -469,7 +518,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
 			Player->setCurrentAnimation(1);
 			Player->direction= 1;
-			Player->setLayerID(4);
+			Player->setLayerID(6);
 			this->addSpriteToDrawList(Player);
 			this->addToObjectsList(Player);
 
@@ -554,26 +603,30 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			TransitionHomeOne-> addSpriteAnimFrame(0,0,50);
 			TransitionHomeOne-> setCurrentAnimation(0);
 			TransitionHomeOne-> setLayerID(7);
-			TransitionHomeOne-> setPosition(-595,-54);
+			TransitionHomeOne-> setPosition(-542,-113);
 			TransitionHomeOne-> toLevel = 2;
-			//this->addSpriteToDrawList(TransitionHomeOne);
+			this->addSpriteToDrawList(TransitionHomeOne);
 			this->addToObjectsList(TransitionHomeOne);
 
-			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
-			this->addSpriteToDrawList(Ghosty1);
-			this->addToObjectsList(Ghosty1);
+			Gull1 = new Seagull("images/Seagull Sprite.png",40,40);
+			this->addSpriteToDrawList(Gull1);
+			this->addToObjectsList(Gull1);
+			this->addToSeagullList(Gull1);
 
-			Ghosty2 = new Ghost("images/Enemy Sprite.png",40,40);
-			this->addSpriteToDrawList(Ghosty2);
-			this->addToObjectsList(Ghosty2);
+			Gull2 = new Seagull("images/Seagull Sprite.png",40,40);
+			this->addSpriteToDrawList(Gull2);
+			this->addToObjectsList(Gull2);
+			this->addToSeagullList(Gull2);
 
-			Ghosty3 = new Ghost("images/Enemy Sprite.png",40,40);
-			this->addSpriteToDrawList(Ghosty3);
-			this->addToObjectsList(Ghosty3);
+			Gull3 = new Seagull ("images/Seagull Sprite.png",40,40);
+			this->addSpriteToDrawList(Gull3);
+			this->addToObjectsList(Gull3);
+			this->addToSeagullList(Gull3);
 
-			Ghosty4 = new Ghost("images/Enemy Sprite.png",40,40);
-			this->addSpriteToDrawList(Ghosty4);
-			this->addToObjectsList(Ghosty4);
+			Gull4 = new Seagull("images/Seagull Sprite.png",40,40);
+			this->addSpriteToDrawList(Gull4);
+			this->addToObjectsList(Gull4);
+			this->addToSeagullList(Gull4);
 
 				//Sprite - UI Score.
 						for(int i=0 ; i<7; i++)
@@ -605,8 +658,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			std::cout << "At Biscuit" << std::endl;
 			std::cout << "Location of 919, 1047: " << MapConstraintsHome.vConstraintVector[919][1047] << std::endl;
 
-
-
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
 
@@ -624,11 +676,11 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player->setPosition(160,95);
 				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
-				TransitionHomeOne->setPosition(-595,-54);
-				Ghosty1 ->setPosition(0,2000);
-				Ghosty2 ->setPosition(2500,0);
-				Ghosty3 ->setPosition(0,-2000);
-				Ghosty4 ->setPosition(-2500,0);
+				TransitionHomeOne->setPosition(-542,-113);
+				Gull1 ->setPosition(0,2000);
+				Gull2 ->setPosition(2500,0);
+				Gull3 ->setPosition(0,-2000);
+				Gull4 ->setPosition(-2500,0);
 
 			NPC[0]->setPosition(0 ,   0 );    // Transparent Layer - 0;
 			NPC[1] ->setPosition( 491-1422, 1584-1033);   // Sonic
@@ -676,14 +728,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 	{
 
 
-		Ghosty1->getPlayerPos(Player->positionX, Player->positionY);
-		Ghosty1->ghUpdate();
-		Ghosty2->getPlayerPos(Player->positionX, Player->positionY);
-		Ghosty2->ghUpdate();
-		Ghosty3->getPlayerPos(Player->positionX, Player->positionY);
-		Ghosty3->ghUpdate();
-		Ghosty4->getPlayerPos(Player->positionX, Player->positionY);
-		Ghosty4->ghUpdate();
+		updateSeagull(Player->positionX, Player->positionY);
 
 		Player->playerUpdate();
 
@@ -946,38 +991,48 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 
 		    //Sprite - Water Background.
-			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 2.png",2500,2000);
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 2.png",5000,4000);
 			WaterBackground -> setNumberOfAnimations(1);
 			WaterBackground -> setPosition(-1700,-750);
 			WaterBackground -> setCenter(0,0);
 			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			WaterBackground -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(WaterBackground);
 			this->addToObjectsList(WaterBackground);
 
 			//Sprite - Map 2 Base.
-			Map2_Base = new Objects ("images/Levels/Map 2 Base.png", 2500,2000);
+			Map2_Base = new Objects ("images/Levels/Map 2 Base.png", 5000,4000);
 			Map2_Base -> setNumberOfAnimations(1);
 			Map2_Base -> setPosition(-475,-1410);
 			Map2_Base -> setCenter(0,0);
 			Map2_Base -> setLayerID (2);
-			Map2_Base -> addSpriteAnimRow(0,0,0,2500,2000,1);
+			Map2_Base -> addSpriteAnimRow(0,0,0,5000,4000,1);
 			Map2_Base -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map2_Base);
 			this->addToObjectsList(Map2_Base);
 
 			
 			//Sprite - Map 2 Objects.
-			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 2500, 2000);
+			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 5000, 4000);
 			Map2_Objects -> setNumberOfAnimations(1);
 			Map2_Objects -> setPosition(-475,-1410);
 			Map2_Objects -> setCenter(0,0);
 			Map2_Objects -> setLayerID (6);
-			Map2_Objects ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			Map2_Objects ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			Map2_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map2_Objects);
 			this->addToObjectsList(Map2_Objects);
+
+			TransitionOneTwo = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
+			TransitionOneTwo-> setNumberOfAnimations(1);
+			TransitionOneTwo-> addSpriteAnimFrame(0,0,50);
+			TransitionOneTwo-> setCurrentAnimation(0);
+			TransitionOneTwo-> setLayerID(7);
+			TransitionOneTwo-> setPosition(510,-233);
+			TransitionOneTwo-> toLevel = 3;
+			this->addSpriteToDrawList(TransitionOneTwo);
+			this->addToObjectsList(TransitionOneTwo);
 
 			//Sprite - Player Sprites.
 
@@ -1014,6 +1069,49 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			MapConstraintsOne = Constraints("images/Levels/Map 2 Constraints.bmp");
 			std::cout << "At Biscuit One" << std::endl;
 
+			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty1);
+			this->addToObjectsList(Ghosty1);
+			this->addToGhostList(Ghosty1);
+
+			Ghosty2 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty2);
+			this->addToObjectsList(Ghosty2);
+			this->addToGhostList(Ghosty2);
+
+			Ghosty3 = new Ghost ("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty3);
+			this->addToObjectsList(Ghosty3);
+			this->addToGhostList(Ghosty3);
+
+			Ghosty4 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty4);
+			this->addToObjectsList(Ghosty4);
+			this->addToGhostList(Ghosty4);
+
+			Ghosty5 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty5);
+			this->addToObjectsList(Ghosty5);
+			this->addToGhostList(Ghosty5);
+
+			Ghosty6 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty6);
+			this->addToObjectsList(Ghosty6);
+			this->addToGhostList(Ghosty6);
+
+			Ghosty7 = new Ghost ("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty7);
+			this->addToObjectsList(Ghosty7);
+			this->addToGhostList(Ghosty7);
+
+			Ghosty8 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty8);
+			this->addToObjectsList(Ghosty8);
+			this->addToGhostList(Ghosty8);
+
+
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
+
 
 	}
 
@@ -1025,7 +1123,15 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
 				Map2_Objects -> setPosition(-475,-1410);
-
+				TransitionOneTwo->setPosition(510,-233);
+				Ghosty1 ->setPosition(0,2000);
+				Ghosty2 ->setPosition(2500,0);
+				Ghosty3 ->setPosition(0,-2000);
+				Ghosty4 ->setPosition(-2500,0);
+				Ghosty5 ->setPosition(0,2000);
+				Ghosty6 ->setPosition(2500,0);
+				Ghosty7 ->setPosition(0,-2000);
+				Ghosty8 ->setPosition(-2500,0);
 				
 				AudioLibShutdown();
 				AudioLibInit();
@@ -1048,9 +1154,12 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 	{
 		Player->playerUpdate();
 
+		updateGhost(Player->positionX, Player->positionY);
+
 		updateObjects();
 		allowMovement();
 		movement();
+		transitionCheck();	
 
 		combatSystem();
 		
@@ -1059,6 +1168,14 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
 		UIHealth->inputHealth(Player->hP);
+
+		if (Player->hP <= 0)
+		{
+			Player->hP = 10;
+			Player->scoreStorage = 0;
+			ResetMap();
+			
+		}
 
 
 	}
@@ -1171,6 +1288,34 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 	interception = 0;
 }
 
+	void LevelOne::transitionCheck()
+	{
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+		float playBotY,playTopY,playLeftX,playRightX;
+
+		tranBotY = TransitionOneTwo->ObjectHitbox->bottomCornerY; tranTopY = TransitionOneTwo->ObjectHitbox->topCornerY;
+		tranLeftX = TransitionOneTwo->ObjectHitbox->leftCornerX; tranRightX = TransitionOneTwo->ObjectHitbox->rightCornerX;
+
+		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+// work on
+		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
+			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
+		{
+			//Transfer points
+			LocalGame->stateInfo.storePlayerHp = Player->hP;
+			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
+
+			std::cout << "BING!" << std::endl;
+			this->LocalGame->SwitchStateTo(this, 4); // To Level 4~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 3,7);
+		}
+		else
+		{
+			//NOTHING!
+		};
+	}
+
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL TWO ----- STATE 4								   ||
@@ -1188,12 +1333,12 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 
 		     //Sprite - Water Background.
-			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 5.png",2500,2000);
+			WaterBackground = new Objects ("images/Backgrounds/Water Sprite 5.png",5000,4000);
 			WaterBackground -> setNumberOfAnimations(1);
 			WaterBackground -> setPosition(-1700,-750);
 			WaterBackground -> setCenter(0,0);
 			WaterBackground -> setLayerID (1);
-			WaterBackground ->addSpriteAnimRow(0,0,0,2500,2000,1);
+			WaterBackground ->addSpriteAnimRow(0,0,0,5000,4000,1);
 			WaterBackground -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(WaterBackground);
 			this->addToObjectsList(WaterBackground);;
@@ -1222,6 +1367,16 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Map3_Objects -> setCurrentAnimation(1);
 			this->addSpriteToDrawList(Map3_Objects);
 			this->addToObjectsList(Map3_Objects);
+
+			TransitionTwoMenu = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
+			TransitionTwoMenu-> setNumberOfAnimations(1);
+			TransitionTwoMenu-> addSpriteAnimFrame(0,0,50);
+			TransitionTwoMenu-> setCurrentAnimation(0);
+			TransitionTwoMenu-> setLayerID(7);
+			TransitionTwoMenu-> setPosition(-137,-298); //Needs position
+			TransitionTwoMenu-> toLevel = 2;
+			this->addSpriteToDrawList(TransitionTwoMenu);
+			this->addToObjectsList(TransitionTwoMenu);
 
 			//Sprite - Player Sprites.
 
@@ -1258,6 +1413,48 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			MapConstraintsTwo = Constraints("images/Levels/Map 3 Constraints.bmp");
 			std::cout << "At Biscuit Two" << std::endl;
 
+			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty1);
+			this->addToObjectsList(Ghosty1);
+			this->addToGhostList(Ghosty1);
+
+			Ghosty2 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty2);
+			this->addToObjectsList(Ghosty2);
+			this->addToGhostList(Ghosty2);
+
+			Ghosty3 = new Ghost ("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty3);
+			this->addToObjectsList(Ghosty3);
+			this->addToGhostList(Ghosty3);
+
+			Ghosty4 = new Ghost("images/Enemy Sprite.png",40,40);
+			this->addSpriteToDrawList(Ghosty4);
+			this->addToObjectsList(Ghosty4);
+			this->addToGhostList(Ghosty4);
+
+			Ghosty5 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty5);
+			this->addToObjectsList(Ghosty5);
+			this->addToGhostList(Ghosty5);
+
+			Ghosty6 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty6);
+			this->addToObjectsList(Ghosty6);
+			this->addToGhostList(Ghosty6);
+
+			Ghosty7 = new Ghost ("images/Enemy Sprite 2.png",80,80);
+			this->addSpriteToDrawList(Ghosty7);
+			this->addToObjectsList(Ghosty7);
+			this->addToGhostList(Ghosty7);
+
+			Ghosty8 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			this->addSpriteToDrawList(Ghosty8);
+			this->addToObjectsList(Ghosty8);
+			this->addToGhostList(Ghosty8);
+
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
+
 	}
 
 
@@ -1268,6 +1465,16 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player-> setPosition(160,95);
 				Player-> setCurrentAnimation(1);
 				Map3_Objects -> setPosition(-1552,-1402);
+				TransitionTwoMenu->setPosition(-137,-298); 
+
+				Ghosty1 ->setPosition(0,2000);
+				Ghosty2 ->setPosition(2500,0);
+				Ghosty3 ->setPosition(0,-2000);
+				Ghosty4 ->setPosition(-2500,0);
+				Ghosty5 ->setPosition(0,2000);
+				Ghosty6 ->setPosition(2500,0);
+				Ghosty7 ->setPosition(0,-2000);
+				Ghosty8 ->setPosition(-2500,0);
 
 				Player->hP = LocalGame->stateInfo.storePlayerHp;
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
@@ -1282,12 +1489,15 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 	void LevelTwo::Update()
 	{
+
+		updateGhost(Player->positionX, Player->positionY);
 		Player->playerUpdate();
 		
 
 		updateObjects();
 		allowMovement();
-		movement();	
+		movement();
+		transitionCheck();	
 
 		combatSystem();
 		
@@ -1296,6 +1506,14 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
 		UIHealth->inputHealth(Player->hP);
+
+		if (Player->hP <= 0)
+		{
+			Player->hP = 10;
+			Player->scoreStorage = 0;
+			ResetMap();
+			
+		}
 	}
 
 
@@ -1401,6 +1619,33 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 	//std::cout << "Yay! Success!" << std::endl;
 	interception = 0;
 }
+
+	void LevelTwo::transitionCheck()
+	{
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+		float playBotY,playTopY,playLeftX,playRightX;
+
+		tranBotY = TransitionTwoMenu->ObjectHitbox->bottomCornerY; tranTopY = TransitionTwoMenu->ObjectHitbox->topCornerY;
+		tranLeftX = TransitionTwoMenu->ObjectHitbox->leftCornerX; tranRightX = TransitionTwoMenu->ObjectHitbox->rightCornerX;
+
+		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
+		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
+// work on
+		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
+			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
+		{
+			//Transfer points
+			LocalGame->stateInfo.storePlayerHp = Player->hP;
+			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
+
+			std::cout << "BING!" << std::endl;
+			this->LocalGame->SwitchStateTo(this, 1); // To Level menu~!
+		}
+		else
+		{
+			//NOTHING!
+		};
+	}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL THREE ----- STATE 5								   ||
@@ -1487,6 +1732,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			MapConstraintsThree = Constraints("images/Levels/Map 4 Constraints.bmp");
 			std::cout << "At Biscuit Three" << std::endl;
 
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
 
@@ -1675,22 +1921,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			Transition->setLayerID(16);
 			this->addSpriteToDrawList(Transition);
 
-			//Sprite - Tutorials.
-			Tutorials = new Sprite("images/Tutorials.png"); //Layer 17- Transition.
-			Tutorials->setSpriteFrameSize(480,261);
-			Tutorials->setNumberOfAnimations(5);
-			Tutorials->setCenter(0,0);
-			Tutorials->addSpriteAnimRow(4,0,0,480,0,1);
-			Tutorials->addSpriteAnimRow(3,0,261,480,0,1);
-			Tutorials->addSpriteAnimRow(2,0,522,480,0,1);
-			Tutorials->addSpriteAnimRow(1,0,783,480,0,1);
-			Tutorials->addSpriteAnimRow(0,0,1044,480,0,1); //Transparent Layer
-			Tutorials->setPosition(0,0);
-			Tutorials->setCurrentAnimation(0);
-			Tutorials->setLayerID(16);
-			this->addSpriteToDrawList(Tutorials);
-
-
+			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
 

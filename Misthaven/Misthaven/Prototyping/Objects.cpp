@@ -10,6 +10,7 @@ Objects::Objects(std::string filename, int width, int height)
 	this-> player = false;
 	this-> collidable = false;
 	this-> ghost = false;
+	this->award = false;
 
 	//Movement speeds
 	this-> inMotion = false;
@@ -128,6 +129,7 @@ void Objects::attackBreakDown()
 			interboxactive = true;
 			attackanim = true;
 			this-> setCurrentAnimation(direction+4);
+			AudioLibPlaySound("Sounds/Woosh.mp3",false);
 
 		}
 		else

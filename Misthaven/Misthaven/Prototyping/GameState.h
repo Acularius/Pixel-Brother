@@ -63,9 +63,12 @@
 		std::vector<Sprite*> spriteListToDraw;
 		void Draw();
 		void addSpriteToDrawList(Sprite *s);
+		
 
 //-------------------------------------------------------------------------------------------
 	void addToObjectsList(Objects *o);
+	void addToGhostList(Ghost *g);
+	void addToSeagullList(Seagull *sg);
 
 	// Score UI
 	Sprite *UIScore[7];
@@ -73,9 +76,13 @@
 
 			/* Object list for movement */
 	std::vector<Objects*> objectsList;
+	std::vector<Ghost*> ghostList;
+	std::vector<Seagull*> gullList;
 
 			// Update Objects
 	void updateObjects();
+	void updateGhost(float inPlayPosX, int inPlayPosY);
+	void updateSeagull(float inPlayPosX, int inPlayPosY);
 	
 	void moveObjectsKeyboardUp(unsigned char key); // Affects the inMotionSpeed modifiers, movement in respect to player.
 	void moveObjectsKeyboardDown(unsigned char key); // Stops the inMotionSpeed modifiers, movement in respect to player.
@@ -158,10 +165,10 @@
 		MainCharacter *Player;
 		Constraints MapConstraintsHome;
 		Health *UIHealth;
-		Ghost *Ghosty1;
-		Ghost *Ghosty2;
-		Ghost *Ghosty3;
-		Ghost *Ghosty4;
+		Seagull *Gull1;
+		Seagull *Gull2;
+		Seagull *Gull3;
+		Seagull *Gull4;
 
 	};
 
@@ -181,17 +188,27 @@
 		 ~LevelOne(void);
 
 		 void allowMovement();
+		 void transitionCheck();
 
 		 //void ScoreUpdate(int inScore);
 
 			 //SPRITE DECLARATIONS
 			 Objects *Map2_Base;
 			 Objects *Map2_Objects;
+			 Transition *TransitionOneTwo;
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsOne;
 			 Health *UIHealth;
 			 
+		Ghost *Ghosty1;
+		Ghost *Ghosty2;
+		Ghost *Ghosty3;
+		Ghost *Ghosty4;
+		Ghost *Ghosty5;
+		Ghost *Ghosty6;
+		Ghost *Ghosty7;
+		Ghost *Ghosty8;
 			 
 
 
@@ -213,14 +230,27 @@
 		 ~LevelTwo(void);
 
 		 void allowMovement();
+		 void transitionCheck();
+
 
 			 //SPRITE DECLARATIONS
 			 Objects *Map3_Base;
 			 Objects *Map3_Objects;
+			 Transition *TransitionTwoMenu;
 
 			 MainCharacter *Player;
 			 Constraints MapConstraintsTwo;
 			 Health *UIHealth;
+			 
+		
+		Ghost *Ghosty1;
+		Ghost *Ghosty2;
+		Ghost *Ghosty3;
+		Ghost *Ghosty4;
+		Ghost *Ghosty5;
+		Ghost *Ghosty6;
+		Ghost *Ghosty7;
+		Ghost *Ghosty8;
 
 	};
 
@@ -277,7 +307,6 @@
 
 			 //SPRITE DECLARATIONS
 		 	 Sprite *Transition;
-			 Sprite *Tutorials;
 
 		bool test;      // To test movement control;
 		int MsgType;

@@ -21,7 +21,6 @@ MainCharacter::MainCharacter(std::string filename, int width, int height)
 
 	this->direction = 1; // Facing down
 
-	this->setLayerID(11);
 	this-> speedX = 0; // Character starts NOT moving
 	this-> speedY = 0;
 	this-> player = true;

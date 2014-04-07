@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Hitbox.h"
+#include "AudioLib.h"
 
 class Objects : public Sprite
 {
@@ -13,6 +14,7 @@ public:
 	bool player; // Animation reference. Stationary. Everything moves in respect to the player.
 	bool collidable; // Does it collide?
 	bool ghost;
+	bool award;
 
 	bool inMotion; // In motion in relation to the player
 	float inMotionSpeed; // The speed that everyone moves in relation to the player
@@ -117,6 +119,27 @@ public:
 	void getPlayerPos(float inPlayerPosX, float inPlayerPosY);
 	void movementGhost(float inPlayerPosX, float inPlayerPosY);
 	void ghostRespawn();
+
+	void closeToAttack();
+	void attackZePlayer();
+	void aboutFace();
+
+};
+
+class Seagull: public Characters
+{
+public:
+	Seagull::Seagull (std::string filename, int width, int height);
+	~Seagull(void);
+	bool engage;
+	float playPosX, playPosY;
+
+
+	void sgUpdate();
+
+	void getPlayerPos(float inPlayerPosX, float inPlayerPosY);
+	void movementSeagull(float inPlayerPosX, float inPlayerPosY);
+	void seagullRespawn();
 
 	void closeToAttack();
 	void attackZePlayer();
