@@ -605,7 +605,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			TransitionHomeOne-> setLayerID(7);
 			TransitionHomeOne-> setPosition(-542,-113);
 			TransitionHomeOne-> toLevel = 2;
-			this->addSpriteToDrawList(TransitionHomeOne);
+			//this->addSpriteToDrawList(TransitionHomeOne);
 			this->addToObjectsList(TransitionHomeOne);
 
 			Gull1 = new Seagull("images/Seagull Sprite.png",40,40);
@@ -1031,7 +1031,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			TransitionOneTwo-> setLayerID(7);
 			TransitionOneTwo-> setPosition(510,-233);
 			TransitionOneTwo-> toLevel = 3;
-			this->addSpriteToDrawList(TransitionOneTwo);
+			//this->addSpriteToDrawList(TransitionOneTwo);
 			this->addToObjectsList(TransitionOneTwo);
 
 			//Sprite - Player Sprites.
@@ -1375,7 +1375,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			TransitionTwoMenu-> setLayerID(7);
 			TransitionTwoMenu-> setPosition(-137,-298); //Needs position
 			TransitionTwoMenu-> toLevel = 2;
-			this->addSpriteToDrawList(TransitionTwoMenu);
+			//this->addSpriteToDrawList(TransitionTwoMenu);
 			this->addToObjectsList(TransitionTwoMenu);
 
 			//Sprite - Player Sprites.

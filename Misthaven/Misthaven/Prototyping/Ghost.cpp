@@ -14,7 +14,7 @@ Ghost::Ghost (std::string filename, int width, int height)
 	this-> immortal = false;
 	playPosX = playPosY = 0;
 
-	this-> respectiveSpeed = 5;
+	this-> respectiveSpeed = 7;
 
 	this-> setLayerID(6);
 
@@ -167,13 +167,13 @@ void Ghost::closeToAttack()
 
 void Ghost::attackZePlayer()
 {
-	if (engage == true  && coolDown == false && attackTicking < 30)
+	if (engage == true  && coolDown == false && attackTicking < 15)
 	{
 		attackTicking++;
 		interboxactive = true;
 		std::cout<< "+";
 	}
-	else if (engage == true  && coolDown == false && attackTicking >= 30)
+	else if (engage == true  && coolDown == false && attackTicking >= 15)
 	{
 		attack = true;
 		coolDown = true;
@@ -238,7 +238,7 @@ Seagull::Seagull (std::string filename, int width, int height)
 	this-> immortal = false;
 	playPosX = playPosY = 0;
 
-	this-> respectiveSpeed = 5;
+	this-> respectiveSpeed = 7;
 
 	this-> setLayerID(6);
 
@@ -391,13 +391,13 @@ void Seagull::closeToAttack()
 
 void Seagull::attackZePlayer()
 {
-	if (engage == true  && coolDown == false && attackTicking < 30)
+	if (engage == true  && coolDown == false && attackTicking < 15)
 	{
 		attackTicking++;
 		interboxactive = true;
 		std::cout<< "+";
 	}
-	else if (engage == true  && coolDown == false && attackTicking >= 30)
+	else if (engage == true  && coolDown == false && attackTicking >= 15)
 	{
 		attack = true;
 		coolDown = true;
