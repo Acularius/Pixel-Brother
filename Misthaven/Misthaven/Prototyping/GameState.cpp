@@ -13,15 +13,20 @@
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
-//									 SPRITE ITERATOR									   ||
+//						SPRITE ITERATOR / ADD TO LIST FUNCTONS							   ||
 //																						   ||
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 
-bool spriteSortingFunction2(Sprite *s1, Sprite *s2)
-{
-	// return true if s1's layerID is less than s2's layerID
-	return (s1->layerID < s2->layerID);
-}
+
+//-------------------------------------------------------------------------------------------
+//  Sprite Draw/iterator functions:
+//-------------------------------------------------------------------------------------------
+
+	bool spriteSortingFunction2(Sprite *s1, Sprite *s2)
+	{
+		// return true if s1's layerID is less than s2's layerID
+		return (s1->layerID < s2->layerID);
+	}
 
 	void GameState::addSpriteToDrawList(Sprite *s)
 	{
@@ -32,7 +37,6 @@ bool spriteSortingFunction2(Sprite *s1, Sprite *s2)
 			this->spriteListToDraw.push_back(s);
 		}
 	}
-
 
 	void GameState::Draw()
 	{
@@ -45,178 +49,190 @@ bool spriteSortingFunction2(Sprite *s1, Sprite *s2)
 		
 	}
 
-	/*All things related to adding to the ObjectsList*/
-void GameState::addToObjectsList(Objects *o)
-{
-	if(o)
+//-------------------------------------------------------------------------------------------
+//  Add to the object list functions:
+//-------------------------------------------------------------------------------------------
+
+	void GameState::addToObjectsList(Objects *o)
 	{
-		/* push the Object to the back of the list */
-		this->objectsList.push_back(o);
-	}
-}
-
-void GameState::addToGhostList(Ghost *g)
-{
-	if(g)
-	{
-		/* push the Object to the back of the list */
-		this->ghostList.push_back(g);
-	}
-}
-
-void GameState::addToSeagullList(Seagull *sg)
-{
-	if(sg)
-	{
-		/* push the Object to the back of the list */
-		this->gullList.push_back(sg);
-	}
-}
-
-// To streamline the code, update all the Objects from object list at once.
-void GameState::updateObjects()
-{
-			std::vector<Objects*>::iterator itUpdate; 
-		for(itUpdate= objectsList.begin() ; itUpdate !=objectsList.end() ; itUpdate++)
-	{
-		Objects *o = (*itUpdate);
-		o-> update();
-	}
-}
-
-void GameState::updateGhost(float inPlayPosX, int inPlayPosY)
-{
-			std::vector<Ghost*>::iterator itUpdate; 
-		for(itUpdate= ghostList.begin() ; itUpdate !=ghostList.end() ; itUpdate++)
-	{
-		Ghost *g = (*itUpdate);
-		g->getPlayerPos(inPlayPosX, inPlayPosY);
-		g->ghUpdate();
-	}
-}
-
-void GameState::updateSeagull(float inPlayPosX, int inPlayPosY)
-{
-			std::vector<Seagull*>::iterator itUpdate; 
-		for(itUpdate= gullList.begin() ; itUpdate !=gullList.end() ; itUpdate++)
-	{
-		Seagull *sg = (*itUpdate);
-		sg->getPlayerPos(inPlayPosX, inPlayPosY);
-		sg->sgUpdate();
-	}
-}
-
-void GameState::moveObjectsKeyboardDown(unsigned char key)
-{
-
-		std::vector<Objects*>::iterator itMoveGo; 
-		for(itMoveGo=objectsList.begin() ; itMoveGo !=objectsList.end() ; itMoveGo++)
-	{
-		Objects *o = (*itMoveGo);
-		o-> movementGo(key);
-	}
-}
-
-void GameState::moveObjectsKeyboardUp(unsigned char key)
-{
-
-		std::vector<Objects*>::iterator itMoveStop; 
-		for(itMoveStop= objectsList.begin() ; itMoveStop !=objectsList.end() ; itMoveStop++)
-	{
-		Objects *o = (*itMoveStop);
-		o-> movementStop(key);
-	}
-}
-
-void GameState::movement()
-{
-
-	std::vector<Objects*>::iterator itMovement;
-	for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
-	{
-		float newPositionX, newPositionY;
-		float currentPositionX, currentPositionY;
-		float currentSpeedX, currentSpeedY;
-		Objects *o = (*itMovement);
-
-		currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
-		currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
-		currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
-
-		newPositionX = currentPositionX + currentSpeedX;
-		newPositionY = currentPositionY + currentSpeedY;
-
-		o-> positionX = newPositionX;
-		o-> positionY = newPositionY;
-	};
-
-}
-
-// Stage 1: check for combat initiation
-// Stage 2: check for all non-immortal objects for intercept
-// Stage 3: If intercept, proceed to combat
-void GameState::combatSystem() // 
-{
-	std::vector<Objects*>::iterator initCombatant; // Initiator combatant
-	for(initCombatant= objectsList.begin() ; initCombatant !=objectsList.end() ; initCombatant++)
-	{
-		(*initCombatant)->bInitiator = true;
-		Objects *oInitiator = (*initCombatant);
-		if ((oInitiator->attack == true) && (oInitiator->interboxactive==true))
+		if(o)
 		{
-			std::cout << "Stage 1 - Combat Search" << std::endl;
-			std::vector<Objects*>::iterator oppoCombatant; // Opponents
-			for(oppoCombatant= objectsList.begin(); oppoCombatant !=objectsList.end() ; oppoCombatant++)
-			{
-				(*oppoCombatant)->bOpponent = true;
-				Objects *oOpponent = (*oppoCombatant);
+			/* push the Object to the back of the list */
+			this->objectsList.push_back(o);
+		}
+	}
 
-				if(oOpponent->bInitiator == false)
+	void GameState::addToGhostList(Ghost *g)
+	{
+		if(g)
+		{
+			/* push the Object to the back of the list */
+			this->ghostList.push_back(g);
+		}
+	}
+
+	void GameState::addToSeagullList(Seagull *sg)
+	{
+		if(sg)
+		{
+			/* push the Object to the back of the list */
+			this->gullList.push_back(sg);
+		}
+	}
+
+//-------------------------------------------------------------------------------------------
+//  To streamline the code, update all the Objects from object list at once:
+//-------------------------------------------------------------------------------------------
+ 
+	void GameState::updateObjects()
+	{
+				std::vector<Objects*>::iterator itUpdate; 
+			for(itUpdate= objectsList.begin() ; itUpdate !=objectsList.end() ; itUpdate++)
+		{
+			Objects *o = (*itUpdate);
+			o-> update();
+		}
+	}
+
+	void GameState::updateGhost(float inPlayPosX, int inPlayPosY)
+	{
+				std::vector<Ghost*>::iterator itUpdate; 
+			for(itUpdate= ghostList.begin() ; itUpdate !=ghostList.end() ; itUpdate++)
+		{
+			Ghost *g = (*itUpdate);
+			g->getPlayerPos(inPlayPosX, inPlayPosY);
+			g->ghUpdate();
+		}
+	}
+
+	void GameState::updateSeagull(float inPlayPosX, int inPlayPosY)
+	{
+				std::vector<Seagull*>::iterator itUpdate; 
+			for(itUpdate= gullList.begin() ; itUpdate !=gullList.end() ; itUpdate++)
+		{
+			Seagull *sg = (*itUpdate);
+			sg->getPlayerPos(inPlayPosX, inPlayPosY);
+			sg->sgUpdate();
+		}
+	}
+
+	void GameState::moveObjectsKeyboardDown(unsigned char key)
+	{
+
+			std::vector<Objects*>::iterator itMoveGo; 
+			for(itMoveGo=objectsList.begin() ; itMoveGo !=objectsList.end() ; itMoveGo++)
+		{
+			Objects *o = (*itMoveGo);
+			o-> movementGo(key);
+		}
+	}
+
+	void GameState::moveObjectsKeyboardUp(unsigned char key)
+	{
+
+			std::vector<Objects*>::iterator itMoveStop; 
+			for(itMoveStop= objectsList.begin() ; itMoveStop !=objectsList.end() ; itMoveStop++)
+		{
+			Objects *o = (*itMoveStop);
+			o-> movementStop(key);
+		}
+	}
+
+	void GameState::movement()
+	{
+
+		std::vector<Objects*>::iterator itMovement;
+		for(itMovement= objectsList.begin() ; itMovement !=objectsList.end() ; itMovement++)
+		{
+			float newPositionX, newPositionY;
+			float currentPositionX, currentPositionY;
+			float currentSpeedX, currentSpeedY;
+			Objects *o = (*itMovement);
+
+			currentPositionX = (o-> positionX); currentPositionY = (o-> positionY);
+			currentSpeedX = (o-> inMotionSpeedX) + (o-> respectiveSpeedX); 
+			currentSpeedY = (o-> inMotionSpeedY) + (o-> respectiveSpeedY);
+
+			newPositionX = currentPositionX + currentSpeedX;
+			newPositionY = currentPositionY + currentSpeedY;
+
+			o-> positionX = newPositionX;
+			o-> positionY = newPositionY;
+		};
+
+	}
+
+//-------------------------------------------------------------------------------------------
+//		Stage 1: check for combat initiation
+//		Stage 2: check for all non-immortal objects for intercept
+//		Stage 3: If intercept, proceed to combat
+//-------------------------------------------------------------------------------------------
+
+	void GameState::combatSystem() // 
+	{
+		std::vector<Objects*>::iterator initCombatant; // Initiator combatant
+		for(initCombatant= objectsList.begin() ; initCombatant !=objectsList.end() ; initCombatant++)
+		{
+			(*initCombatant)->bInitiator = true;
+			Objects *oInitiator = (*initCombatant);
+			if ((oInitiator->attack == true) && (oInitiator->interboxactive==true))
+			{
+				std::cout << "Stage 1 - Combat Search" << std::endl;
+				std::vector<Objects*>::iterator oppoCombatant; // Opponents
+				for(oppoCombatant= objectsList.begin(); oppoCombatant !=objectsList.end() ; oppoCombatant++)
 				{
-					if ((oOpponent->immortal == false))
+					(*oppoCombatant)->bOpponent = true;
+					Objects *oOpponent = (*oppoCombatant);
+
+					if(oOpponent->bInitiator == false)
 					{
-						std::cout << "Combat Initiated" << std::endl;
-						if( (((oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
-							(((oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
+						if ((oOpponent->immortal == false))
 						{
-							std::cout<< "You wound me~!" << std::endl;
-							//Damage Resolution
-							(oOpponent->hP) -= (oInitiator->dam); 
-							if (oOpponent->player==true && oOpponent->hP <= 0)
+							std::cout << "Combat Initiated" << std::endl;
+							if( (((oInitiator->ObjectActBox->bottomCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->bottomCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) || ((oInitiator->ObjectActBox->topCornerY) >= (oOpponent->ObjectHitbox->bottomCornerY) ) && ((oInitiator->ObjectActBox->topCornerY) <= (oOpponent->ObjectHitbox->topCornerY) ) ) && 
+								(((oInitiator->ObjectActBox->leftCornerX) >= (oOpponent->ObjectHitbox->leftCornerX)  ) && ((oInitiator->ObjectActBox->leftCornerX ) <= (oOpponent->ObjectHitbox->rightCornerX)) || ((oInitiator->ObjectActBox->rightCornerX) >= (oOpponent->ObjectHitbox->leftCornerX) ) && ((oInitiator->ObjectActBox->rightCornerX) <= (oOpponent->ObjectHitbox->rightCornerX)) ) )
 							{
-								std::cout<< "You dead sucka!" << std::endl;
+								std::cout<< "You wound me~!" << std::endl;
+								//Damage Resolution
+								(oOpponent->hP) -= (oInitiator->dam); 
+								if (oOpponent->player==true && oOpponent->hP <= 0)
+								{
+									std::cout<< "You dead sucka!" << std::endl;
+								}
+								if(oInitiator->player==true && oOpponent->award==true) // Update Player's score
+								{
+									oInitiator->scoreStorage += oInitiator->dam;
+								}
+							}else{
+								std::cout<< "Nothing was found" << std::endl;
 							}
-							if(oInitiator->player==true && oOpponent->award==true) // Update Player's score
-							{
-								oInitiator->scoreStorage += oInitiator->dam;
-							}
-						}else{
-							std::cout<< "Nothing was found" << std::endl;
 						}
+						else{
+						// Its immortal, No Combat.
+						};
+						(*oppoCombatant)->bOpponent = false;
 					}
 					else{
-					// Its immortal, No Combat.
-					};
-					(*oppoCombatant)->bOpponent = false;
-				}
-				else{
-					(*oppoCombatant)->bOpponent = false;
-				}
-			} // end of for oOpponent statement
+						(*oppoCombatant)->bOpponent = false;
+					}
+				} // end of for oOpponent statement
 			
-		}
-		else{
-			//No combat
-		}
-		(*initCombatant)->bInitiator = false;
-	}; // End of oInitiator for statement 
+			}
+			else{
+				//No combat
+			}
+			(*initCombatant)->bInitiator = false;
+		}; // End of oInitiator for statement 
 
 
 
 
-}
+	}
 
-//Sprite - UI Score.
+//-------------------------------------------------------------------------------------------
+// //Sprite - UI Score Update function:
+//-------------------------------------------------------------------------------------------
+
 	void GameState::ScoreUpdate(int inScore)
 	{
 		int tempScore;
@@ -227,6 +243,10 @@ void GameState::combatSystem() //
 			tempScore=tempScore/10;
 		}
 	}
+
+//-------------------------------------------------------------------------------------------
+//  To streamline the code, update all the Objects from object list at once:
+//-------------------------------------------------------------------------------------------
 
 	void GameState::ScrollingBackgroundKeyDown(unsigned char key)
 {
@@ -248,28 +268,29 @@ void GameState::combatSystem() //
 		}
 }
 
-void GameState::ScrollingBackgroundUpdate()
-{
-		if (Vertical==false) //horozontal
-		{
-			WaterBackground -> positionY-=1;
-			WaterBackground -> positionX+=WaterSpeed;
-		}
-		else //vertical
-		{
-			WaterBackground -> positionY+=(WaterSpeed-1);
-		}
+	void GameState::ScrollingBackgroundUpdate()
+	{
+			if (Vertical==false) //horozontal
+			{
+				WaterBackground -> positionY-=1;
+				WaterBackground -> positionX+=WaterSpeed;
+			}
+			else //vertical
+			{
+				WaterBackground -> positionY+=(WaterSpeed-1);
+			}
 
-		if (WaterBackground-> positionY < -1000)
-		{ WaterBackground -> setPosition(-1422,-1033); } //RESETTING SCROLLING BACKGROUND. 
-}
+			if (WaterBackground-> positionY < -1000)
+			{ WaterBackground -> setPosition(-1422,-1033); } //RESETTING SCROLLING BACKGROUND. 
+	}
+
+	void GameState::ScrollingBackgroundKeyUp(unsigned char key)
+	{
+		if (key=='a'||'s'||'d')
+		WaterSpeed=0;
+	}
 
 
-void GameState::ScrollingBackgroundKeyUp(unsigned char key)
-{
-	if (key=='a'||'s'||'d')
-	WaterSpeed=0;
-}
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 MAIN MENU ----- STATE 1								   ||
@@ -282,7 +303,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			StateNum=1;
 			LocalGame=Local;
 			menuSpeed=0;
-			active=true;
+			active=true; //Keeps the menu state on during bootup.
 
 		AudioLibInit();
 		AudioLibPlaySound("Sounds/Journey.mp3",true);
@@ -324,23 +345,22 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				MenuStrip -> setCurrentAnimation(0);
 				this -> addSpriteToDrawList(MenuStrip);
 
-			//Sprite - Player Sprites.
-			Player = new Sprite("images/Player&HUD/PlayerSprite.png"); //Layer 4- Player Sprite.
-			Player->setSpriteFrameSize(60, 60);
-			Player->setNumberOfAnimations(8);
-			Player->setCenter(0,0);
-			Player->addSpriteAnimRow(1,0,0,60,0,4);
-			Player->addSpriteAnimRow(2,0,60,60,0,4);
-			Player->addSpriteAnimRow(3,0,120,60,0,4);
-			Player->addSpriteAnimRow(4,0,180,60,0,4);
-			Player->setPosition(210,86);
-			Player->setCurrentAnimation(1);
-			Player->setLayerID(6);
-			this->addSpriteToDrawList(Player);
+				//Sprite - Player Sprites.
+				Player = new Sprite("images/Player&HUD/PlayerSprite.png");
+				Player->setSpriteFrameSize(60, 60);
+				Player->setNumberOfAnimations(8);
+				Player->setCenter(0,0);
+				Player->addSpriteAnimRow(1,0,0,60,0,4);
+				Player->addSpriteAnimRow(2,0,60,60,0,4);
+				Player->addSpriteAnimRow(3,0,120,60,0,4);
+				Player->addSpriteAnimRow(4,0,180,60,0,4);
+				Player->setPosition(210,86);
+				Player->setCurrentAnimation(1);
+				Player->setLayerID(6);
+				this->addSpriteToDrawList(Player);
 
-			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
+				std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
-
 
 	void MainMenu::ResetMap()
 	{ 
@@ -355,12 +375,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			MenuStrip -> setCurrentAnimation(0);
 	}
 
-
 	MainMenu::~MainMenu(void) 
 	{ 
 		/*Default deconstructor */
 	}
-
 
 	void MainMenu::Update()
 	{
@@ -381,7 +399,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				{ MenuBG -> setPosition(0,0); } //Looping the scrolling background.
 
 	}
-
 
 	void MainMenu::KeyDown(unsigned char key)
 	{
@@ -429,7 +446,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			}
 	}
 
-
 	void MainMenu::KeyUp(unsigned char key)
 	{
 			switch(key)
@@ -449,13 +465,13 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		switch(opt)
 	   { 
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
-					LocalGame->MessageControl(LocalGame->Msg, 4, 7);
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
 					std::cout<<"OPTION 1 "<<std::endl;
 					break;
 				  }
 		  case 2: { 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					LocalGame->MessageControl(LocalGame->Msg, 1, 7);
+					LocalGame->MessageControl(LocalGame->Msg, 1, 7); //Prints message on screen.
 					std::cout<<"OPTION 2 "<<std::endl;
 					break;
 				  }
@@ -489,7 +505,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		anynumber=0;
 		anynumber2=0;
 
-				    //Sprite - Water Background.
+			//Sprite - Water Background.
 			WaterBackground = new Objects ("images/Backgrounds/Water Sprite.png", 5000, 4000);
 			WaterBackground -> setNumberOfAnimations(1);
 			WaterBackground -> setPosition(-1422,-1033);
@@ -539,11 +555,12 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			AddNpcTile(14, 2014, 1119);  // Witch
 			AddNpcTile(15, 2024, 699);   // Miku
 
+			//Tutorial - Sprites:
 			AddTutorialTile(0,   0,    0);
-			AddTutorialTile(2, 1730, 800);
-			AddTutorialTile(3, 1730, 880);
-			AddTutorialTile(4, 1730, 960);
-			AddTutorialTile(1, 1730, 1040);
+			AddTutorialTile(2, 1730, 800);  //Tutorial 2
+			AddTutorialTile(3, 1730, 880);  // Tutorial 3
+			AddTutorialTile(4, 1730, 960);  //Tutorial 4
+			AddTutorialTile(1, 1730, 1040); //Tutorial 1
 			
 			
 			//Sprite - Map 1 Objects.
@@ -627,9 +644,9 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addToObjectsList(Gull4);
 			this->addToSeagullList(Gull4);
 
-				//Sprite - UI Score.
-						for(int i=0 ; i<7; i++)
-			{ 	
+			//Sprite - UI Score.
+		for(int i=0 ; i<7; i++)
+		{ 	
 			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
 			UIScore[i]->setSpriteFrameSize(16,16);
 			UIScore[i]->setNumberOfAnimations(10); //0-9
@@ -643,12 +660,9 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			UIScore[i]->setCurrentAnimation(i);
 			UIScore[i]->setPosition((380+(i*12)),233);
 			this->addSpriteToDrawList(UIScore[i]); 
-			}
+		}
 
-
-
-
-					// UI Health
+			// UI Health
 			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
@@ -660,36 +674,34 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
-
 	void LevelHome::ResetMap()
 	{ 
-		
-		
 				LocalGame->stateInfo.storePlayerHp = 10;
 				LocalGame->stateInfo.storePlayerScore = 0; 
 				
-
+				//Resetting Sprites: 
 				WaterBackground -> setPosition(-1700,-750);
-				Map1_Base -> setPosition(-1422,-1033); // -1422, -1033
+				Map1_Base -> setPosition(-1422,-1033); 
 				NPC_Objects-> setPosition(-1422,-1033);
 				Player->setPosition(160,95);
 				Player->setCurrentAnimation(1);
-				Map1_Objects -> setPosition(-1422,-1033); //-1422, -1033
+				Map1_Objects -> setPosition(-1422,-1033);
 				TransitionHomeOne->setPosition(-542,-113);
 				Gull1 ->setPosition(0,2000);
 				Gull2 ->setPosition(2500,0);
 				Gull3 ->setPosition(0,-2000);
 				Gull4 ->setPosition(-2500,0);
-
-			NPC[0]->setPosition(0 ,   0 );    // Transparent Layer - 0;
-			NPC[1] ->setPosition( 491-1422, 1584-1033);   // Sonic
-			NPC[2] ->setPosition( 760-1422, 1385-1033);   // Pikachu
-			NPC[3] ->setPosition( 564-1422, 1153-1033);   // Link
-			NPC[4] ->setPosition( 847-1422, 1145-1033);   // Vill 1
-			NPC[5] ->setPosition( 595-1422, 984-1033);    // Vill 2
-			NPC[6] ->setPosition( 378-1422, 645-1033);    // Spyro
-			NPC[7] ->setPosition( 826-1422, 829-1033);    // Portal Keep 1
-			NPC[8] ->setPosition( 920-1422, 829-1033);    // Portal Keep 2
+			
+			//NPC Reset Sprites: 
+			NPC[0]->setPosition(0 ,   0 );				 // Transparent Layer - 0;
+			NPC[1] ->setPosition( 491-1422, 1584-1033);  // Sonic
+			NPC[2] ->setPosition( 760-1422, 1385-1033);  // Pikachu
+			NPC[3] ->setPosition( 564-1422, 1153-1033);  // Link
+			NPC[4] ->setPosition( 847-1422, 1145-1033);  // Vill 1
+			NPC[5] ->setPosition( 595-1422, 984-1033);   // Vill 2
+			NPC[6] ->setPosition( 378-1422, 645-1033);   // Spyro
+			NPC[7] ->setPosition( 826-1422, 829-1033);   // Portal Keep 1
+			NPC[8] ->setPosition( 920-1422, 829-1033);   // Portal Keep 2
 			NPC[9] ->setPosition(1168-1422, 949-1033);   // Naruto
 			NPC[10]->setPosition(1129-1422, 709-1033);   // Vill 3
 			NPC[11]->setPosition(1335-1422, 870-1033);   // Vill 4
@@ -697,6 +709,8 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			NPC[13]->setPosition(1707-1422, 1103-1033);  // Vill 5
 			NPC[14]->setPosition(2014-1422, 1119-1033);  // Witch
 			NPC[15]->setPosition(2024-1422, 699-1033);   // Miku
+
+			//Resetting tutorial sprites:
 			Tutorial[0]->setPosition( 0,    0);
 			Tutorial[2]->setPosition(1730-1422, 800-1033);
 			Tutorial[3]->setPosition(1730-1422, 880-1033);
@@ -709,48 +723,45 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				AudioLibPlaySound("Sounds/Ocean.WAV", true);
 				AudioLibPlaySound("Sounds/Soundtrack Melody.mp3", true);
 
-				Player->hP = LocalGame->stateInfo.storePlayerHp;
-				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
+			Player->hP = LocalGame->stateInfo.storePlayerHp;
+			Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 
 
 
 	}
-
 
 	LevelHome::~LevelHome(void) 
 	{ 
 		/*Default deconstructor */
 	}
-
 	
 	void LevelHome::Update()
 	{
-
-
 		updateSeagull(Player->positionX, Player->positionY);
 
 		Player->playerUpdate();
 
-		//Movement
+		//Movement function calls: 
 		updateObjects();
 		allowMovement();
 		movement();
 		transitionCheck();
+
+		//Npc and tutorial trigger calls:
 		NpcCheck();
 		TutorialCheck();
 		
+		//Combat System function call:
 		combatSystem();
 
+		//Scrolling Background update call:
 		ScrollingBackgroundUpdate();
-
-		
 
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
 		UIHealth->inputHealth(Player->hP);
 
 	}
-
 
 	void LevelHome::KeyDown(unsigned char key)
 	{
@@ -776,7 +787,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			break;
 		};
 	}
-
 
 	void LevelHome::KeyUp(unsigned char key)
 	{
@@ -869,7 +879,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
 		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
-// work on
+
 		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
 			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
 		{
@@ -887,36 +897,37 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		};
 	}
 
-			void LevelHome::AddNpcTile(int i, int PosX, int PosY) 
-			{	
-				  NPC[i] = new Objects("images/Backgrounds/Water Sprite.png",80,80);
-				  NPC[i] -> setNumberOfAnimations(1);
-				  NPC[i] -> setPosition(PosX-1422,PosY-1033);
-				  NPC[i] -> setCenter(0,0);
-				  NPC[i] -> setLayerID(22);
-				  NPC[i] -> addSpriteAnimRow(0,0,0,80,80,1);
-				  this->addToObjectsList(NPC[i]);
-		
-			}
+	void LevelHome::AddNpcTile(int i, int PosX, int PosY) 
+	{	
+		//Creates an object which in turn creates it's hitbox for NPC triggers on level 1:
 
-			void LevelHome:: AddTutorialTile(int i, int PosX, int PosY)
-			{	
-				  Tutorial[i] = new Objects("images/Backgrounds/Water Sprite.png",80,40);
-				  Tutorial[i] -> setNumberOfAnimations(1);
-				  Tutorial[i] -> setPosition(PosX-1422,PosY-1033);
-				  Tutorial[i] -> setCenter(0,0);
-				  Tutorial[i] -> setLayerID(22);
-				  Tutorial[i] -> addSpriteAnimRow(0,0,0,80,40,1);
-				  this->addToObjectsList(Tutorial[i]);
-		
-			}
+		NPC[i] = new Objects("images/Backgrounds/Water Sprite.png",80,80);
+		NPC[i] -> setNumberOfAnimations(1);
+		NPC[i] -> setPosition(PosX-1422,PosY-1033);
+		NPC[i] -> setCenter(0,0);
+		NPC[i] -> setLayerID(22);
+	    NPC[i] -> addSpriteAnimRow(0,0,0,80,80,1);
+		this->addToObjectsList(NPC[i]);
+	}
 
+	void LevelHome:: AddTutorialTile(int i, int PosX, int PosY)
+	{	
+		//Creates an object which in turn creates it's hitbox for tutorial triggers on level 1:
 
-		void LevelHome::NpcCheck()
-		{
-			float tranBotY,tranTopY,tranLeftX,tranRightX;
-			float playBotY,playTopY,playLeftX,playRightX;
-			bool found=false;
+		Tutorial[i] = new Objects("images/Backgrounds/Water Sprite.png",80,40);
+		Tutorial[i] -> setNumberOfAnimations(1);
+		Tutorial[i] -> setPosition(PosX-1422,PosY-1033);
+		Tutorial[i] -> setCenter(0,0);
+		Tutorial[i] -> setLayerID(22);
+		Tutorial[i] -> addSpriteAnimRow(0,0,0,80,40,1);
+	    this->addToObjectsList(Tutorial[i]);
+	}
+
+	void LevelHome::NpcCheck()
+	{
+		float tranBotY,tranTopY,tranLeftX,tranRightX;
+		float playBotY,playTopY,playLeftX,playRightX;
+		bool found=false;
 
 			for(int i=1;i<16;i++)
 			{ 
@@ -933,19 +944,18 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 					   AudioLibPlaySound("Sounds/Tick.mp3",false);
 					   anynumber=i;
 					   found=true;} 
-			}	
+	}	
 			
 			if(found==false) //If nothing triggered in loop -> display transparent layer.
 			 {	 anynumber=0;
 				 NPCDialogue->setCurrentAnimation(0);}
 		} 
 
-
-		void LevelHome::TutorialCheck()
-		{
+	void LevelHome::TutorialCheck()
+	{
 		float tranBotY,tranTopY,tranLeftX,tranRightX;
-			float playBotY,playTopY,playLeftX,playRightX;
-			bool found2=false;
+		float playBotY,playTopY,playLeftX,playRightX;
+		bool found2=false;
 
 			for(int i=1;i<5;i++)
 			{ 
@@ -964,13 +974,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 					   found2=true;} 
 			}	
 			
-			if(found2==false) //If nothing triggered in loop -> display transparent layer.
-			 {	 anynumber2=0;
-				 TutorialSprite->setCurrentAnimation(0);}
-		} 
-
-
-
+		if(found2==false) //If nothing triggered in loop -> display transparent layer.
+		{	anynumber2=0;
+			TutorialSprite->setCurrentAnimation(0);}
+	} 
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
@@ -1011,7 +1018,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Map2_Base);
 			this->addToObjectsList(Map2_Base);
 
-			
 			//Sprite - Map 2 Objects.
 			Map2_Objects = new Objects ("images/Levels/Map 2 Objects.png" , 5000, 4000);
 			Map2_Objects -> setNumberOfAnimations(1);
@@ -1023,6 +1029,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Map2_Objects);
 			this->addToObjectsList(Map2_Objects);
 
+			//Trigger for level transition:
 			TransitionOneTwo = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
 			TransitionOneTwo-> setNumberOfAnimations(1);
 			TransitionOneTwo-> addSpriteAnimFrame(0,0,50);
@@ -1034,7 +1041,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addToObjectsList(TransitionOneTwo);
 
 			//Sprite - Player Sprites.
-
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
 			Player->setCurrentAnimation(1);
 			Player->direction= 1;
@@ -1060,14 +1066,15 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(UIScore[i]); 
 			}
 
-					//Sprite - UI Health
-			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
+			//Sprite - UI Health
+			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24);
 			this->addSpriteToDrawList(UIHealth);	
 
 			std::cout << "Before Biscuit One" << std::endl;
 			MapConstraintsOne = Constraints("images/Levels/Map 2 Constraints.bmp");
 			std::cout << "At Biscuit One" << std::endl;
 
+			//All Ghost sprite/objects:
 			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
 			this->addSpriteToDrawList(Ghosty1);
 			this->addToObjectsList(Ghosty1);
@@ -1114,7 +1121,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 	}
 
-
 	void LevelOne::ResetMap()
 	{ 
 				WaterBackground -> setPosition(-1700,-750);
@@ -1142,12 +1148,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
-
 	LevelOne::~LevelOne(void) 
 	{ 
 		/*Default deconstructor */
 	}
-
 
 	void LevelOne::Update()
 	{
@@ -1175,10 +1179,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			ResetMap();
 			
 		}
-
-
 	}
-
 
 	void LevelOne::KeyDown(unsigned char key)
 	{
@@ -1204,7 +1205,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			break;
 		};
 	}
-
 
 	void LevelOne::KeyUp(unsigned char key)
 	{
@@ -1297,7 +1297,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
 		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
-// work on
+
 		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
 			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
 		{
@@ -1314,6 +1314,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			//NOTHING!
 		};
 	}
+
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -1354,8 +1355,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Map3_Base);
 			this->addToObjectsList(Map3_Base);
 
-
-			
 			//Sprite - Map 1 Objects.
 			Map3_Objects = new Objects ("images/Levels/Map 3 Objects.png",2500,2000);
 			Map3_Objects -> setNumberOfAnimations(1);
@@ -1367,6 +1366,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Map3_Objects);
 			this->addToObjectsList(Map3_Objects);
 
+			//Level Transition Trigger:
 			TransitionTwoMenu = new Transition ("images/Backgrounds/Water Sprite.png",50,50);
 			TransitionTwoMenu-> setNumberOfAnimations(1);
 			TransitionTwoMenu-> addSpriteAnimFrame(0,0,50);
@@ -1378,7 +1378,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addToObjectsList(TransitionTwoMenu);
 
 			//Sprite - Player Sprites.
-
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
 			Player->setCurrentAnimation(1);
 			Player->direction= 1;
@@ -1404,7 +1403,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(UIScore[i]); 
 			}
 
-					//Sprite - UI Health
+			//Sprite - UI Health
 			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
@@ -1412,6 +1411,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			MapConstraintsTwo = Constraints("images/Levels/Map 3 Constraints.bmp");
 			std::cout << "At Biscuit Two" << std::endl;
 
+			//All Ghost Sprites:
 			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
 			this->addSpriteToDrawList(Ghosty1);
 			this->addToObjectsList(Ghosty1);
@@ -1456,7 +1456,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 	}
 
-
 	void LevelTwo::ResetMap()
 	{ 
 				WaterBackground -> setPosition(-1700,-750);
@@ -1479,12 +1478,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
-
 	LevelTwo::~LevelTwo(void) 
 	{ 
 		/*Default deconstructor */
 	}
-
 
 	void LevelTwo::Update()
 	{
@@ -1515,7 +1512,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		}
 	}
 
-
 	void LevelTwo::KeyDown(unsigned char key)
 	{
 		moveObjectsKeyboardDown(key);
@@ -1538,7 +1534,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			break;
 		};
 	}
-
 
 	void LevelTwo::KeyUp(unsigned char key)
 	{
@@ -1629,7 +1624,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 		playBotY = Player->ObjectHitbox->bottomCornerY; playTopY = Player->ObjectHitbox->topCornerY;
 		playLeftX= Player->ObjectHitbox->leftCornerX; playRightX = Player->ObjectHitbox->rightCornerX;
-// work on
+
 		if( ( (playBotY >= tranBotY  ) && (playBotY <= tranTopY) || ( playTopY >= tranBotY ) && ( playTopY <= tranTopY) ) && 
 			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
 		{
@@ -1645,6 +1640,8 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			//NOTHING!
 		};
 	}
+
+
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
 //								 LEVEL THREE ----- STATE 5								   ||
@@ -1682,8 +1679,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Map4_Base);
 			this->addToObjectsList(Map4_Base);
 
-
-			
 			//Sprite - Map 1 Objects.
 			Map4_Objects = new Objects ("images/Levels/Map 4 Objects.png",2500,2000);
 			Map4_Objects -> setNumberOfAnimations(1);
@@ -1697,7 +1692,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addToObjectsList(Map4_Objects);
 
 			//Sprite - Player Sprites.
-
 			Player = new MainCharacter("images/Player&HUD/PlayerSprite.png", 60,60); //Layer 4- Player Sprite.
 			Player->setCurrentAnimation(1);
 			Player->direction= 1;
@@ -1705,7 +1699,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(Player);
 			this->addToObjectsList(Player);
 
-						//Sprite - UI Score.
+			//Sprite - UI Score.
 			for(int i=0 ; i<7; i++)
 			{ 	
 			UIScore[i] = new Sprite("images/Player&HUD/UIScore.png"); //Layer 13- Score
@@ -1723,7 +1717,7 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			this->addSpriteToDrawList(UIScore[i]); 
 			}
 
-					//Sprite - UI Health
+			//Sprite - UI Health
 			UIHealth = new Health("images/Player&HUD/UIHealth.png", 184, 24); //Layer 12- Health
 			this->addSpriteToDrawList(UIHealth);	
 
@@ -1733,7 +1727,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
-
 
 	void LevelThree::ResetMap()
 	{ 
@@ -1747,12 +1740,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 				Player->scoreStorage = LocalGame->stateInfo.storePlayerScore; 
 	}
 
-
 	LevelThree::~LevelThree(void) 
 	{ 
 		/*Default deconstructor */
 	}
-
 
 	void LevelThree::Update()
 	{
@@ -1770,7 +1761,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		ScoreUpdate(Player->scoreStorage);
 		UIHealth->inputHealth(Player->hP);
 	}
-
 
 	void LevelThree::KeyDown(unsigned char key)
 	{
@@ -1797,7 +1787,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		};
 	}
 
-
 	void LevelThree::KeyUp(unsigned char key)
 	{
 		moveObjectsKeyboardUp(key);
@@ -1823,63 +1812,64 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 		};
 	}
 
-		void LevelThree::allowMovement()
-{
-	//std::cout << "allowmovementcheck begin" << std::endl;
-	int interception; //Counts the occurences of interception
-	float stop = 0.f; //stops all movement when interception >=1
-	float newMapPositionX, newMapPositionY;
-	int indexStartX,indexStartY, indexEndX,indexEndY;
+	void LevelThree::allowMovement()
+	{
+		//std::cout << "allowmovementcheck begin" << std::endl;
+		int interception; //Counts the occurences of interception
+		float stop = 0.f; //stops all movement when interception >=1
+		float newMapPositionX, newMapPositionY;
+		int indexStartX,indexStartY, indexEndX,indexEndY;
 
-	int vecindexX, vecindexY;
-	interception = 0;
+		int vecindexX, vecindexY;
+		interception = 0;
 
-	//std::cout << " initialize allowMovement variables" << std::endl;
-	newMapPositionX = (Map4_Base->positionX) + (Map4_Base->inMotionSpeedX);
-	newMapPositionY = (Map4_Base->positionY) + (Map4_Base->inMotionSpeedY);
+		//std::cout << " initialize allowMovement variables" << std::endl;
+		newMapPositionX = (Map4_Base->positionX) + (Map4_Base->inMotionSpeedX);
+		newMapPositionY = (Map4_Base->positionY) + (Map4_Base->inMotionSpeedY);
 
 	
 	
-	indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
-	indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
-	indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
-	indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
+		indexStartX = 0 + (Player->ObjectHitbox->leftCornerX) - newMapPositionX; 
+		indexStartY = 0 + (Player->ObjectHitbox->bottomCornerY) - newMapPositionY;
+		indexEndX = 0 + (Player->ObjectHitbox->rightCornerX) - newMapPositionX; 
+		indexEndY = 0 + (Player->ObjectHitbox->topCornerY) - newMapPositionY;
 
-	//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
-	//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
-	//std::cout << "Check constraint vector" << std::endl;
-	for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
-		for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
-		{
-			if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == true)
+		//std::cout << "Index starts (x,y): (" << indexStartX << ", " << indexStartY << ") " << std::endl;
+		//std::cout << "Index end (x,y): (" << indexEndX << ", " << indexEndY << ") " << std::endl;
+		//std::cout << "Check constraint vector" << std::endl;
+		for (vecindexX = indexStartX; vecindexX <= indexEndX; vecindexX++)
+			for(vecindexY = indexStartY; vecindexY <= indexEndY; vecindexY++)
 			{
-				/* Nothing */
-			} else if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == false) {
-				interception++;
-				break; //ends the loop
+				if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == true)
+				{
+					/* Nothing */
+				} else if (MapConstraintsThree.vConstraintVector[vecindexX][vecindexY] == false) {
+					interception++;
+					break; //ends the loop
 
-			} else{
-				//Nothing
+				} else{
+					//Nothing
+				};
+
 			};
-
-		};
-	//std::cout << "Checked constraint vector" << std::endl;
-		if(interception >= 1){
-		//	std::cout << "Intercept detected" << std::endl;
-			std::vector<Objects*>::iterator itNoMove;
-			for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+		//std::cout << "Checked constraint vector" << std::endl;
+			if(interception >= 1){
+			//	std::cout << "Intercept detected" << std::endl;
+				std::vector<Objects*>::iterator itNoMove;
+				for(itNoMove= objectsList.begin(); itNoMove !=objectsList.end() ; itNoMove++)
+				{
+					Objects *o = (*itNoMove);
+					o-> inMotionSpeedX = stop;
+					o-> inMotionSpeedY = stop;
+				};
+			}else
 			{
-				Objects *o = (*itNoMove);
-				o-> inMotionSpeedX = stop;
-				o-> inMotionSpeedY = stop;
+			//	std::cout << "No intercept detected" << std::endl;
 			};
-		}else
-		{
-		//	std::cout << "No intercept detected" << std::endl;
-		};
-	//std::cout << "Yay! Success!" << std::endl;
-	interception = 0;
-}
+		//std::cout << "Yay! Success!" << std::endl;
+		interception = 0;
+	}
+
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||
 //																						   ||
@@ -1923,12 +1913,10 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 			std::sort(spriteListToDraw.begin(), spriteListToDraw.end(), spriteSortingFunction2);
 	}
 
-
 	void MessageState::ResetMap()
 	{ 
 
 	}
-
 
 	MessageState::~MessageState(void) 
 	{ 
@@ -1971,7 +1959,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 
 	}
 
-
 	void MessageState::KeyDown(unsigned char key)
 	{
 
@@ -1984,7 +1971,6 @@ void GameState::ScrollingBackgroundKeyUp(unsigned char key)
 						 }
 			}
 	}
-
 
 	void MessageState::KeyUp(unsigned char key)
 	{

@@ -24,7 +24,6 @@
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Constraints.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Ghost.cpp" />

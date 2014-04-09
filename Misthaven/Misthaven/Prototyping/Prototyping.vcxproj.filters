@@ -68,9 +68,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Constraints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
