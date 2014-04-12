@@ -11,6 +11,12 @@
 //  This is called by std::sort to sort the list based on layerID for drawing in  order.
 //-------------------------------------------------------------------------------------------
 
+	bool keySortingFunction(Keylogger *k1, Keylogger *k2)
+	{
+		// return true if k1's keyID is less than k2's keyID
+		return (k1->keyID < k2->keyID);
+	}
+
 	bool spriteSortingFunction(Sprite *s1, Sprite *s2)
 	{
 		// return true if s1's layerID is less than s2's layerID
@@ -38,6 +44,7 @@
 
 		stateInfo.storePlayerHp = 10;
 		stateInfo.storePlayerScore = 0;
+		gameTick = 0;
 	
 	}
 
@@ -200,8 +207,25 @@
 	{
 			// Time
 			updateTimer->tick();
-
-
+			this->gameTick++;
+			
+			if((gameTick >= 2) && (storeKey.empty() == false))
+			{
+	std::vector<GameState*>::iterator itkl;
+	for (itkl = states.begin(); itkl != states.end(); itkl++)
+	{
+		if (*itkl)
+		{
+			Keylogger* k = *storeKey.begin();
+			GameState* s = (*itkl);
+			if(s->active==true)
+			{
+				s->KeyDown(k->keyDown);
+			}
+		}
+	}
+	gameTick = 0;
+			}
 
 		std::vector<GameState*>::iterator it;
 		for (it = states.begin(); it != states.end(); it++)
@@ -213,6 +237,9 @@
 				  s->Update();
 			}
 		}
+
+
+
 	}
 
 //-------------------------------------------------------------------------------------------
@@ -237,26 +264,36 @@
 
 	void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 	{
-		switch(key)
+		bool keyStored;
+		keyStored = false;
+				std::vector<Keylogger*>::iterator searchKey;
+				for (searchKey = storeKey.begin(); searchKey != storeKey.end(); searchKey++)
 		{
-		case 32: // the space bar
-			break;
-	}
+			if (*searchKey)
+			{  
+				Keylogger* k = (*searchKey);
+				if(k->keyDown == key)
+				{
+					keyStored = true;
+				}
+			}
+		}
+
+				if (keyStored == false)
+				{
+					Keylogger* daKey = new Keylogger(key,1);
+					addToKeyStorage(daKey);
+				} else 
+				{
+					// nothing
+				}
+
 
 //===========================================================================================
 //								 KEYDOWN ITERATOR
 //===========================================================================================
+				
 
-	std::vector<GameState*>::iterator it;
-	for (it = states.begin(); it != states.end(); it++)
-	{
-		if (*it)
-		{
-			GameState* s = (*it);
-			if(s->active==true)
-			s->KeyDown(key);
-		}
-	}
 
 //===========================================================================================
 //								 TESTING KEYS (StateChanges)
@@ -297,15 +334,7 @@ switch(key)
 
 	void Game::keyboardUp(unsigned char key, int mouseX, int mouseY)
 	{
-		switch(key)
-		{
-		case 32: // the space bar
-			break;
-		//case 27: // the escape key
-		//case 'q': // the 'q' key
-		//	exit(1);
-			break;
-		}
+		removeFromKeyStorage(key);	
 
 			std::vector<GameState*>::iterator it;
 		for (it = states.begin(); it != states.end(); it++)
@@ -323,3 +352,45 @@ switch(key)
 //###########################################################################################
 
 
+
+
+	// std::sort(storeKey.begin(), storeKey.end(), keySortingFunction);
+		void Game::addToKeyStorage(Keylogger *k)
+	{
+		std::vector<Keylogger*>::iterator increaseKID;
+		for (increaseKID = storeKey.begin(); increaseKID != storeKey.end(); increaseKID++)
+		{
+			if(*increaseKID)
+			{
+				Keylogger* kl = (*increaseKID);
+				kl->keyID +=1; //Increase KeyID of existing logged keys
+			}
+		}
+		if(k)
+		{
+			this->storeKey.push_back(k);
+		}
+		std::sort(storeKey.begin(), storeKey.end(), keySortingFunction);
+	}
+
+		void Game::removeFromKeyStorage(unsigned char inKey)
+		{
+			std::vector<Keylogger*>::iterator searchKey;
+				for (searchKey = storeKey.begin(); searchKey != storeKey.end(); searchKey++)
+		{
+			if (*searchKey)
+			{  
+				Keylogger* k = (*searchKey);
+				if(k->keyDown == inKey)
+				{
+					int tempNum = storeKey.size() + 10;
+					k->keyID = tempNum; //A really big number
+				}
+			}
+		}
+			std::sort(storeKey.begin(), storeKey.end(), keySortingFunction);
+			if(storeKey.empty()==false)
+			{
+				storeKey.pop_back();
+			}
+		}

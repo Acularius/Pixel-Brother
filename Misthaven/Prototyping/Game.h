@@ -18,6 +18,7 @@
 
 #include "UserInterface.h"
 #include "Constraints.h"
+#include "Keylogger.h"
 
 
 	//SOUND HEADER FILES:
@@ -191,5 +192,10 @@ public:
 
 //===========================================================================================
 
-	
+		//Keylogger
+		std::vector<Keylogger*> storeKey;
+		void addToKeyStorage(Keylogger *k);
+		void removeFromKeyStorage(unsigned char inKey);
+		
+		int gameTick;
 };

@@ -242,8 +242,8 @@
 			//Up (walk) = 5; +Y 
 		case 'w':
 			{
-				this-> inMotionSpeedX = stop;
 				this-> inMotionSpeedY = speed;
+				this-> inMotionSpeedX = stop;
 				if(player == true)
 				{
 					this->setCurrentAnimation(2);
@@ -255,8 +255,8 @@
 			// Down (walk) = 7; -Y
 		case 's':
 			{
-				this-> inMotionSpeedX = stop;
 				this-> inMotionSpeedY = -speed;
+				this-> inMotionSpeedX = stop;
 				if(player == true)
 				{
 					this-> setCurrentAnimation(1);
@@ -268,8 +268,8 @@
 			// Left (walk) = 6; -X
 		case 'a':
 			{
-				this-> inMotionSpeedX = -speed;
 				this-> inMotionSpeedY = stop;
+				this-> inMotionSpeedX = -speed;
 				if(player == true)
 				{
 					this->setCurrentAnimation(4);
@@ -282,8 +282,8 @@
 			//this->setCurrentAnimation(4);
 		case 'd':
 			{
-				this-> inMotionSpeedX = speed;
 				this-> inMotionSpeedY = stop;
+				this-> inMotionSpeedX = speed;
 				if(player == true)
 				{
 					this-> setCurrentAnimation(3);
@@ -309,13 +309,22 @@
 
 	void Objects::movementStop(unsigned char key) //Keyboard Up
 	{
-	float stop = 0.f;
+		float stop;
+		float speed;
+		speed = inMotionSpeed;
+		if ((player==true) || (stationary==true))
+		{
+			speed = 0.f;
+		} else
+		{
+			speed = -speed;
+		}
+		stop = 0.f;
 	switch (key)
 	{
 		//Up (stationary) = 1; Y
 	case 'w':
 		{
-			this-> inMotionSpeedX = stop;
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
@@ -328,7 +337,6 @@
 		// Down (stationary) = 3; Y	
 	case 's':
 		{
-			this-> inMotionSpeedX = stop;
 			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
@@ -342,7 +350,6 @@
 	case 'a':
 		{
 			this-> inMotionSpeedX = stop;
-			this-> inMotionSpeedY = stop;
 			if(player == true)
 			{
 				this-> setCurrentAnimation(4);
@@ -355,7 +362,6 @@
 	case 'd':
 		{
 			this-> inMotionSpeedX = stop;
-			this-> inMotionSpeedY = stop;
 			if(player==true)
 			{
 				this-> setCurrentAnimation(3);

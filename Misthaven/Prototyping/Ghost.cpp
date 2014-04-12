@@ -63,7 +63,7 @@
 		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offset, stop;
 		bool choice;
 		choice = rand() %2; // Either 0 or 1
-		offset = rand() % 11;
+		offset = rand() % 11 + 6;
 		move = (this->respectiveSpeed);
 		stop = 0;
 		playerPosX = inPlayerPosX - offset; playerPosY = inPlayerPosY - offset;
@@ -319,7 +319,7 @@
 		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offset, stop;
 		bool choice;
 		choice = rand() %2; // Either 0 or 1
-		offset = rand() % 11;
+		offset = rand() % 11 + 6;
 		move = (this->respectiveSpeed);
 		stop = 0;
 		playerPosX = inPlayerPosX - offset; playerPosY = inPlayerPosY - offset;

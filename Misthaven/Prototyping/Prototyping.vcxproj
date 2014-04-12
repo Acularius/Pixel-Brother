@@ -17,6 +17,7 @@
     <ClInclude Include="DrawPrimitives.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Hitbox.h" />
+    <ClInclude Include="Keylogger.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Sprite.h" />
@@ -28,6 +29,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Hitbox.cpp" />
+    <ClCompile Include="Keylogger.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
