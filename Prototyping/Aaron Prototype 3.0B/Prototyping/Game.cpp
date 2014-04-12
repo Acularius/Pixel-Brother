@@ -328,7 +328,7 @@ void Game::keyboardDown(unsigned char key, int mouseX, int mouseY)
 							break;  }
 			case '2': {		
 							SwitchStateTo (StateHome, 2);
-							playEnvironment();
+							//playEnvironment();
 							StateControl(UI,true,6);
 							MessageControl(Msg, 3, 7);
 							break;  }

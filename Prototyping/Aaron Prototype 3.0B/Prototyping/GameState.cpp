@@ -51,7 +51,7 @@
 			menuSpeed=0;
 			active=true;
 
-			LocalGame -> playSound(false); //PLAY'S FMOD LOOP BACKGROUND SOUND.
+			//LocalGame -> playSound(false); //PLAY'S FMOD LOOP BACKGROUND SOUND.
 
 				//Sprite - Menu Background.
 				MenuBG = new Sprite("images/Menu Background.png");
@@ -256,7 +256,8 @@
 		LocalGame=Local;
 		active=false;
 		loadcheck=false;
-		mapSpeed = 0;
+		mapSpeedX = 0;
+		mapSpeedY = 0;
 		WaterSpeed = 0;
 
 		    //Sprite - Water Background.
@@ -319,20 +320,29 @@
 
 	void LevelHome::Update()
 	{
+				Map1_Base -> positionX+=mapSpeedX;
+				Map1_Objects -> positionX+=mapSpeedX;
+				Map1_Base ->positionY+=mapSpeedY;
+				Map1_Objects ->positionY+=mapSpeedY;
+
 	 		if (test == true) //Horozontal Movement:
 			{
 				// MAP SPEED:
-				Map1_Base -> positionX+=mapSpeed;
-				Map1_Objects -> positionX+=mapSpeed;
+				//if(abs(Map1_Base->positionX==9))
+
 				// PARALAX SCROLLING:
+				
 				WaterBackground -> positionY-=1;
 				WaterBackground -> positionX+=WaterSpeed;
+
 			}
 			else //Vertical Movement:
 			{
 				// MAP SPEED:
-				Map1_Base ->positionY+=mapSpeed;
-				Map1_Objects ->positionY+=mapSpeed;
+				//if(abs(Map1_Base->positionY==9))
+				{Map1_Base ->positionY+=mapSpeedY;}
+				//if(abs(Map1_Objects->positionY==9))
+				{Map1_Objects ->positionY+=mapSpeedY;}
 				// PARALAX SCROLLING:
 				WaterBackground -> positionY+=(WaterSpeed-1);
 			}
@@ -354,67 +364,81 @@
 	void LevelHome::KeyDown(unsigned char key)
 	{
 
-			switch(key)
-			{
-				case 32: // the space bar
-					     break;
-				case 27: { //escape key
-							 break; }
 
-				case 'w':
-					     test = false;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 break;
 
-				case 'a':
-						 test = true;
-						 mapSpeed = 9;
+
+				if(key=='w')
+				{		 
+						 if(mapSpeedY==0)
+						 { mapSpeedY = - 9; }
+						 else
+						 { mapSpeedY =-mapSpeedY; }
+						 WaterSpeed = -4; 
+				}
+
+				if(key=='s')
+				{
+						 if(mapSpeedY==0)
+						 { mapSpeedY = + 9; }
+						 else
+						 { mapSpeedX = -mapSpeedX; }
 						 WaterSpeed = 4;
-						 break;
+						
+				}
 
-				case 'd':
-						 test = true;
-						 mapSpeed = -9;
-						 WaterSpeed = -4;
-						 break;
 
-				case 's':
-						 test = false;
-						 mapSpeed = 9;
+				if(key=='a')
+				{
+						 if(mapSpeedX==0)
+						 { mapSpeedX = + 9; }
+						 else
+						 { mapSpeedX =-mapSpeedX; }
 						 WaterSpeed = 4;
-						 break;
-			}
+				}
+
+				if(key=='d')
+				{
+						 
+						 if(mapSpeedX==0)
+						 { mapSpeedX = - 9; }
+						 else
+						 { mapSpeedX = -mapSpeedX; }
+						 WaterSpeed = -4;
+				}
+
+
 	}
 
 
 	void LevelHome::KeyUp(unsigned char key)
 	{
-			switch(key)
-			{
-				case 32: // the space bar
-						 break;
-				case 27: // the escape key
-						 break;
-		
-				case 'w':
-						mapSpeed = 0;
+
+				if(key=='w')
+				{
+						if(mapSpeedY == -9)
+						{ mapSpeedY = 0; }
 						WaterSpeed = 0;
-						break;
-				case 'a':
-						mapSpeed = 0;
+				}
+				if(key=='a')
+				{
+						if(mapSpeedX== +9)
+						{ mapSpeedX = 0; }
 						WaterSpeed = 0;
-						break;
-				case 'd':
-						mapSpeed = 0;
+				}
+				if(key=='d')
+				{
+						if(mapSpeedX== -9)
+						{ mapSpeedX = 0; }
 						WaterSpeed = 0;
-						break;
-				case 's':
-						mapSpeed = 0;
+				}
+				if(key=='s')
+				{
+						if(mapSpeedY == +9)
+						{ mapSpeedY = 0; }
 						WaterSpeed = 0;
-						break;
-			}
+				}
 	}
+
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX||

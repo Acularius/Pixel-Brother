@@ -108,7 +108,9 @@
 			 Sprite *Map1_Objects;
 		     Sprite *WaterBackground;
 
-		int mapSpeed;   // Speed of player (basically);
+		//int mapSpeed;   // Speed of player (basically);
+		int mapSpeedX;
+		int mapSpeedY;
 		int WaterSpeed; // Speed of scrolling water BG;
 		bool test;      // To test movement control;
 

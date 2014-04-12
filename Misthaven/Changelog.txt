@@ -1,4 +1,0 @@
-Pre Version :
-
-03.03.2014
-- Simple Scoring over time mechanism.
