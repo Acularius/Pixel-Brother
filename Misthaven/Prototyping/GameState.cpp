@@ -465,13 +465,13 @@
 		switch(opt)
 	   { 
 		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
-					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
+					LocalGame->MessageControl(LocalGame->Msg, 2, 7); //Prints message on screen.
 					std::cout<<"OPTION 1 "<<std::endl;
 					break;
 				  }
 		  case 2: { 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					LocalGame->MessageControl(LocalGame->Msg, 1, 7); //Prints message on screen.
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
 					std::cout<<"OPTION 2 "<<std::endl;
 					break;
 				  }
@@ -782,7 +782,8 @@
 			{
 				Player-> interboxactive = true;
 				Player->attackBreakDown();
-				std::cout<< "I am attacking" << std::endl;	
+				std::cout<< "I am attacking" << std::endl;
+				AudioLibPlaySound("Sounds/Woosh.mp3",false);
 			};
 			break;
 		};
@@ -969,7 +970,7 @@
 				    ( (playLeftX >= tranLeftX) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX) && (playRightX <= tranRightX) ) )
 					{  TutorialSprite->setCurrentAnimation(i); //Displays the i'th sprite based on array's index i
 					   if(anynumber2!=i)
-					   AudioLibPlaySound("Sounds/Tick.mp3",false);
+					   AudioLibPlaySound("Sounds/Gong.mp3",false);
 					   anynumber2=i;
 					   found2=true;} 
 			}	
@@ -1200,7 +1201,8 @@
 			{
 				Player-> interboxactive = true;
 				Player->attackBreakDown();
-				std::cout<< "I am attacking" << std::endl;	
+				std::cout<< "I am attacking" << std::endl;
+				AudioLibPlaySound("Sounds/Woosh.mp3",false);
 			};
 			break;
 		};
@@ -1307,7 +1309,7 @@
 
 			std::cout << "BING!" << std::endl;
 			this->LocalGame->SwitchStateTo(this, 4); // To Level 4~!
-			this->LocalGame->MessageControl(this->LocalGame->Msg, 3,7);
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 1,7);
 		}
 		else
 		{
@@ -1529,7 +1531,8 @@
 			{
 				Player-> interboxactive = true;
 				Player->attackBreakDown();
-				std::cout<< "I am attacking" << std::endl;	
+				std::cout<< "I am attacking" << std::endl;
+				AudioLibPlaySound("Sounds/Woosh.mp3",false);
 			};
 			break;
 		};
@@ -1781,7 +1784,8 @@
 			{
 				Player-> interboxactive = true;
 				Player->attackBreakDown();
-				std::cout<< "I am attacking" << std::endl;	
+				std::cout<< "I am attacking" << std::endl;
+				AudioLibPlaySound("Sounds/Woosh.mp3",false);
 			};
 			break;
 		};
