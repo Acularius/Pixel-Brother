@@ -24,7 +24,7 @@
 		this-> immortal = false;
 		playPosX = playPosY = 0;
 
-		this-> respectiveSpeed = 6;
+		this-> respectiveSpeed = 8;
 
 		this-> setLayerID(6);
 
@@ -33,6 +33,7 @@
 		dam = 1;
 		engage = false;
 		separComSys = true;
+		attackCountDown = 15;
 	}
 
 //-------------------------------------------------------------------------------------------
@@ -197,13 +198,13 @@
 
 	void Ghost::attackZePlayer()
 	{
-		if (engage == true  && coolDown == false && attackTicking < 15)
+		if (engage == true  && coolDown == false && attackTicking < attackCountDown)
 		{
 			attackTicking++;
 			interboxactive = true;
 			std::cout<< "+";
 		}
-		else if (engage == true  && coolDown == false && attackTicking >= 15)
+		else if (engage == true  && coolDown == false && attackTicking >= attackCountDown)
 		{
 			attack = true;
 			coolDown = true;
@@ -285,7 +286,6 @@
 		//Combat info
 		hP = 1;
 		dam = 0;
-		engage = false;
 		separComSys = true;
 
 
@@ -431,49 +431,7 @@
 		}
 	}
 
-//-------------------------------------------------------------------------------------------
-//  
-//-------------------------------------------------------------------------------------------
 
-	void Seagull::closeToAttack()
-	{
-		if ( (std::abs(positionX-playPosX) <= 20) && (std::abs(positionY-playPosY) <=30 ) )
-		{
-			engage = true;
-		}
-		else
-		{
-			engage = false;
-		}
-	
-	}
-
-//-------------------------------------------------------------------------------------------
-//  
-//-------------------------------------------------------------------------------------------
-
-	void Seagull::attackZePlayer()
-	{
-		if (engage == true  && coolDown == false && attackTicking < 15)
-		{
-			attackTicking++;
-			interboxactive = true;
-			std::cout<< "+";
-		}
-		else if (engage == true  && coolDown == false && attackTicking >= 15)
-		{
-			attack = true;
-			coolDown = true;
-			interboxactive = true;
-			std::cout << "Fire!" << std::endl;
-		}
-		else
-		{
-			interboxactive = false;
-			attackTicking = 0;
-			attack = false;
-		}
-	}
 
 //-------------------------------------------------------------------------------------------
 //  
@@ -509,12 +467,9 @@
 	void Seagull::sgUpdate()
 	{
 		seagullRespawn();
-		closeToAttack();
-	
+
 		aboutFace();
 		movementSeagull(playPosX, playPosY);
-
-		attackZePlayer();
 	}
 
 //																			|Donald Smith|

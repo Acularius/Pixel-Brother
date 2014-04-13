@@ -20,7 +20,7 @@ public:
 	float inMotionSpeed; // The speed that everyone moves in relation to the player
 	float respectiveSpeed; //The speed an object moves whether or not the player is moving or not. Max Speed.
 
-	int tickFrame;
+	int tickFrame; // Affects the rate at which animations cycle through frames.
 
 
 	virtual void update();
@@ -29,29 +29,29 @@ public:
 	bool immortal; // Does it take damage?
 	int hP; //Hit Points
 	int dam; //Damage
-	bool coolDown;
-	int coolDTicking;
-	int attackTicking;
+	bool coolDown; // Is object on cool down (Attack)
+	int coolDTicking; // CoolDown countdown
+	int attackTicking; // Time until combat initiates
 
-	bool bOpponent;
-	bool bInitiator;
+	bool bOpponent; // Is it the opponent? (Combat System)
+	bool bInitiator; // Is it the initiator? (Combat System)
 	bool separComSys;
 
 	void coolDownfunc(); // No attack spam
 	void attackBreakUp(); // So one can't hold down the attack key - Up
 	void attackBreakDown(); // So one can't hold down the attack key - Down
-	void attackUpdate();
+	void attackUpdate(); // The attack for the player
 
 
-	int direction;
+	int direction; // Which way is it facing
 	//Interact Box
-	bool attack;
-	bool attackanim;
-	bool talk;
-	bool interboxactive;
+	bool attack; // Is it initiating combat - activates interact box
+	bool attackanim; // Animation for attacking 
+	bool talk; // Does it initiate conversation
+	bool interboxactive; // Is the interact box active?
 
 	//Score
-	int scoreStorage;
+	int scoreStorage; // Stores the score - FOR PLAYER
 
 	//Movement
 	float inMotionSpeedX; // Object's move speed in pixels. X (left or right) - When the player moves - X Plane
@@ -86,13 +86,13 @@ class MainCharacter : public Characters
 public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
-	int tickHPRegen;
+	int tickHPRegen; // How often does the player regen health
 
 
 	Hitbox *ObjectHitbox;
 	
-	void playerUpdate();
-	void healthRegen();
+	void playerUpdate(); // Updates Player specific functions
+	void healthRegen(); // Health Regeneration function
 
 };
 
@@ -110,28 +110,29 @@ class Ghost : public Characters
 public:
 	Ghost::Ghost (std::string filename, int width, int height);
 	~Ghost(void);
-	bool engage;
-	float playPosX, playPosY;
+	bool engage; // Player is in Range
+	float playPosX, playPosY; // Where the Player's position is.
+	int attackCountDown; // CountDown before the attack in attackZePlayer()
 
 
-	void ghUpdate();
+	void ghUpdate(); // Updates the Ghost
 
-	void getPlayerPos(float inPlayerPosX, float inPlayerPosY);
-	void movementGhost(float inPlayerPosX, float inPlayerPosY);
-	void ghostRespawn();
+	void getPlayerPos(float inPlayerPosX, float inPlayerPosY); // Gets the Player's position
+	void movementGhost(float inPlayerPosX, float inPlayerPosY); // Using the player's position, heads there.
+	void ghostRespawn(); // When the ghost dies or does damage to the player, respawn().
 
-	void closeToAttack();
-	void attackZePlayer();
-	void aboutFace();
+	void closeToAttack(); // If the ghost is close enough to attack, 
+	void attackZePlayer(); // Initiates combat
+	void aboutFace(); // Faces the player.
 
 };
 
+// Similar to Ghost
 class Seagull: public Characters
 {
 public:
 	Seagull::Seagull (std::string filename, int width, int height);
 	~Seagull(void);
-	bool engage;
 	float playPosX, playPosY;
 
 
@@ -141,8 +142,7 @@ public:
 	void movementSeagull(float inPlayerPosX, float inPlayerPosY);
 	void seagullRespawn();
 
-	void closeToAttack();
-	void attackZePlayer();
+
 	void aboutFace();
 
 };

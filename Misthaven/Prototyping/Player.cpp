@@ -75,10 +75,10 @@
 	{
 		if(hP < 10)
 		{
-			if(tickHPRegen < 200)
+			if(tickHPRegen < 400)
 			{
 				tickHPRegen++;
-			}else if(tickHPRegen >= 200 )
+			}else if(tickHPRegen >= 400 )
 			{
 				hP++;
 				tickHPRegen = 0;

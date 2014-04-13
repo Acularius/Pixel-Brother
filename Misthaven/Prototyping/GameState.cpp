@@ -1097,21 +1097,27 @@
 			this->addToGhostList(Ghosty4);
 
 			Ghosty5 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			Ghosty5->dam = 2;
+			Ghosty5->respectiveSpeed = 9;
 			this->addSpriteToDrawList(Ghosty5);
 			this->addToObjectsList(Ghosty5);
 			this->addToGhostList(Ghosty5);
 
 			Ghosty6 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			Ghosty6-> respectiveSpeed = 12;
 			this->addSpriteToDrawList(Ghosty6);
 			this->addToObjectsList(Ghosty6);
 			this->addToGhostList(Ghosty6);
 
 			Ghosty7 = new Ghost ("images/Enemy Sprite 2.png",80,80);
+			Ghosty7->respectiveSpeed = 12;
 			this->addSpriteToDrawList(Ghosty7);
 			this->addToObjectsList(Ghosty7);
 			this->addToGhostList(Ghosty7);
 
 			Ghosty8 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			Ghosty8->dam = 2;
+			Ghosty8->respectiveSpeed = 9;
 			this->addSpriteToDrawList(Ghosty8);
 			this->addToObjectsList(Ghosty8);
 			this->addToGhostList(Ghosty8);
@@ -1413,7 +1419,7 @@
 			MapConstraintsTwo = Constraints("images/Levels/Map 3 Constraints.bmp");
 			std::cout << "At Biscuit Two" << std::endl;
 
-			//All Ghost Sprites:
+			//All Ghost sprite/objects:
 			Ghosty1 = new Ghost("images/Enemy Sprite.png",40,40);
 			this->addSpriteToDrawList(Ghosty1);
 			this->addToObjectsList(Ghosty1);
@@ -1435,21 +1441,27 @@
 			this->addToGhostList(Ghosty4);
 
 			Ghosty5 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			Ghosty5->dam = 2;
+			Ghosty5->respectiveSpeed = 9;
 			this->addSpriteToDrawList(Ghosty5);
 			this->addToObjectsList(Ghosty5);
 			this->addToGhostList(Ghosty5);
 
 			Ghosty6 = new Ghost("images/Enemy Sprite 2.png",80,80);
+			Ghosty6-> respectiveSpeed = 12;
 			this->addSpriteToDrawList(Ghosty6);
 			this->addToObjectsList(Ghosty6);
 			this->addToGhostList(Ghosty6);
 
 			Ghosty7 = new Ghost ("images/Enemy Sprite 2.png",80,80);
+			Ghosty7->respectiveSpeed = 12;
 			this->addSpriteToDrawList(Ghosty7);
 			this->addToObjectsList(Ghosty7);
 			this->addToGhostList(Ghosty7);
 
 			Ghosty8 = new Ghost("images/Enemy Sprite 1.png",80,80);
+			Ghosty8->dam = 2;
+			Ghosty8->respectiveSpeed = 9;
 			this->addSpriteToDrawList(Ghosty8);
 			this->addToObjectsList(Ghosty8);
 			this->addToGhostList(Ghosty8);

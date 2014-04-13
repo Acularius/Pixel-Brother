@@ -7,7 +7,9 @@
 	#include "Objects.h"
 
 //-------------------------------------------------------------------------------------------
-//  
+//  Object Class:
+// The Work horse of the game, should never use sprite to load anything. 
+// Use this to derive more specialized objects, but it comes equipped with all the data members that are needed to be inherited.
 //-------------------------------------------------------------------------------------------
 
 	Objects::Objects(std::string filename, int width, int height)
@@ -64,9 +66,6 @@
 
 	}
 
-//-------------------------------------------------------------------------------------------
-//  
-//-------------------------------------------------------------------------------------------
 
 	Objects::~Objects()
 	{
@@ -74,7 +73,7 @@
 	}
 
 //-------------------------------------------------------------------------------------------
-//  
+//  Using an iterator of the object, update all the functions below.
 //-------------------------------------------------------------------------------------------
 
 	void Objects::update() 
@@ -114,11 +113,11 @@
 
 	void Objects::coolDownfunc()
 	{
-		if (coolDown == true && coolDTicking < 2)
+		if (coolDown == true && coolDTicking < 1)
 		{
 			coolDTicking++;
 		}
-		else if (coolDown == true && coolDTicking >=2)
+		else if (coolDown == true && coolDTicking >=1)
 		{
 			coolDown=false;
 			coolDTicking = 0;
