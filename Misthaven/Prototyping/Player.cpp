@@ -23,7 +23,7 @@
 		this->addSpriteAnimRow(6,0,300,60,0,4);
 		this->addSpriteAnimRow(7,0,360,60,0,4);
 		this->addSpriteAnimRow(8,0,420,60,0,4);
-		this->setPosition(160,95); 
+		this->setPosition(210,100); 
 		this->setCurrentAnimation(1);
 
 		this->direction = 1; // Facing down

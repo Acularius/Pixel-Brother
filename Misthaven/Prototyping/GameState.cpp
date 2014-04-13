@@ -687,7 +687,7 @@
 				WaterBackground -> setPosition(-1700,-750);
 				Map1_Base -> setPosition(-1422,-1033); 
 				NPC_Objects-> setPosition(-1422,-1033);
-				Player->setPosition(160,95);
+				Player->setPosition(210,100);
 				Player->setCurrentAnimation(1);
 				Map1_Objects -> setPosition(-1422,-1033);
 				TransitionHomeOne->setPosition(-542,-113);
@@ -1138,7 +1138,7 @@
 	{ 
 				WaterBackground -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
-				Player-> setPosition(160,95);
+				Player-> setPosition(210,100);
 				Player-> setCurrentAnimation(1);
 				Map2_Objects -> setPosition(-475,-1410);
 				TransitionOneTwo->setPosition(510,-233);
@@ -1485,7 +1485,7 @@
 	{ 
 				WaterBackground -> setPosition(-1700,-750);
 				Map3_Base -> setPosition(-1552,-1402);
-				Player-> setPosition(160,95);
+				Player-> setPosition(210,100);
 				Player-> setCurrentAnimation(1);
 				Map3_Objects -> setPosition(-1552,-1402);
 				TransitionTwoMenu->setPosition(-137,-298); 
@@ -1763,7 +1763,7 @@
 	{ 
 				WaterBackground -> setPosition(-1700,-750);
 				Map4_Base -> setPosition(-1404,-1384);
-				Player-> setPosition(160,95);
+				Player-> setPosition(210,100);
 				Player-> setCurrentAnimation(1);
 				Map4_Objects -> setPosition(-1404,-1384);
 				
