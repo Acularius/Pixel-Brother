@@ -364,6 +364,7 @@
 
 	void MainMenu::ResetMap()
 	{ 
+			LocalGame->storeKey.clear();
 			AudioLibShutdown();
 			AudioLibInit();
 			AudioLibPlaySound("Sounds/Journey.mp3",true);
@@ -1136,6 +1137,7 @@
 
 	void LevelOne::ResetMap()
 	{ 
+		LocalGame->storeKey.clear();
 				WaterBackground -> setPosition(-1700,-750);
 				Map2_Base -> setPosition(-475,-1410);
 				Player-> setPosition(210,100);
@@ -1761,6 +1763,7 @@
 
 	void LevelThree::ResetMap()
 	{ 
+		LocalGame->storeKey.clear();
 				WaterBackground -> setPosition(-1700,-750);
 				Map4_Base -> setPosition(-1404,-1384);
 				Player-> setPosition(210,100);

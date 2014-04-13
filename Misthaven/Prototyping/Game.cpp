@@ -81,9 +81,9 @@
 		StateTwo->Init(this);
 		states.push_back(StateTwo);
 
-		LevelThree* StateThree = new LevelThree();
+		/*LevelThree* StateThree = new LevelThree();
 		StateThree->Init(this);
-		states.push_back(StateThree);
+		states.push_back(StateThree);*/
 
 
 
