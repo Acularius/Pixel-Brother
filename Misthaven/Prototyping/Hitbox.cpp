@@ -78,8 +78,8 @@
 
 	InteractBox::InteractBox()
 	{
-		faceHeight = 43; faceWidth = 40; 
-		sideWidth = 43; sideHeight = 45;
+		faceHeight = 63; faceWidth = 40; 
+		sideWidth = 63; sideHeight = 45;
 
 		leftCornerX = rightCornerX = bottomCornerY= topCornerY = 0;
 		active, attack, talk = false;

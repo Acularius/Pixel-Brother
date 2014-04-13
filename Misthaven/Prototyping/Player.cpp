@@ -78,7 +78,7 @@
 			if(tickHPRegen < 400)
 			{
 				tickHPRegen++;
-			}else if(tickHPRegen >= 400 )
+			}else if(tickHPRegen >= 200 )
 			{
 				hP++;
 				tickHPRegen = 0;

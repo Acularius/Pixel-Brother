@@ -113,11 +113,11 @@
 
 	void Objects::coolDownfunc()
 	{
-		if (coolDown == true && coolDTicking < 1)
+		if (coolDown == true && coolDTicking < 0)
 		{
 			coolDTicking++;
 		}
-		else if (coolDown == true && coolDTicking >=1)
+		else if (coolDown == true && coolDTicking >=0)
 		{
 			coolDown=false;
 			coolDTicking = 0;
