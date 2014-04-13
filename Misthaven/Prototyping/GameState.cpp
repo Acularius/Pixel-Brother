@@ -466,7 +466,7 @@
 	   {  
 		  case 1: { 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					LocalGame->MessageControl(LocalGame->Msg, 2, 7); //Prints message on screen.
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
 					std::cout<<"OPTION 1 "<<std::endl;
 					break;
 				  }
@@ -475,7 +475,7 @@
 					LocalGame->filesave(1);
 
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					LocalGame->MessageControl(LocalGame->Msg, 2, 7); //Prints message on screen.
+					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
 					std::cout<<"OPTION 2 "<<std::endl;
 					break;
 				  }
