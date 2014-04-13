@@ -61,43 +61,43 @@
 
 	void Ghost::movementGhost(float inPlayerPosX, float inPlayerPosY)
 	{
-		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offset, stop;
+		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offset, range, stop;
 		bool choice;
 		choice = rand() %2; // Either 0 or 1
 		offset = 30; // find the player's centre
+		range = 20; // How close to be before Ghost stops
 		move = (this->respectiveSpeed);
 		stop = 0;
 		playerPosX = inPlayerPosX + offset; playerPosY = inPlayerPosY + offset;
 		ghostPosX = (this->positionX); ghostPosY = (this->positionY);
 
-	//(std::abs(positionX-playPosX) <= 20) && (std::abs(positionY-playPosY) <=30 )
 		switch (choice)
 		{
 		case true:{
 			// Dealing with the x-coords
-					if ( std::abs(playerPosX - ghostPosX) > offset  && ghostPosX < playerPosX)
+					if ( std::abs(playerPosX - ghostPosX) > range  && ghostPosX < playerPosX)
 					{
 						(this->respectiveSpeedY) = stop;
 						(this->respectiveSpeedX) = move;
 					};
-					if ( std::abs(playerPosX - ghostPosX) > offset  && ghostPosX > playerPosX)
+					if ( std::abs(playerPosX - ghostPosX) > range  && ghostPosX > playerPosX)
 					{
 						(this->respectiveSpeedY) = stop;
 						(this->respectiveSpeedX) = -move;
 					};
-					if ( std::abs(playerPosX - ghostPosX) <= offset)
+					if ( std::abs(playerPosX - ghostPosX) <= range)
 					{
 						(this->respectiveSpeedX) = stop;
 						// Dealing with the y-coords
-						if ( std::abs(playerPosY - ghostPosY) > offset  && ghostPosY < playerPosY)
+						if ( std::abs(playerPosY - ghostPosY) > range  && ghostPosY < playerPosY)
 						{
 							(this->respectiveSpeedY) = move;
 						};
-						if ( std::abs(playerPosY - ghostPosY) > offset  && ghostPosY > playerPosY)
+						if ( std::abs(playerPosY - ghostPosY) > range  && ghostPosY > playerPosY)
 						{
 							(this->respectiveSpeedY) = -move;
 						};
-						if (std::abs(playerPosY - ghostPosY) <= offset)
+						if (std::abs(playerPosY - ghostPosY) <= range)
 						{
 							(this->respectiveSpeedY) = stop;
 						}
@@ -107,29 +107,29 @@
 		case false:
 			{
 				// Dealing with the y-coords
-				if (std::abs(playerPosY - ghostPosY) > offset  && ghostPosY < playerPosY)
+				if (std::abs(playerPosY - ghostPosY) > range  && ghostPosY < playerPosY)
 					{
 						(this->respectiveSpeedX) = stop;
 						(this->respectiveSpeedY) = move;
 					};
-					if (std::abs(playerPosY - ghostPosY) > offset  && ghostPosY > playerPosY)
+					if (std::abs(playerPosY - ghostPosY) > range  && ghostPosY > playerPosY)
 					{
 						(this->respectiveSpeedX) = stop;
 						(this->respectiveSpeedY) = -move;
 					};
-					if (std::abs(playerPosY - ghostPosY) <= offset)
+					if (std::abs(playerPosY - ghostPosY) <= range)
 					{
 						(this->respectiveSpeedY) = stop;
 						// Dealing with the x-coords
-						if (std::abs(playerPosX - ghostPosX) > offset  && ghostPosX < playerPosX)
+						if (std::abs(playerPosX - ghostPosX) > range  && ghostPosX < playerPosX)
 						{
 							(this->respectiveSpeedX) = move;
 						};
-						if (std::abs(playerPosX - ghostPosX) > offset  && ghostPosX > playerPosX)
+						if (std::abs(playerPosX - ghostPosX) > range  && ghostPosX > playerPosX)
 						{
 							(this->respectiveSpeedX) = -move;
 						};
-						if (std::abs(playerPosX - ghostPosX) > offset)
+						if (std::abs(playerPosX - ghostPosX) <= range)
 						{
 							(this->respectiveSpeedX) = stop;
 						}
