@@ -87,6 +87,7 @@ public:
 	MainCharacter::MainCharacter(std::string filename, int width, int height);
 	~MainCharacter(void);
 	int tickHPRegen; // How often does the player regen health
+	int GameCheckpoint; //For StoryProgression and filesaving;
 
 
 	Hitbox *ObjectHitbox;

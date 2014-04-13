@@ -463,15 +463,19 @@
 	void MainMenu::MenuControl (int opt)
 	{  
 		switch(opt)
-	   { 
-		  case 1: { LocalGame->SwitchStateTo (LocalGame->StateTwo, 4);
+	   {  
+		  case 1: { 
+					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
 					LocalGame->MessageControl(LocalGame->Msg, 2, 7); //Prints message on screen.
 					std::cout<<"OPTION 1 "<<std::endl;
 					break;
 				  }
 		  case 2: { 
+					LocalGame->stateInfo.storePlayerCheckpoint=3;//Setting New Game
+					LocalGame->filesave(1);
+
 					LocalGame->SwitchStateTo (LocalGame->StateHome, 2);
-					LocalGame->MessageControl(LocalGame->Msg, 4, 7); //Prints message on screen.
+					LocalGame->MessageControl(LocalGame->Msg, 2, 7); //Prints message on screen.
 					std::cout<<"OPTION 2 "<<std::endl;
 					break;
 				  }
@@ -889,8 +893,10 @@
 			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
 
 			std::cout << "BING!" << std::endl;
-			this->LocalGame->SwitchStateTo(this, 3); // To Level 3~!
-			this->LocalGame->MessageControl(this->LocalGame->Msg, 2,7);
+			AudioLibPlaySound("Sounds/Futuristic Fly.mp3",false);
+			LocalGame->filesave (1);
+			this->LocalGame->SwitchStateTo(this, LocalGame->stateInfo.storePlayerCheckpoint); // To Checkpoint;
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 5-LocalGame->stateInfo.storePlayerCheckpoint,7);
 		}
 		else
 		{
@@ -1178,11 +1184,13 @@
 		//UI Update
 		ScoreUpdate(Player->scoreStorage);
 		UIHealth->inputHealth(Player->hP);
-
+		
 		if (Player->hP <= 0)
 		{
 			Player->hP = 10;
 			Player->scoreStorage = 0;
+			this->LocalGame->SwitchStateTo(this, 2); // To Level 4~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 7,7);
 			ResetMap();
 			
 		}
@@ -1310,12 +1318,15 @@
 			( (playLeftX >= tranLeftX  ) && (playLeftX <= tranRightX) || (playRightX >= tranLeftX  ) && (playRightX <= tranRightX) ) )
 		{
 			//Transfer points
-			LocalGame->stateInfo.storePlayerHp = Player->hP;
+			LocalGame->stateInfo.storePlayerHp = Player->hP=10;
 			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
 
 			std::cout << "BING!" << std::endl;
-			this->LocalGame->SwitchStateTo(this, 4); // To Level 4~!
-			this->LocalGame->MessageControl(this->LocalGame->Msg, 1,7);
+			AudioLibPlaySound("Sounds/Futuristic Fly.mp3",false);
+			LocalGame->filesave (1);
+			this->LocalGame->SwitchStateTo(this, 2); // To Level 4~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 4,7);
+			LocalGame->stateInfo.storePlayerCheckpoint++;
 		}
 		else
 		{
@@ -1521,7 +1532,8 @@
 		{
 			Player->hP = 10;
 			Player->scoreStorage = 0;
-			ResetMap();
+			this->LocalGame->SwitchStateTo(this, 2); // To Level 4~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 7,7);
 			
 		}
 	}
@@ -1648,7 +1660,11 @@
 			LocalGame->stateInfo.storePlayerScore = Player->scoreStorage;
 
 			std::cout << "BING!" << std::endl;
-			this->LocalGame->SwitchStateTo(this, 1); // To Level menu~!
+			AudioLibPlaySound("Sounds/Futuristic Fly.mp3",false);
+			LocalGame->filesave (1);
+			this->LocalGame->SwitchStateTo(this, 2); // To Level 4~!
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 6,7);
+			LocalGame->stateInfo.storePlayerCheckpoint=3;
 		}
 		else
 		{

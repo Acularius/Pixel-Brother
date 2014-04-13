@@ -44,6 +44,8 @@
 
 		stateInfo.storePlayerHp = 10;
 		stateInfo.storePlayerScore = 0;
+		stateInfo.storePlayerCheckpoint = 3; //LevelOne
+		filesave (0);
 		gameTick = 0;
 	
 	}
@@ -348,9 +350,6 @@ switch(key)
 		}
 	}
 
-//																			   |SpriteLib|
-//###########################################################################################
-
 
 
 
@@ -394,3 +393,27 @@ switch(key)
 				storeKey.pop_back();
 			}
 		}
+
+
+//-------------------------------------------------------------------------------------------
+//  filesave( in saveorload ) - Used to load and save the player's last checkpoint.
+//-------------------------------------------------------------------------------------------
+
+		void Game::filesave (int saveorload) //FILE LOADING AND SAVING
+		{ 
+			if (saveorload==0) //0 - LOAD
+			 { std::ifstream INFILE;
+			   INFILE.open("save.txt");
+			   INFILE>>stateInfo.storePlayerCheckpoint;
+			   INFILE.close(); }
+
+		  if (saveorload==1) //1 - SAVE
+			 { std::ofstream OUTFILE;
+			   OUTFILE.open("save.txt");
+			   OUTFILE<<stateInfo.storePlayerCheckpoint<<std::endl;
+			   OUTFILE.close(); }
+		}
+
+//																			   |SpriteLib|
+//###########################################################################################
+

@@ -38,6 +38,8 @@
 		//Combat information
 		hP= 10;
 		dam = 1;
+		GameCheckpoint = 3; //Setting the portal to take the player to level 1. 
+
 		this->immortal=false;
 
 		tickHPRegen = 0;

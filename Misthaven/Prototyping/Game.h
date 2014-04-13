@@ -15,6 +15,7 @@
 #include "Timer.h"
 #include <algorithm>
 #include <cmath>
+#include <fstream> //FileIO;
 
 #include "UserInterface.h"
 #include "Constraints.h"
@@ -84,6 +85,7 @@ typedef struct _GameStateInfo
 	//Store UI information
 	int storePlayerHp;
 	int storePlayerScore;
+	int storePlayerCheckpoint;
 }GameStateInfo;
 
 /* 
@@ -184,6 +186,7 @@ public:
 
 		//STATE MANAGER.CPP DEFINITIONS
 		void StateReset();
+		void filesave (int saveorload);
 		void StateControl (GameState* g, bool a,int num);
 		void SwitchStateTo (GameState* g, int num);
 		void StateToggle (GameState* g, int num);
