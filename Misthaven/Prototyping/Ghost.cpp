@@ -15,8 +15,8 @@
 			:Characters(filename, width, height)
 	{
 		this-> setNumberOfAnimations(2);
-		this-> addSpriteAnimRow(0, 0,	   0,width,0,8);
-		this-> addSpriteAnimRow(1, 0, height,width,0,8);
+		this-> addSpriteAnimRow(0, 0,	   0,width,0,16);
+		this-> addSpriteAnimRow(1, 0, height,width,0,16);
 		this-> setCurrentAnimation(0);
 		this-> direction=0;
 		this-> ghost=true;
