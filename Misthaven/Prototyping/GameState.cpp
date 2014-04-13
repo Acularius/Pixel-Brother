@@ -1327,7 +1327,7 @@
 			AudioLibPlaySound("Sounds/Futuristic Fly.mp3",false);
 			LocalGame->filesave (1);
 			this->LocalGame->SwitchStateTo(this, 2); // To Level 4~!
-			this->LocalGame->MessageControl(this->LocalGame->Msg, 4,7);
+			this->LocalGame->MessageControl(this->LocalGame->Msg, 5,7);
 			LocalGame->stateInfo.storePlayerCheckpoint++;
 		}
 		else
