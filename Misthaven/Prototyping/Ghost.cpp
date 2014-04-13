@@ -61,19 +61,20 @@
 
 	void Ghost::movementGhost(float inPlayerPosX, float inPlayerPosY)
 	{
-		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offset, range, stop;
-		bool choice;
+		float playerPosX, playerPosY, move, ghostPosX, ghostPosY, offsetX, offsetY, range, stop;
+		int choice;
 		choice = rand() %2; // Either 0 or 1
-		offset = 30; // find the player's centre
+		offsetX = 10; // find the player's centre
+		offsetY = 10;
 		range = 20; // How close to be before Ghost stops
 		move = (this->respectiveSpeed);
 		stop = 0;
-		playerPosX = inPlayerPosX + offset; playerPosY = inPlayerPosY + offset;
+		playerPosX = inPlayerPosX + offsetX; playerPosY = inPlayerPosY + offsetY;
 		ghostPosX = (this->positionX); ghostPosY = (this->positionY);
 
 		switch (choice)
 		{
-		case true:{
+		case 0:{
 			// Dealing with the x-coords
 					if ( std::abs(playerPosX - ghostPosX) > range  && ghostPosX < playerPosX)
 					{
@@ -104,7 +105,7 @@
 					};
 				  }
 				  break;
-		case false:
+		case 1:
 			{
 				// Dealing with the y-coords
 				if (std::abs(playerPosY - ghostPosY) > range  && ghostPosY < playerPosY)
@@ -182,7 +183,7 @@
 
 	void Ghost::closeToAttack()
 	{
-		if ( (std::abs(positionX-playPosX) <= 20) && (std::abs(positionY-playPosY) <=30 ) )
+		if ( (std::abs(positionX-playPosX) <= 30) && (std::abs(positionY-playPosY) <=40 ) )
 		{
 			engage = true;
 		}
